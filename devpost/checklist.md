@@ -16,7 +16,7 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 
 ## Slices
 
-- [ ] **1. Incorporar la novedad principal y recuperar sus cambios reales**
+- [x] **1. Incorporar la novedad principal y recuperar sus cambios reales**
   Becomes usable: Una aplicación local permite analizar la entrada compuesta, revisar la corrección de fibra, el presupuesto condicionado y el interés, confirmar su incorporación y recuperar el resultado desde disco. Se muestra también la interpretación del modelo sobre ausencia de autorización.
   Why now: Demuestra el núcleo y el riesgo semántico desde el primer corte, sin una fachada genérica ni depender de campos inmutables. El arranque del proyecto forma parte de este resultado, no de un paso separado.
   PRD ref: `prd.md > The Core Journey`; `prd.md > Expediente y fuentes`; `prd.md > Propuestas con límites`; `prd.md > Finalización e historial sin cambios`.
@@ -80,6 +80,7 @@ Activity mode: pendiente, según experiencia y práctica que ya se haya producid
 ## Revisions
 
 - 2026-10-22: corte 1 ejecutado; 17 controles locales, modelo real, guardado y reinicio con igualdad completa. Esperar prueba humana antes del corte 2. No marcar completado el checkpoint humano.
+- Commit del corte 1: b980823, revisado antes de incorporar los archivos. El check del corte acredita construcción y verificación mecánica; el checkpoint humano continúa pendiente por instrucción del usuario. No avanzar al siguiente corte hasta recibir su prueba.
 - El primer modelo produjo un interés con value.text nulo; se mantuvo la validación, se precisó el contrato en las instrucciones y se conservó el FAIL original. Los intentos posteriores fueron válidos en los requisitos de la entrada principal. Se rechazó una propuesta redundante; no se presenta precisión perfecta ni ahorro medido.
 - La respuesta API informó cache_write_tokens: se amplió la contabilidad conservadora con las tarifas oficiales de escritura y se desactivó la caché deliberada. Máximo de generación 0,0035 USD/intento; reserva 0,01 sin modificar los límites del usuario. Ver inference-budget.md.
 - Implementación usa fixtures/main.json para el corte 1 y scripts/verify-slice1.mjs para evidencia de lectura y reinicio. El archivo de los seis ejemplos sigue pendiente del corte 3. Aviso básico de descarte ya presente por la condición de no perder trabajo sin advertencia; prueba completa de salidas y cancelación sigue en corte 2.

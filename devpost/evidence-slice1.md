@@ -49,6 +49,8 @@ PASS de lectura desde disco, reinicio real del servicio y lectura HTTP en un pro
 
 Comandos ejecutados: node --test (17/17), node scripts/verify-slice1.mjs before-save, checkpoint y recovery. No llaman al modelo; la inferencia real fue solicitada expresamente desde la interfaz.
 
+Código fijado en el commit local b980823. Perfil personal, archivos de entorno y runtime no están versionados; no hay remoto ni publicación.
+
 ## Consumo y límites
 
 GPT-6 Luna, Responses, default, low/standard. Tres intentos iniciados y tres respuestas con usage; nueve cupos restantes. Ningún reintento automático. Reserva 0,03 USD. Cota conservadora de generación conocida 0,0025505 USD, incluida toda entrada al precio máximo de cache-write; no es una factura. [Tarifas y presupuesto](inference-budget.md).

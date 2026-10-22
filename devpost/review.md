@@ -1,0 +1,59 @@
+---
+doc: joint-planning-review
+status: approved
+updated: 2026-10-22
+---
+
+# Revisión conjunta de producto y solución técnica
+
+El usuario ha aceptado el paquete conjunto con el ajuste aquí incorporado: cambios legítimos permitidos y evaluación en tres capas independientes. [PRD](prd.md) y [especificación](spec.md) recogen la aceptación condicionada y sus precisiones. No se ha construido.
+
+## Resultado que debe demostrar la primera versión
+Introducir una novedad de un cliente ficticio de fibra y dos móviles, revisar cambios con sus fuentes, guardar solo lo aprobado y recuperar un expediente correcto al reabrir.
+La revisión sin cambios deja constancia solo al confirmar su finalización; conserva estado, próximo movimiento y versión de datos. Repetir la misma revisión sin información nueva no duplica.
+
+## Decisiones del paquete aceptado con ajuste
+
+| Producto | Ejecución técnica propuesta | Consecuencia práctica |
+| --- | --- | --- |
+| Una pantalla con expediente, novedad, propuestas e historial | HTML/CSS/JavaScript y un servidor local Node 24, sin framework | Menos preparación; se usa en este equipo y no como servicio multiusuario. |
+| El modelo sugiere; la persona incorpora | La API del modelo no tiene acceso al guardado; las incorporaciones pasan por reglas del programa | Validar formato y citas no garantiza significado; se evalúan los seis casos. |
+| Los campos del alcance admiten cambios legítimos revisados | Registro cerrado de campos y operaciones, incluido presupuesto de referencia y seguimiento | No se supera la evaluación manteniéndolos inmutables. C1-B y C6-B exigen cambios positivos. |
+| Solo autorización contractual queda fuera de modificaciones de V1 | El modelo sí interpreta su existencia o ausencia en una salida evaluable independiente | El bloqueo técnico no acredita comprensión; equivocarse en C4 mantiene MODEL en FAIL. |
+| «Guardar incorporaciones revisadas» y «Confirmar fin de revisión» son intenciones distintas | Datos versionados y revisión confirmada se registran con reglas distintas en un mismo archivo | Un guardado parcial no declara revisado todo el caso; finalizar no pierde incorporaciones previas. |
+| Lo pendiente no se guarda automáticamente | Aviso antes de descartar trabajo revisado sin guardar; salida interna cancelable y advertencia nativa en cierre/recarga normal | Incluye aceptaciones, ediciones, rechazos y motivo. No se promete recuperar borradores o interceptar cierres forzados. |
+| La procedencia queda disponible | La confirmación incluye las fuentes originales que se archivarán como aportadas | Archivar una fuente no convierte todos sus contenidos en hechos aprobados. |
+| Seis pruebas independientes y reapertura | Ejemplos ficticios aislados, almacenamiento local y controles contra repetición | Se puede repetir cada prueba sin borrar las anteriores ni usar aplicaciones reales. |
+| Modelo candidato GPT-6 Luna | Una petición por análisis; propuesta de máximo doce intentos para seis casos y una repetición | El acceso de generación y la calidad siguen sin comprobarse; gasto aún no autorizado. |
+
+No cambia la arquitectura local. Se amplían operaciones permitidas, interpretación evaluable y comprobaciones positivas. El nombre sigue pendiente y no se autoriza consumo por aceptar el modelo candidato.
+
+## Comprobación obligatoria
+[C1–C6 y resultados esperados](evaluation.md):
+1. Presupuesto condicionado: mantener 40 EUR de referencia y conservar todas las condiciones de estudiar 50.
+2. Corrección: 600 a 300 Mb con procedencia y antecedente.
+3. Documento incluido: recibido, sin afirmar autenticidad ni documentación completa.
+4. Interés: conservarlo sin autorización de contratar.
+5. Contradicción: mostrar ambas fuentes y no resolverla por inferencia.
+6. Sin novedades: anotación solo al confirmar, misma versión de datos y repetición sin duplicados.
+
+Un solo fallo crítico bloquea el resultado global. Interés convertido en autorización, condición perdida o contenido no aprobado guardado no se compensan con otros aciertos. También bloquean fuentes falsas y finalización sin confirmación. Registrar el error aunque la persona lo detecte antes de guardar.
+
+Tres resultados independientes: MODEL (interpretación/propuestas originales), GUARDS (aprobación/guardado) y RECOVERY (resultado persistido/reapertura). Una capa correcta no compensa otra errónea.
+Primero pruebas sin coste para controles y recuperación; después, si se autoriza, seis casos con modelo real, variantes positivas de C1/C6 y entrada principal compuesta. Las simulaciones o los campos bloqueados no validan MODEL.
+No se han ejecutado pruebas de producto.
+
+## Coste y medición
+Acceso comprobado: autenticación y listado de modelos. No comprobados: generación, saldo, cuota y calidad.
+La estimación publicada para doce llamadas pequeñas sería unos 0,0096 USD, con los supuestos y límites de [spec.md > Acceso y coste](spec.md#acceso-y-coste); no es gasto realizado, tope garantizado ni autorización. El máximo propuesto de doce incluye ahora hasta nueve entradas iniciales (seis bases, dos variantes y la compuesta) y tres repeticiones selectivas; no una segunda tanda completa.
+Antes de habilitar generación hay que acordar presupuesto. No se activan servicios de Google o AWS.
+
+El ahorro de tiempo es una hipótesis. Registrar espera, lectura, corrección y guardado frente al trabajo manual; también trazabilidad y errores. Después de esos resultados se decide continuar, ajustar o parar y cuánto acabado merece. No hay porcentaje de ahorro conseguido.
+
+## Lectura y siguiente paso
+- [PRD completo](prd.md): controles, resultado esperado, guardado parcial, finalización y límites.
+- [Especificación completa](spec.md): componentes, datos, contratos, errores y pruebas.
+- [Evaluación](evaluation.md): seis entradas ficticias y observaciones.
+
+El [orden de construcción](checklist.md) queda preparado como borrador de 5-build, en cortes utilizables y verificables. Se pide revisión del orden, no otra aprobación del paquete ya aceptado.
+No hay implementación ni inferencia iniciadas. El presupuesto sigue pendiente; no hace falta elegir nombre definitivo ahora.

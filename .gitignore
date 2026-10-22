@@ -1,0 +1,15 @@
+# Personal learner context stays out of future commits.
+/devpost/learner-profile.md
+
+# Local credentials and private runtime data.
+.env
+.env.*
+!.env.example
+/runtime/
+/data/private/
+
+# Future generated outputs and dependencies.
+node_modules/
+dist/
+coverage/
+*.log

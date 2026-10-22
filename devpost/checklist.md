@@ -36,7 +36,7 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
   Learner check: Guardar una incorporación y dejar otra pendiente; intentar cambiar de prueba y volver sin perder decisiones. Finalizar después, reabrir y revisar la traza. Confirmar una revisión sin cambios y repetirla, comprobando que no aparecen actividad o versiones ficticias.
   Commit: `Add partial reviews, explicit completion and discard warnings`
 
-- [ ] **3. Ejecutar las seis familias, los cambios positivos y la recuperación ante errores**
+- [x] **3. Ejecutar las seis familias, los cambios positivos y la recuperación ante errores**
   Becomes usable: La misma aplicación permite ejecutar C1–C6 y las variantes positivas C1-B/C6-B, con documento separado, contradicción de fuentes y modificaciones legítimas de presupuesto/seguimiento. Los resultados tienen evidencia separada de interpretación, controles y recuperación.
   Why now: Cierra el alcance y demuestra que conservar un campo en los casos negativos es una interpretación correcta, no una incapacidad técnica para cambiarlo. Permite decidir utilidad y acabado con evidencia del núcleo.
   PRD ref: `prd.md > Propuestas con límites`; `prd.md > Seis pruebas y registro de evidencia`; `prd.md > What We're Building`; `prd.md > States and Boundaries`.
@@ -54,10 +54,10 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 
 ## Final Review
 
-- [ ] Los tres cortes están verificados y sus evidencias indican qué se ejecutó, con qué versión de código/prompt y qué sigue NOT RUN.
-- [ ] MODEL: seis casos y contrastes positivos con salida original, sin confundir un bloqueo técnico o corrección humana con comprensión.
-- [ ] GUARDS: cambios válidos aceptados se guardan; no aceptados no se guardan; autorización contractual bloqueada se informa solo como restricción de V1.
-- [ ] RECOVERY: datos, antecedentes, fuentes, revisiones y versiones coinciden al leer de nuevo y reiniciar; parcial, deduplicación y fallos no producen estado ficticio.
+- [x] Los tres cortes están verificados mecánicamente y sus evidencias indican ejecución, código/prompt y límites; no implica aceptación humana final.
+- [x] MODEL: seis casos y contrastes positivos evaluados con salida original; críticos cumplidos en la muestra, dos fallos de precisión no críticos conservados. Sin confundir bloqueo técnico o corrección con comprensión.
+- [x] GUARDS: cambios válidos aceptados se guardan; no aceptados no se guardan; autorización contractual bloqueada se informa solo como restricción de V1.
+- [x] RECOVERY: datos, antecedentes, fuentes, revisiones y versiones coinciden al leer de nuevo y reiniciar; parcial, deduplicación y fallos no producen estado ficticio en las comprobaciones ejecutadas.
 - [ ] No hay fallos críticos pendientes. Si los hay, detener la aceptación del núcleo, registrar el problema y reevaluar la ruta; no compensar con aciertos.
 - [ ] El participante ha explorado los casos, comunicado observaciones y vuelto a probar las correcciones acordadas; no inventar revisión si no ocurrió.
 - [ ] Medición de tiempo y correcciones registrada; ahorro solo como resultado si los datos lo apoyan. Decisión de continuar, ajustar o parar documentada antes del acabado adicional.
@@ -78,6 +78,11 @@ Reflection: no solicitada; la respuesta personal, si existe, irá al perfil excl
 Activity mode: pendiente, según experiencia y práctica que ya se haya producido.
 
 ## Revisions
+
+- 2026-10-22, corte 3: commit 165a5b3. Seis familias, variantes positivas, factura prometida y principal evaluadas. Ocho llamadas nuevas, doce acumuladas, sin reintentos ni ampliación del presupuesto. Dos respuestas compatibles reutilizadas. 32 controles locales; veinte tratamientos de aprobación/rechazo comparados íntegramente en otro proceso. Evidencia separada en evidence-slice3.md y originales ficticios en evidence-model-slice3.json.
+- No se detectan fallos críticos en la muestra actual; principal/C4 mantienen fallos de precisión por redundancia, que el agente rechaza en los controles. Prueba final humana y ahorro pendientes. No se marca aceptación global ni listo para publicar.
+- Aviso propio de Ctrl+R visible y cancelación conservando PRUEBA comprobados por el agente. El participante confirma aparición del aviso nativo de Chrome; no se le atribuye cancelación/conservación ni prueba final del conjunto. El fallo inicial de ausencia de aviso queda registrado.
+- Repetición explícita de respuestas reales registradas disponible solo para contexto exacto, sin nuevas llamadas. Cupo agotado: no permite analizar entradas editadas o continuar un estado parcial modificado tras perder su borrador. Limitación documentada antes de la prueba final; no hay fallback silencioso ni resultados inventados.
 
 - 2026-10-22, continuación: feedback temprano recibido y corte 2 autorizado. Tres ajustes de presentación incorporados sin cambiar el expediente persistido. Evidencias en evidence-slice2.md; 28 controles locales y C6 real. No se declara superada la evaluación global ni ahorro medido.
 - Commit del corte 2: 6120344. Se marca construido y comprobado mecánicamente, con la limitación visual del aviso nativo registrada en evidencia. Corte 3 queda sin ejecutar en esta continuación.

@@ -1,0 +1,12 @@
+[
+  {"id":"MAIN","label":"Principal · fibra, condiciones e interés"},
+  {"id":"C1","label":"C1 · presupuesto condicionado","source":{"id":"S-N01","text":"Podría llegar a 50 euros si incluye las dos líneas y el precio no sube durante doce meses. Todavía no he decidido."}},
+  {"id":"C2","label":"C2 · corrección de fibra","source":{"id":"S-N02","text":"Me equivoqué cuando te dije 600 Mb: mi fibra actual es de 300 Mb."}},
+  {"id":"C3","label":"C3 · factura presente","source":{"id":"S-N03","text":"Te paso el texto de mi última factura"},"documents":[{"id":"S-DOC03","type":"document","author":"Documento ficticio del cliente Demo 01","sourceDate":"2026-10-20","text":"FACTURA FICTICIA — DEMO. Periodo septiembre 2026. Servicios: fibra 600 Mb y dos líneas móviles. Importe total: 47 EUR. Documento inventado sin valor comercial."}]},
+  {"id":"C4","label":"C4 · interés sin contratar","source":{"id":"S-N04","text":"La oferta A me interesa. No contrates todavía: quiero revisarla antes."}},
+  {"id":"C5","label":"C5 · permanencia contradictoria","source":{"id":"S-OFERTA-A2","type":"offer","author":"Proveedor ficticio A","text":"Oferta A — 45 EUR al mes. Compromiso de permanencia: doce meses."}},
+  {"id":"C6","label":"C6 · sin novedades","source":{"id":"S-N06","text":"No tengo novedades de este asunto desde la última revisión."}},
+  {"id":"C1-B","label":"C1-B · nuevo límite definitivo","source":{"id":"S-N01-B","sourceDate":"2026-10-21","text":"Confirmo que mi nuevo presupuesto máximo es 45 euros al mes. Es mi nuevo límite definitivo, no depende de una oferta. Todavía no autorizo contratar"}},
+  {"id":"C3-P","label":"C3 · factura prometida, no recibida","source":{"id":"S-N03-P","text":"Te la enviaré mañana."}},
+  {"id":"C6-B","label":"C6-B · esperar decisión del cliente","source":{"id":"S-N06-B","sourceDate":"2026-10-21","text":"He decidido que ahora esperes mi decisión. Te avisaré yo cuando esté listo; no me llames todavía"}}
+]

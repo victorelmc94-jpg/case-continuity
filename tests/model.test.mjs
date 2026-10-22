@@ -45,3 +45,18 @@ test('oversized contexts and missing credentials fail before consuming an attemp
   run.caseData.needs='x'.repeat(25000);assert.throws(()=>buildPayload(run,fixture.novelty),/24 KiB/);
   assert.equal((await budget.status()).attempts,0);
 });
+
+test('timeout, refusal, incomplete and malformed generation reserve one attempt, never retry and never return proposals',async t=>{
+  for(const failure of ['timeout','refusal','incomplete','malformed']){
+    const runtime=await temporary(t),calls=[];
+    const model=new ModelService({runtime,apiKey:'test-only',budget:new Budget(path.join(runtime,'ledger.json'),verifiedTime),fetchImpl:async(url,options)=>{
+      calls.push({url,aborted:options.signal.aborted});
+      if(url.endsWith('input_tokens'))return response({object:'response.input_tokens',input_tokens:1500});
+      if(failure==='timeout')throw new DOMException('Simulated deadline','TimeoutError');
+      return response({id:'simulation',status:failure==='incomplete'?'incomplete':'completed',usage:{input_tokens:1500,output_tokens:10},
+        output:[{type:'message',content:failure==='refusal'?[{type:'refusal',refusal:'Simulated refusal'}]:[{type:'output_text',text:'{"incomplete":'}]}]});
+    }});
+    const {run,draft}=scenario();await assert.rejects(model.analyze(run,draft.novelty));
+    assert.equal(calls.length,2);assert.equal((await model.budget.status()).attempts,1);assert.equal(model.active,false);
+  }
+});

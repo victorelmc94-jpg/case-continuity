@@ -1,15 +1,15 @@
 ---
 doc: evaluation-plan
-status: draft
+status: executed-with-observations
 updated: 2026-10-22
-execution: partial-main-and-c6
+execution: six-cases-positive-variants-and-recovery
 ---
 
 # Seis casos ficticios y prueba del núcleo
 
-Plan complementario del alcance, no prueba de funcionamiento ni checklist de 5-build. Todos los nombres, fechas, ofertas y documentos de esta sección son inventados. Cero compensación de fallos críticos es una decisión expresa del usuario; los detalles de la comparación manual siguen como protocolo propuesto.
+Protocolo de aceptación complementario del alcance. Todos los nombres, fechas, ofertas y documentos son inventados. Cero compensación de fallos críticos es una decisión expresa del usuario; la comparación manual sigue como protocolo pendiente.
 
-Ejecución hasta corte 2: entrada principal y C6 con modelo real, con evidencias separadas en evidence-slice1.md y evidence-slice2.md. Los seis casos como conjunto, sus variantes positivas y comparación de tiempo siguen pendientes. Las definiciones siguientes no equivalen a resultados ejecutados.
+Ejecución de corte 3 en evidence-slice3.md y salidas originales en evidence-model-slice3.json: seis familias, variantes positivas, factura prometida y principal; controles y recuperación separados. Principal y C6 reutilizados tras verificar compatibilidad. Dos fallos de precisión no críticos conservados. Las definiciones siguientes son el resultado esperado; el documento de evidencia indica el observado. Prueba final humana y comparación de tiempo pendientes.
 
 ## Baseline
 

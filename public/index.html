@@ -9,8 +9,8 @@
 </head>
 <body>
   <header class="top">
-    <div><p class="eyebrow">PRUEBA LOCAL · DATOS FICTICIOS · CORTE 2</p><h1>Revisión de expediente</h1><p>Una novedad. Cambios revisados. Un caso que puedes retomar.</p></div>
-    <div class="top-actions"><button id="refresh" class="secondary">Volver a leer lo guardado</button><button id="new-run">Nueva prueba ficticia</button></div>
+    <div><p class="eyebrow">PRUEBA LOCAL · DATOS FICTICIOS · CORTE 3</p><h1>Revisión de expediente</h1><p>Una novedad. Cambios revisados. Un caso que puedes retomar.</p></div>
+    <div class="top-actions"><button id="refresh" class="secondary">Volver a leer lo guardado</button><label>Entrada de prueba<select id="fixture"></select></label><button id="new-run">Nueva prueba ficticia</button></div>
   </header>
   <div id="message" role="status" aria-live="polite"></div>
   <main>
@@ -23,16 +23,26 @@
     </section>
     <section aria-labelledby="novelty-title" class="panel">
       <h2 id="novelty-title">Novedad para revisar</h2>
-      <p class="muted">La entrada principal ya está preparada. Puedes editarla; no introduzcas datos reales.</p>
+      <p class="muted">Cada prueba nueva parte de su propia base. No introduzcas datos reales.</p>
       <form id="novelty-form">
         <div class="fields"><label>Referencia<input id="source-id" maxlength="80" required></label><label>Fecha de la fuente<input id="source-date" type="date" required></label></div>
         <label>Quién lo declara<input id="source-author" maxlength="100" required></label>
+        <label>Tipo de novedad<select id="source-type"><option value="human_note">Declaración o nota</option><option value="offer">Ficha de oferta</option></select></label>
         <label>Texto original<textarea id="source-text" rows="7" maxlength="7000" required></textarea></label>
+        <details id="document-details"><summary>Texto documental separado, si está presente</summary>
+          <p class="small">Prometer una factura no equivale a aportarla. Solo incluye texto ficticio que realmente se haya recibido.</p>
+          <label>Referencia del documento<input id="document-id" maxlength="80"></label>
+          <label>Fecha del documento<input id="document-date" type="date"></label>
+          <label>Autor del documento<input id="document-author" maxlength="100"></label>
+          <label>Texto documental<textarea id="document-text" rows="5" maxlength="7000"></textarea></label>
+        </details>
         <button id="analyze" type="submit">Analizar novedad con el modelo</button>
+        <button id="recorded" type="button" class="secondary">Usar respuesta real registrada (sin nueva llamada)</button>
         <button id="edit-novelty" type="button" class="secondary" hidden>Modificar novedad y descartar propuestas</button>
       </form>
       <p id="budget" class="small muted"></p>
-      <p class="small muted">Puedes guardar incorporaciones por partes. Solo confirmar el fin de revisión la declara terminada. Los seis casos completos siguen pendientes.</p>
+      <p class="small muted">La respuesta registrada permite repetir la evaluación ficticia con el mismo contexto. No es una nueva interpretación. Puedes guardar por partes; solo confirmar el fin declara la revisión terminada.</p>
+      <p id="unsaved-warning" role="status" hidden>Hay trabajo sin guardar. Salir no lo incorpora ni termina la revisión. Usa los controles de esta página para recibir el aviso de descarte.</p>
     </section>
     <section id="review-panel" aria-labelledby="review-title" class="panel wide" hidden>
       <div class="section-head"><h2 id="review-title">Interpretación y propuestas</h2><span class="badge proposal-badge">Todavía sin incorporar</span></div>
@@ -43,7 +53,7 @@
         <p id="decision-count"></p>
         <details><summary>Qué se guardará al confirmar</summary><div id="save-preview"></div></details>
         <label>Motivo de la conclusión, si aporta información<textarea id="review-reason" rows="2" maxlength="1000" placeholder="Opcional. Solo se guarda al confirmar el fin de revisión."></textarea></label>
-        <p>Guardar una parte incorpora solo lo aceptado, sin terminar la revisión. Confirmar el fin requiere resolver todas las propuestas; también archiva la fuente original como material aportado, sin validar todo su contenido.</p>
+        <p>Guardar una parte incorpora solo lo aceptado, sin terminar la revisión. Confirmar el fin requiere resolver todas las propuestas; también archiva la novedad y el texto documental aportado como fuentes, sin validar su contenido ni aceptar una recepción rechazada.</p>
         <button id="partial" class="secondary" disabled>Guardar incorporaciones aceptadas</button>
         <button id="commit" disabled>Confirmar fin de revisión y guardar</button>
       </div>

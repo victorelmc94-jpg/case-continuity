@@ -48,3 +48,8 @@ La verificación de tarifas vence el 2026-10-23 a las 22:11:10 Europe/Madrid; a 
 ## Corte 2 ejecutado
 Una generación adicional para C6, con el mismo registro y límites: 1274 tokens de entrada, 191 de salida; cota conservadora 0,000414 USD. Repetir la fuente ya revisada no consultó al modelo. Pruebas de controles de pantalla simuladas sin inferencia.
 Acumulado: cuatro intentos, reserva 0,04 USD, cota de generación conocida 0,0029645 USD; ocho intentos restantes. La cifra del apartado anterior es la foto histórica del corte 1. Ver evidence-slice2.md.
+
+## Corte 3 ejecutado — cupo agotado
+Ocho generaciones nuevas: C1, C2, C3, factura prometida, C4, C5, C1-B y C6-B. Cero reintentos en este corte. Principal y C6 reutilizan respuestas compatibles existentes; controles y recuperación no llaman al proveedor.
+Acumulado: **12/12 intentos**, reserva 0,12 USD, cota conservadora de generación conocida **0,0081175 USD**, cero intentos con usage desconocido. No es factura. No se restablece cupo ni se genera más aunque quede presupuesto monetario: el límite de intentos se alcanzó.
+La prueba final ofrece repetición explícita de respuestas reales registradas para contexto idéntico. No es nueva inferencia. No funciona como fallback para entradas editadas ni para estados modificados tras perder un borrador parcial. Detalle y referencias por intento: evidence-slice3.md.

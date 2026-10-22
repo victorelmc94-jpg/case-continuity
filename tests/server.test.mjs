@@ -2,6 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import http from 'node:http';
+import path from 'node:path';
+import {atomicWrite} from '../src/store.mjs';
+import {getFixture} from '../src/fixtures.mjs';
+import {buildPayload} from '../src/model.mjs';
+import {hash,newRun,validateSource} from '../src/domain.mjs';
 import { createApplication } from '../src/server.mjs';
 import { copy } from '../src/domain.mjs';
 import { fixture, simulatedOutput, temporary } from './helpers.mjs';
@@ -86,4 +91,41 @@ test('origin and token are required, external host rejected, key absent from hea
   assert.equal(externalHostStatus,403);
   const health=(await request('health')).value;assert.equal(health.modelAvailable,false);assert.equal(JSON.stringify(health).includes('OPENAI_API_KEY'),false);
   const page=await fetch(base);assert.match(page.headers.get('content-security-policy'),/default-src 'self'/);
+});
+
+test('a real separate document is required, archived with the receipt, and changes the review identity',async t=>{
+  const f=getFixture('C3'),doc=f.documents[0],output={...simulatedOutput(),proposals:[]};
+  output.interpretation={authorization:'not_established',explanation:'Simulación técnica',source_refs:[{source_id:f.novelty.id,quote:f.novelty.text}]};
+  output.proposals=[{kind:'document_receipt',summary:'Registrar texto recibido',target:'documents',value:{number:null,text:null,document_source_id:doc.id,offer_id:null,offer:null},conditions:[],uncertainties:[],source_refs:[{source_id:f.novelty.id,quote:f.novelty.text}]}];
+  const service=await launch(t,await temporary(t),{output}),initial=(await service.request('run',{fixtureId:'C3'})).value;
+  const payload={runId:initial.run.id,baseStorageRevision:initial.storageRevision,source:f.novelty};
+  assert.equal((await service.request('analyze',payload)).status,400,'Promised/mentioned without text is not received');
+  const d=(await service.request('analyze',{...payload,documents:[doc]})).value.draft;
+  const command={draftId:d.id,actionId:randomUUID(),baseStorageRevision:d.baseStorageRevision,mode:'finalize',confirmCompleted:true,decisions:d.proposals.map(p=>({proposalId:p.id,status:'accepted'}))};
+  const saved=(await service.request('commit',command)).value;
+  assert.deepEqual(saved.run.sources.find(s=>s.id===doc.id),validateSource(doc));assert.equal(saved.run.caseData.documents[0].status,'Recibido, sin validar');
+  const repeat=(await service.request('analyze',{...payload,baseStorageRevision:saved.storageRevision,documents:[doc]})).value.draft;assert.equal(repeat.origin,'existing_review');
+  // Same note without its document is a distinct review; it cannot reuse the completed document bundle.
+  assert.equal((await service.request('analyze',{...payload,baseStorageRevision:saved.storageRevision})).status,200);
+  assert.equal(service.calls(),3);
+});
+
+test('disk failure returns no success, leaves data and draft base intact, and exact retry can save once',async t=>{
+  let failing=false;const service=await launch(t,await temporary(t),{writer:async(file,value)=>{if(failing)throw Error('Simulated disk full');return atomicWrite(file,value);}});
+  const initial=(await service.request('run',{})).value;
+  const d=(await service.request('analyze',{runId:initial.run.id,baseStorageRevision:initial.storageRevision,source:fixture.novelty})).value.draft;
+  const command={draftId:d.id,actionId:randomUUID(),baseStorageRevision:d.baseStorageRevision,mode:'finalize',confirmCompleted:true,decisions:d.proposals.map(p=>({proposalId:p.id,status:'accepted'}))};
+  failing=true;assert.equal((await service.request('commit',command)).status,500);assert.deepEqual((await service.request('run')).value.run,initial.run);
+  assert.equal(service.app.drafts.get(d.id).consumed,false);assert.equal(service.app.drafts.get(d.id).baseStorageRevision,initial.storageRevision);
+  failing=false;const saved=(await service.request('commit',command)).value;assert.equal(saved.run.reviewEvents.length,1);assert.deepEqual((await service.request('commit',command)).value.run,saved.run);
+});
+
+test('recorded output needs an exact context match and never calls the provider',async t=>{
+  const runtime=await temporary(t),f=getFixture('MAIN'),run=newRun(f),source=validateSource(f.novelty);
+  await atomicWrite(path.join(runtime,'recorded-responses.json'),{MAIN:{requestFingerprint:hash(buildPayload(run,source)),output:simulatedOutput(),attempt:'test-only'}});
+  const service=await launch(t,runtime),initial=(await service.request('run',{})).value;
+  const payload={runId:initial.run.id,baseStorageRevision:initial.storageRevision,source:f.novelty};
+  assert.equal((await service.request('recorded',{...payload,source:{...f.novelty,text:f.novelty.text+' EDITADO'}})).status,409);
+  const d=(await service.request('recorded',payload)).value.draft;assert.equal(d.origin,'recorded_model');assert.equal(service.calls(),0);
+  assert.deepEqual((await service.request('run')).value.run,initial.run);
 });

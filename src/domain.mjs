@@ -95,7 +95,7 @@ export function validateOutput(output, sources, caseData) {
   return copy(output);
 }
 export function newRun(fixture) {
-  const run = { id: randomUUID(), createdAt: new Date().toISOString(), dataVersion: 1, caseData: copy(fixture.caseData),
+  const run = { id: randomUUID(), fixtureId:fixture.id??'MAIN', createdAt: new Date().toISOString(), dataVersion: 1, caseData: copy(fixture.caseData),
     sources: fixture.sources.map(s => ({ ...copy(s), contentHash: hash(s.text) })),
     dataVersions: [], incorporationReceipts: [], reviewEvents: [] };
   run.dataVersions.push({ version:1, at:run.createdAt, caseData:copy(run.caseData), reason:'Base ficticia' });
@@ -120,19 +120,20 @@ function applyProposal(data, p) {
 }
 
 export const reviewKey = source => hash([source.id,source.contentHash??hash(source.text)]);
+export const bundleKey = (source,documents=[]) => documents.length?hash([reviewKey(source),documents.map(reviewKey).sort()]):reviewKey(source);
 const normalize = text => String(text??'').trim().replace(/\s+/g,' ').toLocaleLowerCase('es');
-export function effectKey(proposal, source) {
+export function effectKey(proposal, source, key=reviewKey(source)) {
   const p=proposal,v=p.value;
   // Ignore summaries, quote lengths and display wording; preserve operative values and conditions.
   const value=p.kind==='conditional_budget'?v.number:p.kind==='offer_interest'?[v.offer_id,p.conditions.map(normalize).sort()]:p.kind==='document_receipt'?v.document_source_id:p.kind==='offer_record'?v.offer:['current_fiber_mbps','mobile_lines','budget_reference'].includes(p.target)?v.number:normalize(v.text);
-  return hash([reviewKey(source),p.kind,p.target,value]);
+  return hash([key,p.kind,p.target,value]);
 }
 export const sameConditions=(a,b)=>hash(a.map(normalize).sort())===hash(b.map(normalize).sort());
 export function openReviews(run) {
   const finished=new Set(run.reviewEvents.flatMap(e=>e.receiptIds));
   const groups=new Map();
   for(const r of run.incorporationReceipts.filter(r=>r.reviewKey&&!finished.has(r.id))){
-    if(!groups.has(r.reviewKey))groups.set(r.reviewKey,{sourceId:r.reviewSourceId,receiptIds:[]});
+    if(!groups.has(r.reviewKey))groups.set(r.reviewKey,{sourceId:r.reviewSourceId,documentIds:r.reviewDocumentIds??[],receiptIds:[]});
     groups.get(r.reviewKey).receiptIds.push(r.id);
   }
   return [...groups.values()];
@@ -175,10 +176,10 @@ export function commitReview(workspace, draft, command) {
   const before = copy(run.caseData);
   const at = new Date().toISOString();
   const receipts = [];
-  const key=reviewKey(draft.novelty);
+  const key=draft.reviewKey??reviewKey(draft.novelty);
   const savedProposalIds=[];
   for (const item of approved) {
-    const effect=effectKey(item.proposal,draft.novelty);
+    const effect=effectKey(item.proposal,draft.novelty,key);
     const existing=[...run.incorporationReceipts,...receipts].find(r=>r.effectKey===effect);
     if(existing){
       requireThat(item.proposal.kind!=='conditional_budget'||sameConditions(existing.proposal.conditions,item.proposal.conditions),'La misma fuente ya aportó ese importe con condiciones distintas. No se duplica ni sustituye automáticamente: revisa la incorporación anterior.',409);
@@ -188,7 +189,7 @@ export function commitReview(workspace, draft, command) {
     applyProposal(run.caseData,item.proposal);
     if(hash(previous)===hash(run.caseData[item.proposal.target]))continue;
     receipts.push({ id:randomUUID(), proposalId:item.id, proposal:copy(item.proposal), humanEdited:item.humanEdited, before:previous,
-      after:copy(run.caseData[item.proposal.target]), at, reviewer:'Asesor Demo',reviewKey:key,reviewSourceId:draft.novelty.id,effectKey:effect });
+      after:copy(run.caseData[item.proposal.target]), at, reviewer:'Asesor Demo',reviewKey:key,reviewSourceId:draft.novelty.id,reviewDocumentIds:(draft.documents??[]).map(s=>s.id),effectKey:effect });
     savedProposalIds.push(item.id);
   }
   requireThat(finishing||savedProposalIds.length>0,'No hay incorporaciones nuevas que guardar');
@@ -198,7 +199,8 @@ export function commitReview(workspace, draft, command) {
     run.dataVersion++;
     run.dataVersions.push({ version:run.dataVersion, at, caseData:copy(run.caseData), reason:'Incorporaciones revisadas', actionId:command.actionId });
   }
-  const used = new Set([...receipts.flatMap(r => r.proposal.source_refs.map(s => s.source_id)), draft.novelty.id]);
+  const used = new Set([...receipts.flatMap(r => [...r.proposal.source_refs.map(s => s.source_id),r.proposal.value.document_source_id]), draft.novelty.id,
+    ...(finishing?(draft.documents??[]).map(s=>s.id):[])]);
   for (const source of draft.sources.filter(s => used.has(s.id))) {
     const existing = run.sources.find(s => s.id === source.id);
     requireThat(!existing || existing.contentHash === source.contentHash, 'No se puede sustituir una fuente original');
@@ -210,9 +212,9 @@ export function commitReview(workspace, draft, command) {
     const completed=new Set(run.reviewEvents.flatMap(e=>e.receiptIds));
     const related=run.incorporationReceipts.filter(r=>r.reviewKey===key&&!completed.has(r.id));
     const reason=command.reason?.trim()??'';
-    const prior=run.reviewEvents.filter(e=>e.reviewKey===key||(!e.reviewKey&&e.sourceIds.includes(draft.novelty.id)));
+    const prior=run.reviewEvents.filter(e=>e.reviewKey===key||(!e.reviewKey&&!(draft.documents??[]).length&&e.sourceIds.includes(draft.novelty.id)));
     duplicateReview=Boolean(!related.length&&prior.some(e=>!reason||normalize(reason)===normalize(e.reason)));
-    if(!duplicateReview)run.reviewEvents.push({id:randomUUID(),at,reviewer:'Asesor Demo',reviewKey:key,sourceIds:[draft.novelty.id],
+    if(!duplicateReview)run.reviewEvents.push({id:randomUUID(),at,reviewer:'Asesor Demo',reviewKey:key,sourceIds:[draft.novelty.id,...(draft.documents??[]).map(s=>s.id)],
       conclusion:related.length?'Revisado, con incorporaciones':'Revisado, sin cambios',reason,
       acceptedCount:related.length,rejectedCount:command.decisions.filter(d=>d.status==='rejected').length,receiptIds:related.map(r=>r.id),dataVersion:run.dataVersion});
   }

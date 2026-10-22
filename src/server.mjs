@@ -3,13 +3,14 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { randomUUID } from 'node:crypto';
-import { AppError, copy, hash, requireThat, newRun, validateSource, validateOutput, commitReview, reviewKey, effectKey, openReviews, sameConditions } from './domain.mjs';
+import { AppError, copy, hash, requireThat, newRun, validateSource, validateOutput, commitReview, bundleKey, effectKey, openReviews, sameConditions } from './domain.mjs';
 import { WorkspaceStore } from './store.mjs';
 import { ModelService } from './model.mjs';
+import {getFixture,caseList} from './fixtures.mjs';
+import {recordedResponse} from './recorded.mjs';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 export async function createApplication({runtime=path.join(root,'runtime'),modelService,writer}={}) {
-  const fixture=JSON.parse(await fs.readFile(path.join(root,'fixtures/main.json'),'utf8'));
   const store=new WorkspaceStore(path.join(runtime,'workspace.json'),writer);
   const model=modelService??new ModelService({runtime,apiKey:process.env.OPENAI_API_KEY});
   const token=randomUUID();
@@ -17,8 +18,9 @@ export async function createApplication({runtime=path.join(root,'runtime'),model
   let origin;
   async function view(workspace) {
     workspace ??= await store.read();
-    return {storageRevision:workspace.storageRevision,run:workspace.runs[workspace.activeRunId]??null,novelty:fixture.novelty,
-      openReviews:workspace.activeRunId?openReviews(workspace.runs[workspace.activeRunId]):[],budget:await model.budget.status(),slice:2};
+    const run=workspace.runs[workspace.activeRunId]??null,fixture=getFixture(run?.fixtureId??'MAIN');
+    return {storageRevision:workspace.storageRevision,run,novelty:fixture.novelty,documents:fixture.documents,cases:caseList,
+      openReviews:run?openReviews(run):[],budget:await model.budget.status(),slice:3};
   }
   async function body(req) {
     requireThat(req.headers['content-type']?.split(';')[0]==='application/json','La petición debe ser JSON',415);
@@ -41,13 +43,14 @@ export async function createApplication({runtime=path.join(root,'runtime'),model
       requireThat(req.headers.host===new URL(origin).host,'Host no permitido',403);
       const url=new URL(req.url,origin);
       if(req.method==='GET' && url.pathname==='/api/session') return send(200,{token});
-      if(req.method==='GET' && url.pathname==='/api/health') return send(200,{app:'build-ai-basics-candidate',slice:2,pid:process.pid,modelAvailable:Boolean(model.apiKey),storage:'local'});
+      if(req.method==='GET' && url.pathname==='/api/health') return send(200,{app:'build-ai-basics-candidate',slice:3,pid:process.pid,modelAvailable:Boolean(model.apiKey),storage:'local'});
       if(req.method==='GET' && url.pathname==='/api/run') return send(200,await view());
       if(req.method==='POST') {
         requireThat(req.headers.origin===origin && req.headers['x-review-token']===token,'Solicitud de revisión no autorizada',403);
         const data=await body(req);
         if(url.pathname==='/api/run') {
-          requireThat(Object.keys(data).length===0,'Creación de caso no válida');
+          requireThat(Object.keys(data).every(k=>k==='fixtureId'),'Creación de caso no válida');
+          const fixture=getFixture(data.fixtureId??'MAIN');requireThat(fixture,'Prueba ficticia desconocida');
           const workspace=await store.transact(current=>{
             const run=newRun(fixture);
             current.runs[run.id]=run;current.activeRunId=run.id;current.storageRevision++;
@@ -55,26 +58,35 @@ export async function createApplication({runtime=path.join(root,'runtime'),model
           });
           return send(201,await view(workspace));
         }
-        if(url.pathname==='/api/analyze') {
-          requireThat(Object.keys(data).every(k=>['runId','baseStorageRevision','source'].includes(k)),'Análisis no válido');
+        if(['/api/analyze','/api/recorded'].includes(url.pathname)) {
+          requireThat(Object.keys(data).every(k=>['runId','baseStorageRevision','source','documents'].includes(k)),'Análisis no válido');
           const workspace=await store.read();
           requireThat(data.runId===workspace.activeRunId && data.baseStorageRevision===workspace.storageRevision,'La prueba ha cambiado; recarga antes de analizar',409);
           const run=workspace.runs[data.runId];
           requireThat(run,'Primero inicia una prueba ficticia');
           const novelty=validateSource(data.source);
+          requireThat(['human_note','offer'].includes(novelty.type),'La novedad debe ser una nota o una oferta');
+          requireThat(data.documents===undefined||(Array.isArray(data.documents)&&data.documents.length<=1),'Se admite un texto documental separado');
+          const documents=(data.documents??[]).map(validateSource);
+          requireThat(documents.every(s=>s.type==='document'&&s.id!==novelty.id),'Documento separado no válido');
           const existing=run.sources.find(s=>s.id===novelty.id);
           requireThat(!existing || ['id','type','author','sourceDate','text'].every(k=>existing[k]===novelty[k]),'Una fuente conservada no se cambia. Usa una referencia nueva para una fuente distinta');
           const sources=existing?copy(run.sources):[...copy(run.sources),novelty];
+          for(const document of documents){const previous=sources.find(s=>s.id===document.id);
+            requireThat(!previous||['id','type','author','sourceDate','text'].every(k=>previous[k]===document[k]),'Una fuente documental conservada no se sustituye');
+            if(!previous)sources.push(document);}
+          const key=bundleKey(novelty,documents);
           const prior=run.reviewEvents.filter(e=>
-            (e.reviewKey===reviewKey(novelty)||(!e.reviewKey&&existing&&e.sourceIds.includes(novelty.id)))&&
+            (e.reviewKey===key||(!e.reviewKey&&!documents.length&&existing&&e.sourceIds.includes(novelty.id)))&&
             (e.dataVersion??run.dataVersions.find(v=>v.at===e.at)?.version)===run.dataVersion).at(-1);
           // Reopening an unchanged, completed review is deterministic and never poses as new model understanding.
-          const result=prior?{output:{interpretation:null,proposals:[],no_change_reason:'La misma fuente ya tiene una revisión confirmada y los datos no han cambiado. No se ha consultado el modelo.'},origin:'existing_review'}:await model.analyze(run,novelty);
+          const result=prior?{output:{interpretation:null,proposals:[],no_change_reason:'La misma fuente ya tiene una revisión confirmada y los datos no han cambiado. No se ha consultado el modelo.'},origin:'existing_review'}:
+            url.pathname==='/api/recorded'?await recordedResponse(runtime,run,novelty,documents):await model.analyze(run,novelty,documents);
           const valid=prior?result.output:validateOutput(result.output,sources,run.caseData);
-          const draft={id:randomUUID(),runId:run.id,baseStorageRevision:workspace.storageRevision,novelty,sources,
+          const draft={id:randomUUID(),runId:run.id,baseStorageRevision:workspace.storageRevision,novelty,documents,reviewKey:key,sources,
             interpretation:valid.interpretation,proposals:valid.proposals.map(p=>({...p,id:randomUUID()})),
             no_change_reason:valid.no_change_reason,attempt:result.attempt??null,origin:result.origin??'model',consumed:false,savedProposalIds:[]};
-          draft.savedProposalIds=draft.proposals.filter(p=>run.incorporationReceipts.some(r=>r.effectKey===effectKey(p,novelty)&&(p.kind!=='conditional_budget'||sameConditions(r.proposal.conditions,p.conditions)))).map(p=>p.id);
+          draft.savedProposalIds=draft.proposals.filter(p=>run.incorporationReceipts.some(r=>r.effectKey===effectKey(p,novelty,key)&&(p.kind!=='conditional_budget'||sameConditions(r.proposal.conditions,p.conditions)))).map(p=>p.id);
           drafts.set(draft.id,draft);
           // Cap ephemeral drafts; this never turns a draft into an incorporated fact.
           if(drafts.size>20) drafts.delete(drafts.keys().next().value);

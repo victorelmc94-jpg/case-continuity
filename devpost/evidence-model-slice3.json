@@ -1,0 +1,556 @@
+{
+  "purpose": "Salidas estructuradas originales de pruebas ficticias; no son hechos aprobados ni valoraciones del participante. Sin razonamiento interno ni credenciales.",
+  "cases": {
+    "MAIN": {
+      "attempt": "feee5da9-3dae-4a45-a015-ab3d3c6ebac7",
+      "requestFingerprint": "2282c9732900072a6bd7142f42bd49e27da125ac1f65399bd6e3b02314bb3ade",
+      "output": {
+        "interpretation": {
+          "authorization": "explicitly_not_authorized",
+          "explanation": "El cliente expresa interés en la oferta A, pero también indica explícitamente que no se contrate todavía. El interés no constituye autorización.",
+          "source_refs": [
+            {
+              "source_id": "S-DEMO",
+              "quote": "La oferta A me interesa, pero no contrates todavía."
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "fiber_correction",
+            "summary": "Corregir la velocidad de fibra actual a 300 Mb.",
+            "target": "current_fiber_mbps",
+            "value": {
+              "number": 300,
+              "text": null,
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-DEMO",
+                "quote": "Corrijo lo de la fibra: tengo 300 Mb."
+              }
+            ]
+          },
+          {
+            "kind": "conditional_budget",
+            "summary": "Registrar el límite condicional de hasta 50 euros al mes, sin sustituir el presupuesto de referencia existente.",
+            "target": "budget_conditions",
+            "value": {
+              "number": 50,
+              "text": "Podría estudiar hasta 50 euros si incluye las dos líneas y el precio no sube durante doce meses.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [
+              "Debe incluir las dos líneas móviles.",
+              "El precio no debe subir durante doce meses."
+            ],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-DEMO",
+                "quote": "Podría estudiar hasta 50 euros si incluye las dos líneas y el precio no sube durante doce meses."
+              }
+            ]
+          },
+          {
+            "kind": "offer_interest",
+            "summary": "Registrar interés en la oferta A, con la salvedad expresa de que no se contrate todavía.",
+            "target": "offer_interest",
+            "value": {
+              "number": null,
+              "text": "La oferta A me interesa, pero no contrates todavía.",
+              "document_source_id": null,
+              "offer_id": "A",
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-DEMO",
+                "quote": "La oferta A me interesa, pero no contrates todavía."
+              }
+            ]
+          },
+          {
+            "kind": "uncertainty",
+            "summary": "Dejar constancia de que no está confirmado si la oferta A cumple las condiciones para estudiar el presupuesto condicional.",
+            "target": "uncertainties",
+            "value": {
+              "number": null,
+              "text": "No consta si la oferta A incluye las dos líneas móviles ni si mantiene el precio durante doce meses.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [
+              "La oferta A solo indica precio y ausencia de permanencia; no especifica si incluye las dos líneas ni si el precio se mantiene doce meses."
+            ],
+            "source_refs": [
+              {
+                "source_id": "S-OFERTA-A1",
+                "quote": "Oferta A: 45 euros al mes, sin permanencia."
+              },
+              {
+                "source_id": "S-DEMO",
+                "quote": "Podría estudiar hasta 50 euros si incluye las dos líneas y el precio no sube durante doce meses."
+              }
+            ]
+          },
+          {
+            "kind": "antecedent",
+            "summary": "Registrar que la factura está pendiente de entrega; no consta como documento recibido.",
+            "target": "antecedents",
+            "value": {
+              "number": null,
+              "text": "La factura está pendiente de entregar.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-BASE-01",
+                "quote": "La factura está pendiente de entregar."
+              }
+            ]
+          }
+        ],
+        "no_change_reason": null
+      },
+      "evidence": "runtime/evaluation/feee5da9-3dae-4a45-a015-ab3d3c6ebac7.json"
+    },
+    "C1": {
+      "attempt": "d53a2350-c266-4dde-a0d1-2ccb020d12ee",
+      "requestFingerprint": "2865253aeec647fa7583ff0f0726b9cce7b0eeb3a160dd4e64a65443f4577fea",
+      "output": {
+        "interpretation": {
+          "authorization": "not_established",
+          "explanation": "La novedad expresa que aún no ha decidido, pero no declara autorización ni rechazo a contratar. El expediente indica que no hay autorización registrada; eso no permite inferir una decisión explícita.",
+          "source_refs": [
+            {
+              "source_id": "S-N01",
+              "quote": "Todavía no he decidido."
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "conditional_budget",
+            "summary": "Registrar un límite posible de 50 euros mensuales, sujeto a que incluya las dos líneas y el precio no aumente durante doce meses; no sustituye el presupuesto de referencia de 40 euros.",
+            "target": "budget_conditions",
+            "value": {
+              "number": 50,
+              "text": "Podría llegar a 50 euros si incluye las dos líneas y el precio no sube durante doce meses.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [
+              "Incluye las dos líneas móviles",
+              "El precio no sube durante doce meses"
+            ],
+            "uncertainties": [
+              "La persona aún no ha decidido."
+            ],
+            "source_refs": [
+              {
+                "source_id": "S-N01",
+                "quote": "Podría llegar a 50 euros si incluye las dos líneas y el precio no sube durante doce meses."
+              }
+            ]
+          },
+          {
+            "kind": "uncertainty",
+            "summary": "Registrar que la persona todavía no ha tomado una decisión.",
+            "target": "uncertainties",
+            "value": {
+              "number": null,
+              "text": "Todavía no he decidido.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-N01",
+                "quote": "Todavía no he decidido."
+              }
+            ]
+          }
+        ],
+        "no_change_reason": "No se propone interés en la oferta A: la novedad no declara interés en esa oferta concreta. Tampoco se propone recepción documental, pues no hay una fuente de tipo document; la factura figura como pendiente de entrega."
+      },
+      "evidence": "runtime/slice3/evaluation/d53a2350-c266-4dde-a0d1-2ccb020d12ee.json"
+    },
+    "C2": {
+      "attempt": "7eaba458-c69c-454d-b415-5aa99737c325",
+      "requestFingerprint": "74940f7af0536dc6db35f0913aff6a66a74e105b5af8da71cc421edb4d07dc47",
+      "output": {
+        "interpretation": {
+          "authorization": "not_established",
+          "explanation": "Las fuentes no expresan autorización para contratar ni una negativa explícita a contratar.",
+          "source_refs": [
+            {
+              "source_id": "S-BASE-01",
+              "quote": "Mi fibra actual es de 600 Mb y mi presupuesto máximo es de 40 euros al mes."
+            },
+            {
+              "source_id": "S-N02",
+              "quote": "Me equivoqué cuando te dije 600 Mb: mi fibra actual es de 300 Mb."
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "fiber_correction",
+            "summary": "Corregir la fibra actual de 600 a 300 Mb según la rectificación explícita.",
+            "target": "current_fiber_mbps",
+            "value": {
+              "number": 300,
+              "text": null,
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-BASE-01",
+                "quote": "Mi fibra actual es de 600 Mb"
+              },
+              {
+                "source_id": "S-N02",
+                "quote": "Me equivoqué cuando te dije 600 Mb: mi fibra actual es de 300 Mb."
+              }
+            ]
+          }
+        ],
+        "no_change_reason": "La fibra sí requiere corrección. La factura solo consta como pendiente de entregar, no como documento recibido; el presupuesto de 40 euros ya está registrado y no hay una nueva declaración de interés en la oferta A ni de autorización para contratar."
+      },
+      "evidence": "runtime/slice3/evaluation/7eaba458-c69c-454d-b415-5aa99737c325.json"
+    },
+    "C3": {
+      "attempt": "f46bb470-205a-4561-8ba1-cf2f0c68f3d2",
+      "requestFingerprint": "27b74d0f9074a831109f2371231d408db2bd0f674345e1838153af7de8d3e1a3",
+      "output": {
+        "interpretation": {
+          "authorization": "not_established",
+          "explanation": "La novedad entrega una factura, pero no expresa interés en contratar la oferta A ni autorización para contratar.",
+          "source_refs": [
+            {
+              "source_id": "S-N03",
+              "quote": "Te paso el texto de mi última factura"
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "document_receipt",
+            "summary": "Registrar la recepción de la factura ficticia.",
+            "target": "documents",
+            "value": {
+              "number": null,
+              "text": null,
+              "document_source_id": "S-DOC03",
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-N03",
+                "quote": "Te paso el texto de mi última factura"
+              },
+              {
+                "source_id": "S-DOC03",
+                "quote": "FACTURA FICTICIA — DEMO. Periodo septiembre 2026."
+              }
+            ]
+          }
+        ],
+        "no_change_reason": "La fibra, las líneas móviles, el presupuesto de referencia y la oferta A ya constan en el expediente. La factura informa un importe de 47 EUR, pero eso no rectifica el presupuesto máximo de 40 euros al mes. No hay novedad que justifique cambiar el estado operativo o el próximo movimiento."
+      },
+      "evidence": "runtime/slice3/evaluation/f46bb470-205a-4561-8ba1-cf2f0c68f3d2.json"
+    },
+    "C4": {
+      "attempt": "bd11c660-0888-48c4-a341-1361a7fc42c9",
+      "requestFingerprint": "9076d15b847360d8167a38686dbf456b68bfbb81357924d6fd91aedf93de65f0",
+      "output": {
+        "interpretation": {
+          "authorization": "explicitly_not_authorized",
+          "explanation": "El cliente expresa interés en la oferta A, pero prohíbe contratar por ahora y quiere revisarla antes. El interés no constituye autorización.",
+          "source_refs": [
+            {
+              "source_id": "S-N04",
+              "quote": "La oferta A me interesa. No contrates todavía: quiero revisarla antes."
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "offer_interest",
+            "summary": "Registrar interés en la oferta A sujeto a revisión previa; no autoriza contratar.",
+            "target": "offer_interest",
+            "value": {
+              "number": null,
+              "text": "La oferta A me interesa. No contrates todavía: quiero revisarla antes.",
+              "document_source_id": null,
+              "offer_id": "A",
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-N04",
+                "quote": "La oferta A me interesa. No contrates todavía: quiero revisarla antes."
+              }
+            ]
+          },
+          {
+            "kind": "uncertainty",
+            "summary": "Registrar que la factura está pendiente de entrega; no consta como documento recibido.",
+            "target": "uncertainties",
+            "value": {
+              "number": null,
+              "text": "La factura está pendiente de entregar; no consta recibida.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-BASE-01",
+                "quote": "La factura está pendiente de entregar."
+              }
+            ]
+          }
+        ],
+        "no_change_reason": "La fibra actual, las dos líneas móviles y el presupuesto de 40 euros ya constan en el expediente. No se propone registrar la factura como documento recibido ni cambiar presupuesto, oferta o próximo movimiento."
+      },
+      "evidence": "runtime/slice3/evaluation/bd11c660-0888-48c4-a341-1361a7fc42c9.json"
+    },
+    "C5": {
+      "attempt": "deb1998c-7233-4f08-b27c-08264f25c6fd",
+      "requestFingerprint": "f5ec195037710813a7ea589f3f2ba1e1c3eb9a68128298559ac5cddfe68c980e",
+      "output": {
+        "interpretation": {
+          "authorization": "not_established",
+          "explanation": "No hay una declaración de autorización en las fuentes. El expediente indica «Sin autorización registrada», lo que no permite inferir autorización ni una negativa explícita.",
+          "source_refs": [
+            {
+              "source_id": "S-OFERTA-A1",
+              "quote": "Oferta A: 45 euros al mes, sin permanencia."
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "uncertainty",
+            "summary": "Registrar la discrepancia sobre la permanencia de la oferta A: una fuente dice que no tiene y otra indica doce meses.",
+            "target": "uncertainties",
+            "value": {
+              "number": null,
+              "text": "Hay información contradictoria sobre la permanencia de la oferta A: S-OFERTA-A1 indica que es sin permanencia, mientras que S-OFERTA-A2 indica un compromiso de doce meses. No se puede determinar cuál condición aplica.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [
+              "No se puede determinar cuál condición de permanencia aplica a la oferta A."
+            ],
+            "source_refs": [
+              {
+                "source_id": "S-OFERTA-A1",
+                "quote": "Oferta A: 45 euros al mes, sin permanencia."
+              },
+              {
+                "source_id": "S-OFERTA-A2",
+                "quote": "Compromiso de permanencia: doce meses."
+              }
+            ]
+          }
+        ],
+        "no_change_reason": "Las necesidades, la fibra actual y el presupuesto máximo ya constan en el expediente. La factura figura como pendiente de entregar, no como recibida. La novedad no declara interés en contratar ni autorización."
+      },
+      "evidence": "runtime/slice3/evaluation/deb1998c-7233-4f08-b27c-08264f25c6fd.json"
+    },
+    "C6": {
+      "attempt": "bc2e0cc6-5c3a-49cc-a6b9-87b2ad578955",
+      "requestFingerprint": "a7409a205359f67479d231ee747fb1084ecc8f13393941c23d1d25c8c5340030",
+      "output": {
+        "interpretation": {
+          "authorization": "not_established",
+          "explanation": "No consta una declaración de autorización en las fuentes. La novedad indica que no hay novedades, lo que no permite inferir autorización ni falta de autorización expresa.",
+          "source_refs": [
+            {
+              "source_id": "S-N06",
+              "quote": "No tengo novedades de este asunto desde la última revisión."
+            }
+          ]
+        },
+        "proposals": [],
+        "no_change_reason": "La fuente comunica que no hay novedades y no aporta cambios concretos al expediente."
+      },
+      "evidence": "runtime/slice2-c6/evaluation/bc2e0cc6-5c3a-49cc-a6b9-87b2ad578955.json"
+    },
+    "C1-B": {
+      "attempt": "6ac11b47-10c8-4b9c-8d33-5a51819d73e0",
+      "requestFingerprint": "616cd5f5009cb8ffa03255b507f4f8e730c715bbba0ba14c044d7ba9bf9caba7",
+      "output": {
+        "interpretation": {
+          "authorization": "explicitly_not_authorized",
+          "explanation": "El cliente declara expresamente que todavía no autoriza contratar. Su nuevo presupuesto máximo no constituye autorización para contratar.",
+          "source_refs": [
+            {
+              "source_id": "S-N01-B",
+              "quote": "Todavía no autorizo contratar"
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "case_update",
+            "summary": "Actualizar el presupuesto de referencia a 45 euros al mes: el cliente lo identifica como su nuevo límite definitivo e incondicional.",
+            "target": "budget_reference",
+            "value": {
+              "number": 45,
+              "text": null,
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-N01-B",
+                "quote": "Confirmo que mi nuevo presupuesto máximo es 45 euros al mes. Es mi nuevo límite definitivo, no depende de una oferta."
+              }
+            ]
+          }
+        ],
+        "no_change_reason": null
+      },
+      "evidence": "runtime/slice3/evaluation/6ac11b47-10c8-4b9c-8d33-5a51819d73e0.json"
+    },
+    "C3-P": {
+      "attempt": "09900e34-a393-49ca-ba46-49ecbbd1a58e",
+      "requestFingerprint": "8c5bd3e8d54f8ff6e47a706e2c6a7813b7c2d5b8b5491cf8970ae424f0581389",
+      "output": {
+        "interpretation": {
+          "authorization": "not_established",
+          "explanation": "La novedad no expresa interés en contratar la oferta A ni autorización para contratarla. La factura se anuncia como un envío futuro; no consta recibida.",
+          "source_refs": [
+            {
+              "source_id": "S-N03-P",
+              "quote": "Te la enviaré mañana."
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "antecedent",
+            "summary": "Registrar que el cliente anunció que enviaría la factura al día siguiente; no consta que se haya recibido.",
+            "target": "antecedents",
+            "value": {
+              "number": null,
+              "text": "El 20 de octubre de 2026, el cliente anunció que enviaría la factura al día siguiente. La factura no consta recibida.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-N03-P",
+                "quote": "Te la enviaré mañana."
+              }
+            ]
+          }
+        ],
+        "no_change_reason": null
+      },
+      "evidence": "runtime/slice3/evaluation/09900e34-a393-49ca-ba46-49ecbbd1a58e.json"
+    },
+    "C6-B": {
+      "attempt": "c1584082-2b5d-4bd7-9b2f-696e832d4e75",
+      "requestFingerprint": "b4a02b184ebc539532fbca302e6a0833d0c8ca900b33da5bb29ea8c624208643",
+      "output": {
+        "interpretation": {
+          "authorization": "not_established",
+          "explanation": "El cliente pide que se espere su decisión y que no se le llame todavía. No expresa autorización para contratar ni una prohibición explícita de contratar.",
+          "source_refs": [
+            {
+              "source_id": "S-N06-B",
+              "quote": "He decidido que ahora esperes mi decisión. Te avisaré yo cuando esté listo; no me llames todavía"
+            }
+          ]
+        },
+        "proposals": [
+          {
+            "kind": "case_update",
+            "summary": "Actualizar el estado operativo para reflejar que se debe esperar la decisión del cliente y no llamarlo todavía.",
+            "target": "operational_state",
+            "value": {
+              "number": null,
+              "text": "Esperar la decisión del cliente; no llamarlo todavía.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-N06-B",
+                "quote": "He decidido que ahora esperes mi decisión. Te avisaré yo cuando esté listo; no me llames todavía"
+              }
+            ]
+          },
+          {
+            "kind": "case_update",
+            "summary": "Cambiar el próximo movimiento para aguardar a que el cliente avise cuando esté listo.",
+            "target": "next_movement",
+            "value": {
+              "number": null,
+              "text": "Esperar a que el cliente avise cuando esté listo.",
+              "document_source_id": null,
+              "offer_id": null,
+              "offer": null
+            },
+            "conditions": [],
+            "uncertainties": [],
+            "source_refs": [
+              {
+                "source_id": "S-N06-B",
+                "quote": "Te avisaré yo cuando esté listo"
+              }
+            ]
+          }
+        ],
+        "no_change_reason": null
+      },
+      "evidence": "runtime/slice3/evaluation/c1584082-2b5d-4bd7-9b2f-696e832d4e75.json"
+    }
+  }
+}

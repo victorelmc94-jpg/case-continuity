@@ -2,6 +2,8 @@ import {labels,monthly,budgetStatement,describeValue,contractingInstruction} fro
 const $=id=>document.getElementById(id);
 const counted=(n,one,many)=>n+' '+(n===1?one:many);
 const state={view:null,draft:null,decisions:new Map(),token:null,busy:false,dirty:false,retry:null};
+const sourceFields=['source-id','source-date','source-author','source-type','source-text','document-id','document-date','document-author','document-text'];
+function showDirty(){ $('unsaved-warning').hidden=!state.dirty; }
 const authLabels={explicitly_not_authorized:'No existe autorización para contratar',not_established:'No consta autorización en esta novedad',explicit_authorization_reported:'El modelo interpreta autorización expresa: revisa su fundamento',uncertain:'El modelo considera incierta la autorización'};
 function node(tag,text,className){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(className)e.className=className;return e;}
 function clear(el){el.replaceChildren();}
@@ -11,8 +13,8 @@ async function api(route,body){
   const options=body===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json','X-Review-Token':state.token},body:JSON.stringify(body)};
   const response=await fetch('/api/'+route,options);const value=await response.json();if(!response.ok)throw new Error(value.error??'Operación fallida');return value;
 }
-function syncSourceUI(){for(const id of ['source-id','source-date','source-author','source-text'])$(id).disabled=state.busy||Boolean(state.draft);$('edit-novelty').hidden=!state.draft;$('edit-novelty').disabled=state.busy;}
-function setBusy(b){state.busy=b;$('analyze').disabled=b||!state.view?.run;$('new-run').disabled=b;$('refresh').disabled=b;$('review-reason').disabled=b;document.querySelectorAll('#proposals button,#proposals input,#proposals textarea,#open-reviews button').forEach(e=>e.disabled=b);syncSourceUI();updateSave();}
+function syncSourceUI(){for(const id of sourceFields)$(id).disabled=state.busy||Boolean(state.draft);$('edit-novelty').hidden=!state.draft;$('edit-novelty').disabled=state.busy;showDirty();}
+function setBusy(b){state.busy=b;$('analyze').disabled=b||!state.view?.run||state.view.budget.remainingAttempts===0;$('recorded').disabled=b||!state.view?.run;$('fixture').disabled=b;$('new-run').disabled=b;$('refresh').disabled=b;$('review-reason').disabled=b;document.querySelectorAll('#proposals button,#proposals input,#proposals textarea,#open-reviews button').forEach(e=>e.disabled=b);syncSourceUI();updateSave();}
 async function canDiscard(){
   if(!state.dirty)return true;
   const dialog=$('discard-dialog');
@@ -44,7 +46,8 @@ function renderReceipt(receipt,sources){
 }
 function renderCase(){
   const view=state.view;const run=view?.run;clear($('case-data'));clear($('sources'));clear($('versions'));clear($('history'));clear($('open-reviews'));
-  $('analyze').disabled=!run||state.busy;
+  $('analyze').disabled=!run||state.busy||view.budget.remainingAttempts===0;
+  if(!$('fixture').options.length)for(const item of view.cases??[{id:'MAIN',label:'Principal'}]){const option=node('option',item.label);option.value=item.id;$('fixture').append(option);}
   if(!run){$('version').textContent='Sin iniciar';$('run-label').textContent='';$('case-data').append(node('p','Inicia una prueba ficticia para empezar.'));return;}
   $('version').textContent='Datos · V'+run.dataVersion;
   $('run-label').textContent=run.caseData.client+' · Prueba '+run.id.slice(0,8);
@@ -64,7 +67,7 @@ function renderCase(){
   for(const receipt of run.incorporationReceipts)$('versions').append(renderReceipt(receipt,run.sources));
   for(const review of view.openReviews??[]){
     const box=node('div',undefined,'open-review');box.append(node('strong','Incorporaciones guardadas; revisión sin finalizar'),node('p',review.sourceId+' · '+counted(review.receiptIds.length,'incorporación','incorporaciones')+'. Lo pendiente del borrador no se conserva al cerrar.'));
-    const resume=node('button','Volver a revisar '+review.sourceId,'secondary');resume.onclick=async()=>{if(!await canDiscard())return;resetDraft();fillNovelty(run.sources.find(s=>s.id===review.sourceId));state.dirty=true;message('Fuente recuperada. Las decisiones pendientes no se han reconstruido. Analiza para continuar y revisa antes de finalizar.');};box.append(resume);$('open-reviews').append(box);
+    const resume=node('button','Volver a revisar '+review.sourceId,'secondary');resume.onclick=async()=>{if(!await canDiscard())return;resetDraft();fillNovelty(run.sources.find(s=>s.id===review.sourceId),run.sources.filter(s=>(review.documentIds??[]).includes(s.id)));state.dirty=true;showDirty();message('Fuente recuperada. Las decisiones pendientes no se han reconstruido. Analiza para continuar y revisa antes de finalizar.');};box.append(resume);$('open-reviews').append(box);
   }
   if(!run.reviewEvents.length)$('history').append(node('p','No hay revisiones confirmadas.','muted'));
   for(const event of [...run.reviewEvents].reverse()){
@@ -78,8 +81,9 @@ function renderCase(){
   $('budget').textContent=(b.model==='SIMULATED'?'Simulación técnica sin inferencia':'GPT-6 Luna')+' · '+b.attempts+'/12 intentos · reserva '+b.reservedUsd.toFixed(2)+' USD · estimación máxima del uso conocido '+(Math.ceil(b.knownGenerationCostUsd*1e6)/1e6).toFixed(6)+' USD. '+(!b.ratesValid?'Tarifas caducadas: generación bloqueada.':'Entrada ≤ 6.000 · salida ≤ 4.000 tokens.');
 }
 function resetDraft(){state.draft=null;state.decisions.clear();state.dirty=false;state.retry=null;$('review-reason').value='';$('review-panel').hidden=true;clear($('proposals'));syncSourceUI();updateSave();}
-function fillNovelty(n){$('source-id').value=n.id;$('source-date').value=n.sourceDate;$('source-author').value=n.author;$('source-text').value=n.text;}
+function fillNovelty(n,documents=[]){$('source-id').value=n.id;$('source-date').value=n.sourceDate;$('source-author').value=n.author;$('source-type').value=n.type;$('source-text').value=n.text;const d=documents[0];for(const [field,key]of [['id','id'],['date','sourceDate'],['author','author'],['text','text']])$('document-'+field).value=d?.[key]??'';$('document-details').open=Boolean(d);}
 function updateSave(){
+  showDirty();
   const all=state.draft?.proposals??[];
   const reviewed=all.filter(p=>state.decisions.has(p.id)).length;
   const accepted=all.filter(p=>state.decisions.get(p.id)?.status.startsWith('accepted')).length;
@@ -90,7 +94,7 @@ function updateSave(){
   clear($('save-preview'));
   const ul=node('ul');
   for(const p of all){const choice=state.decisions.get(p.id);if(choice?.status.startsWith('accepted'))ul.append(node('li',choice.edit?.summary??p.summary));}
-  $('save-preview').append(ul,node('p','Fuente original que se archivará: '+(state.draft?.novelty.id??'—'),'small'));
+  $('save-preview').append(ul,node('p','Fuentes originales que se archivarán al finalizar: '+[state.draft?.novelty.id,...(state.draft?.documents??[]).map(s=>s.id)].filter(Boolean).join(', '),'small'));
 }
 function renderDraft(){
   syncSourceUI();
@@ -134,20 +138,24 @@ function renderDraft(){
   });
   updateSave();
 }
-$('new-run').onclick=async()=>{if(!await canDiscard())return;setBusy(true);try{state.view=await api('run',{});resetDraft();renderCase();fillNovelty(state.view.novelty);message('Prueba nueva e independiente. No se han borrado las anteriores.');}catch(e){message(e.message,true);}finally{setBusy(false);}};
+$('new-run').onclick=async()=>{if(!await canDiscard())return;setBusy(true);try{state.view=await api('run',{fixtureId:$('fixture').value});resetDraft();renderCase();fillNovelty(state.view.novelty,state.view.documents);message('Prueba nueva e independiente. No se han borrado las anteriores.');}catch(e){message(e.message,true);}finally{setBusy(false);}};
 $('refresh').onclick=async()=>{if(!await canDiscard())return;setBusy(true);try{state.view=await api('run');resetDraft();renderCase();message('Lectura nueva del almacenamiento local. Lo pendiente no se ha incorporado.');}catch(e){message(e.message,true);}finally{setBusy(false);}};
-for(const id of ['source-id','source-date','source-author','source-text'])$(id).addEventListener('input',()=>{if(state.draft){resetDraft();message('Entrada modificada: analiza de nuevo antes de revisar.');}state.dirty=true;});
+for(const id of sourceFields)$(id).addEventListener('input',()=>{if(state.draft){resetDraft();message('Entrada modificada: analiza de nuevo antes de revisar.');}state.dirty=true;showDirty();});
 $('edit-novelty').onclick=async()=>{if(!await canDiscard())return;resetDraft();state.dirty=true;message('Propuestas descartadas sin incorporar ni finalizar. Puedes modificar el texto y analizarlo de nuevo.');$('source-text').focus();};
-$('review-reason').addEventListener('input',()=>{state.dirty=true;});
-$('novelty-form').onsubmit=async event=>{
-  event.preventDefault();if(state.busy)return;
+$('review-reason').addEventListener('input',()=>{state.dirty=true;showDirty();});
+async function analyze(route){
+  if(state.busy)return;
   if(state.draft&&!await canDiscard())return;
-  const source={id:$('source-id').value,type:'human_note',author:$('source-author').value,sourceDate:$('source-date').value,text:$('source-text').value};
+  const source={id:$('source-id').value,type:$('source-type').value,author:$('source-author').value,sourceDate:$('source-date').value,text:$('source-text').value};
+  const hasDocument=['document-id','document-date','document-author','document-text'].some(id=>$(id).value.trim());
+  const documents=hasDocument?[{id:$('document-id').value,type:'document',author:$('document-author').value,sourceDate:$('document-date').value,text:$('document-text').value}]:[];
   resetDraft();state.dirty=true;setBusy(true);message('Preparando la revisión. Si requiere modelo, se contará la entrada antes de generar. Nada se incorpora todavía.');
-  try{const result=await api('analyze',{runId:state.view.run.id,baseStorageRevision:state.view.storageRevision,source});state.draft=result.draft;state.decisions.clear();for(const id of state.draft.savedProposalIds)state.decisions.set(id,{proposalId:id,status:'saved'});state.view.budget=result.budget;state.dirty=true;renderCase();renderDraft();message(result.draft.origin==='existing_review'?'Fuente ya revisada: no se ha consumido otro intento. Confirmar sin información nueva no duplica la anotación.':result.draft.origin==='simulated_controls'?'Simulación técnica para comprobar controles; no acredita comprensión del modelo.':'Propuestas reales recibidas. Revisa el texto y las citas antes de decidir.');}
+  try{const result=await api(route,{runId:state.view.run.id,baseStorageRevision:state.view.storageRevision,source,documents});state.draft=result.draft;state.decisions.clear();for(const id of state.draft.savedProposalIds)state.decisions.set(id,{proposalId:id,status:'saved'});state.view.budget=result.budget;state.dirty=true;renderCase();renderDraft();message(result.draft.origin==='existing_review'?'Fuente ya revisada: no se ha consumido otro intento. Confirmar sin información nueva no duplica la anotación.':result.draft.origin==='recorded_model'?'Respuesta real registrada · intento '+result.draft.attempt+'. Sin nueva llamada. Revisa antes de guardar.':result.draft.origin==='simulated_controls'?'Simulación técnica para comprobar controles; no acredita comprensión del modelo.':'Propuestas reales recibidas. Revisa el texto y las citas antes de decidir.');}
   catch(e){message(e.message,true);try{const v=await api('run');state.view.budget=v.budget;renderCase();}catch{}}
   finally{setBusy(false);}
-};
+}
+$('novelty-form').onsubmit=event=>{event.preventDefault();analyze('analyze');};
+$('recorded').onclick=()=>analyze('recorded');
 async function save(mode){
   if($(mode==='partial'?'partial':'commit').disabled)return;setBusy(true);
   const decisions=[...state.decisions.values()].filter(d=>mode==='finalize'||d.status.startsWith('accepted'));
@@ -160,5 +168,11 @@ async function save(mode){
   finally{setBusy(false);}
 }
 $('partial').onclick=()=>save('partial');$('commit').onclick=()=>save('finalize');
-window.addEventListener('beforeunload',event=>{if(state.dirty){event.preventDefault();event.returnValue='';}});
-try{state.token=(await api('session')).token;state.view=await api('run');renderCase();fillNovelty(state.view.novelty);}catch(e){message(e.message,true);}
+window.addEventListener('beforeunload',event=>{if(state.dirty){event.preventDefault();event.returnValue=true;}});
+document.addEventListener('keydown',async event=>{
+  if(state.dirty&&(event.key==='F5'||((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='r'))){
+    event.preventDefault();if($('discard-dialog').open)return;
+    if(await canDiscard()){state.dirty=false;window.location.reload();}
+  }
+});
+try{state.token=(await api('session')).token;state.view=await api('run');renderCase();$('fixture').value=state.view.run?.fixtureId??'MAIN';fillNovelty(state.view.novelty,state.view.documents);setBusy(false);}catch(e){message(e.message,true);}

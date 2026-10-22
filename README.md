@@ -1,62 +1,63 @@
 # Revisión de expediente — prueba local, nombre pendiente
 
-Proyecto nuevo e independiente, creado desde vacío para evaluar una candidata de Build With AI: Basics. Todo el expediente y las ofertas de ejemplo son ficticios. No contiene código de aplicaciones anteriores.
+Proyecto nuevo e independiente, construido desde vacío. Expedientes, documentos y ofertas ficticios. Sin código de aplicaciones anteriores, tarifas reales ni contratación.
 
-Los **cortes 1 y 2** permiten analizar una novedad con un modelo real, aceptar, editar o rechazar propuestas, guardar por partes y finalizar explícitamente. Lo aprobado se recupera desde disco; una revisión sin cambios no crea versión vacía y su repetición sin información nueva no duplica el historial. El corte 1 fue probado por Víctor y se incorporaron sus tres ajustes de presentación. El corte 3 y la evaluación global siguen pendientes.
+Los tres cortes están implementados. La evaluación distingue interpretación original del modelo, aprobación/guardado y recuperación. La prueba final del participante y la medición frente al trabajo manual siguen pendientes. [Resultados y límites](devpost/evidence-slice3.md).
 
 ## Abrir
 
-Con el servicio arrancado: **http://127.0.0.1:4317**.
-
-Para arrancarlo de nuevo, abrir una terminal en esta carpeta y ejecutar:
+Con el servicio arrancado: **http://127.0.0.1:4317**. Para volver a arrancar, abrir una terminal en esta carpeta:
 
 ```powershell
 npm start
 ```
 
-Usa Node 24.x (comprobado con 24.18.0). No hay paquetes que instalar ni compilación. Para detener: Ctrl+C en su terminal. Si el puerto está ocupado, no se cambia ni se detiene otro servicio.
+Node 24.x (comprobado con 24.18.0), sin paquetes que instalar ni compilación. Ctrl+C detiene su servicio. No detener otros procesos si el puerto está ocupado.
 
-El servidor lee OPENAI_API_KEY del entorno del proceso o de un .env local excluido de Git. Hay acceso comprobado en este equipo. No introducir la clave en el navegador, código o repositorio. .env.example contiene solo el nombre de la variable. Sin credencial se puede consultar lo guardado y ejecutar controles locales; analizar informa del problema sin simular resultados.
+La clave solo se lee en el servidor desde OPENAI_API_KEY o un .env excluido. Nunca introducirla en navegador o repositorio. Hay acceso real comprobado; **se han agotado los doce intentos autorizados**. Crear pruebas o reiniciar no restablece el cupo. No se habilitan más llamadas sin nueva autorización.
 
-## Qué probar — aproximadamente 10–15 minutos de intervención
+## Prueba final, en sesiones separadas si hace falta
 
-1. Al abrir verás el resultado ya comprobado. Abre «Fuentes y antecedentes» para examinar procedencia y valores anteriores.
-2. Pulsa **Nueva prueba ficticia**: parte de 600 Mb, referencia de 40 €, sin interés incorporado. Las ejecuciones anteriores se conservan en el archivo local, aunque este corte solo muestra la activa.
-3. Deja el texto preparado y pulsa **Analizar novedad con el modelo** una vez. Espera el resultado; consume un intento del cupo compartido. No hay reintentos automáticos.
-4. Comprueba antes de corregir nada: propuesta de 300 Mb, disposición hasta 50 € si incluye las dos líneas y mantiene precio doce meses, interés en A e interpretación expresa de que no hay autorización. Una condición perdida o interés convertido en autorización es un fallo crítico, aunque el programa bloquee un campo.
-5. Acepta, edita o rechaza cada tarjeta. El expediente de la izquierda/arriba debe permanecer igual. El botón final solo se habilita al resolver todas las tarjetas. Puedes rechazar una incorporación para comprobar que no se guarda. La fuente original se archivará como material aportado; eso no aprueba todo su contenido.
-6. Prueba **Guardar incorporaciones aceptadas** con una tarjeta aceptada y otra pendiente. Solo la primera debe aparecer guardada; todavía no hay revisión confirmada. Rechazos y motivo siguen en pantalla pero no se guardan como borrador. Intenta cambiar de prueba: **Volver a la revisión** conserva el trabajo; **Descartar y continuar** pierde lo pendiente, manteniendo lo incorporado.
-7. Resuelve las tarjetas restantes y **confirma el fin de revisión**. Si guardaste una parte antes, la conclusión reconoce esas incorporaciones y no las duplica. Si aceptas fibra y disposición condicionada, verás 300 Mb, referencia de 40 € y «Podría estudiar hasta 50 €/mes…» con ambas condiciones. Contratación destaca la petición de no contratar todavía con su cita incorporada. El campo técnico de autorización sigue fuera de escritura de V1.
-8. Pulsa **Volver a leer lo guardado**, recarga o detén y vuelve a arrancar el servicio. Si solo guardaste una parte, verás «revisión sin finalizar». No se inventan las decisiones pendientes perdidas. El historial muestra antes/después, condiciones y fuentes; JSON queda en detalles técnicos cerrados.
+1. En «Entrada de prueba», elige un caso y pulsa **Nueva prueba ficticia**. Cada uno comienza desde 600 Mb, 40 €, factura pendiente y seguimiento original. Los anteriores permanecen en el archivo local; la pantalla muestra solo el activo.
+2. Pulsa **Usar respuesta real registrada (sin nueva llamada)**. Conserva la entrada preparada: se exige el mismo contexto, instrucciones y esquema que en la respuesta original. Un texto editado o un estado ya modificado no se empareja silenciosamente. Se identifica el intento original. Esto repite propuestas reales; no es inferencia nueva ni simulación.
+3. Lee interpretación y citas **antes de corregir**. Aceptar una tarjeta no cambia todavía el expediente. Acepta, edita o rechaza, y confirma el fin de revisión para guardar. Se pueden guardar incorporaciones por partes sin declarar terminada la revisión.
+4. Pulsa «Volver a leer lo guardado» o cierra y reabre. Comprueba valores, historial, fuentes y versiones. Para contrastar no aprobación, crea otra prueba del mismo caso y rechaza todas las propuestas: mantiene V1 y deja solo la revisión confirmada.
 
-Para probar una revisión sin cambios: en una prueba nueva usa referencia S-N06 y texto «No tengo novedades de este asunto desde la última revisión.». Analizar por sí solo no registra revisión. Confirmar debe mantener V1, estado y próximo movimiento y añadir una sola anotación. Reabrir la misma fuente, sin cambios posteriores en los datos, se identifica como revisión local sin otra consulta al modelo; confirmar sin información nueva conserva la anotación original. Un motivo humano concreto distinto puede aportar información, sin cambiar datos.
+| Entrada | Resultado a comprobar |
+|---|---|
+| Principal | Fibra 300; referencia 40; «Podría estudiar hasta 50 €/mes…» con ambas condiciones; interés y petición expresa de no contratar; seguimiento original. Rechazar la repetición innecesaria sobre factura pendiente. |
+| C1 | Posibilidad de 50 condicionada a dos líneas y precio estable doce meses; referencia 40. |
+| C2 | Corrección 600 → 300 atribuida al cliente; antecedente anterior conservado. |
+| C3 | Nota y texto documental distintos; factura «Recibido, sin validar»; referencia 40, no 47. |
+| C4 | Interés con «No contrates todavía»; rechazar la duda redundante sobre factura ya pendiente. |
+| C5 | Permanencia contradictoria con ambas fuentes; no escoger automáticamente la más reciente. |
+| C6 | Sin propuestas; solo confirmar crea «Revisado, sin cambios», manteniendo V1 y seguimiento. Repetir no duplica. |
+| C1-B | Cambio legítimo del presupuesto de referencia 40 → 45, solo tras aprobación. |
+| Factura prometida | Antecedente del envío anunciado; ningún documento recibido. |
+| C6-B | Cambios legítimos en estado y próximo movimiento: esperar al cliente, sin llamada realizada. |
 
-Si una propuesta es incorrecta, anota qué dijo el modelo antes de editarla. Interesan también redundancias, lectura confusa y trabajo de corrección. No hemos medido ahorro de tiempo ni utilidad frente al método manual.
+Puedes probar parcial, rechazos y avisos dentro de la misma sesión. **No se conservan borradores.** Si cierras tras guardar parcialmente, las incorporaciones sobreviven pero no las decisiones pendientes. Continuar con un nuevo análisis del estado cambiado requeriría inferencia y ahora está bloqueado por el cupo agotado. Para la prueba final sin gasto, termina cada revisión antes de cerrar; una prueba nueva permite repetir desde la base con la respuesta registrada.
 
-## Límite de inferencia
+Ctrl+R/F5 con trabajo pendiente abre aviso propio; «Volver» lo conserva y «Descartar» recarga sin incorporar ni finalizar. El navegador controla su aviso nativo de recarga/cierre. Chrome mostró ese aviso en la comprobación humana comunicada; no se ha probado cierre forzado ni todos los navegadores. Nada se guarda automáticamente.
 
-Modelo fijo GPT-6 Luna. Máximo autorizado: 1 USD y doce intentos, contando errores y repeticiones. El registro persistente no se reinicia al crear prueba ni reiniciar servidor.
-Entrada contada antes de generar, máximo 6.000 tokens; salida máxima 4.000, incluido razonamiento; petición de hasta 24 KiB, sin herramientas ni reintentos. Reserva conservadora de 0,01 USD por intento: como máximo 0,12 USD para los doce. [Tarifas y cálculo](devpost/inference-budget.md).
-Tras los cortes 1 y 2 se usaron **4/12 intentos**, reserva 0,04 USD y cota conservadora del consumo de generación conocido 0,0029645 USD. No es una factura. Una nueva generación aumenta el registro; una reapertura local de fuente ya revisada y datos iguales no llama al modelo.
-Las tarifas verificadas vencen el **23/10/2026 a las 22:11 Europe/Madrid**; se bloquearán nuevas generaciones hasta revisarlas.
+La novedad y el texto documental se archivan como material aportado al finalizar. Rechazar recepción no crea un documento recibido ni valida el texto. El historial muestra antes/después, condiciones y citas; JSON queda en detalles secundarios cerrados.
 
-## Comprobaciones y límites del corte
+## Evidencia y consumo
 
 ```powershell
 npm test
 ```
 
-28 pruebas con node:test para controles, presentación, presupuesto, disco y servicio HTTP; no llaman al proveedor. Las salidas simuladas están identificadas y no acreditan comprensión del modelo.
-[Evidencia del corte 1](devpost/evidence-slice1.md) y [del corte 2](devpost/evidence-slice2.md) separan modelo, aprobaciones y recuperación. C6 se ejecutó con modelo real; los avisos y parciales también se probaron en un servicio aislado con simulación explícita, sin modificar el expediente conservado.
+32 controles locales, sin inferencia. Se ha verificado aceptación/rechazo por HTTP en diez escenarios y recuperación íntegra de veinte ejecuciones en otro proceso. [Salidas originales ficticias](devpost/evidence-model-slice3.json), [evaluación separada y fallos](devpost/evidence-slice3.md), [protocolo](devpost/evaluation.md). No confundir controles mecánicos con una valoración humana.
 
-El guardado parcial está disponible y el completo exige resolver todas las tarjetas. Aún faltan las seis familias como conjunto, sus variantes y la medición de trabajo frente al método manual. La repetición conserva fuentes y efectos estructurados; si la misma fuente e importe presentan condiciones distintas, se informa conflicto en vez de fusionarlas automáticamente. Hay avisos internos cancelables; los borradores no sobreviven a recarga o reinicio. La advertencia nativa depende del navegador y no cubre cierres forzados; su diálogo no pudo acreditarse visualmente con la automatización usada.
+**12/12 intentos acumulados**, incluidos fallos/repeticiones anteriores; ocho nuevos en corte 3. Reserva 0,12 USD; cota conservadora de generación conocida **0,0081175 USD**, no factura. Entrada ≤ 6.000 tokens, salida ≤ 4.000, petición ≤ 24 KiB, sin reintentos. [Tarifas y cálculo](devpost/inference-budget.md). No se usan créditos de Google/AWS ni recursos nuevos.
 
-Los datos viven en runtime/workspace.json; los intentos en runtime/inference-ledger.json y las respuestas técnicas ficticias en runtime/evaluation/. Todo runtime queda fuera de Git. No borrar el registro para recuperar cupo. Un archivo corrupto detiene lectura/guardado; no se reinicializa silenciosamente. No se garantiza resistencia absoluta a fallo físico de disco.
+Principal y C6 se reutilizaron tras comprobar contexto, fuentes, instrucciones y esquema. Dos propuestas redundantes mantienen fallos de precisión registrados. El primer fallo histórico de contrato también se conserva. No se ha demostrado fiabilidad general, utilidad neta ni ahorro de tiempo. La autorización contractual sigue fuera de escritura por límite técnico, separado de la evaluación semántica.
+
+runtime/workspace.json conserva expedientes; runtime/inference-ledger.json conserva cupo; runtime/slice3/ conserva capturas, comparaciones y recuperación. runtime queda fuera de Git. No borrar el registro para recuperar intentos. Ante archivo corrupto se detiene sin reinicializar. Los fallos de timeout, refusal y disco lleno fueron simulados; no se afirma haber provocado fallos reales del proveedor o disco.
 
 ## Plan y proceso
 
-- [Alcance](devpost/scope.md), [PRD](devpost/prd.md), [especificación](devpost/spec.md), [lectura conjunta](devpost/review.md).
-- [Orden aprobado y checkpoint humano pendiente](devpost/checklist.md), [seis casos previstos](devpost/evaluation.md).
-- [Pack oficial](skills/README.md), [origen fijado y licencia](skills/ORIGIN.md). Se siguen sus pasos reales; el perfil de 1-start queda fuera de commits.
+[Alcance](devpost/scope.md), [PRD](devpost/prd.md), [especificación](devpost/spec.md), [checklist](devpost/checklist.md), [Pack oficial](skills/README.md) y [origen/licencia](skills/ORIGIN.md). Modo fast aprobado, control temprano realizado y prueba final pendiente. Perfil personal fuera de commits.
 
-Git es solo local. No hay repositorio remoto, despliegue, inscripción ni presentación. Nombre definitivo, participación, acabado y materiales públicos siguen pendientes del participante.
+Git local, sin remoto. Sin publicación, despliegue, inscripción ni candidatura enviada. Nombre definitivo, decisión de participar, acabado y materiales públicos quedan pendientes.

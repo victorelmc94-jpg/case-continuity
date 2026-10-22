@@ -6,9 +6,9 @@ updated: 2026-10-22
 
 # Build Checklist
 
-Build mode: fast — elegido expresamente por el usuario el 2026-10-22. Prueba temprana del corte 1 recibida; ajustes de presentación y corte 2 autorizados. Los seis casos y el ahorro siguen pendientes.
+Build mode: fast — elegido expresamente por el usuario el 2026-10-22. Prueba temprana del corte 1 recibida. Continuación del corte 3 autorizada; evaluación mecánica de seis casos y positivos ejecutada, con observaciones. Prueba final humana y ahorro siguen pendientes.
 
-Orden aprobado expresamente por el usuario. En esta continuación se ejecuta el corte 2 y los tres ajustes solicitados, sin adelantar el corte 3. Los tres cortes incluyen comportamiento completo que se puede usar y verificar; no son fases separadas de interfaz, almacenamiento y modelo.
+Orden aprobado expresamente por el usuario. Esta continuación ejecuta el corte 3 sin funciones fuera de alcance. Los tres cortes incluyen comportamiento completo que se puede usar y verificar; no son fases separadas de interfaz, almacenamiento y modelo.
 
 Git local y commits revisados autorizados. Se ha inicializado la carpeta dedicada; no hay repositorio remoto.
 Inferencia autorizada hasta 1 USD y doce intentos totales, incluidos errores/repeticiones. Tarifas verificadas, entrada contada antes de generar, máximo 6.000 tokens de entrada y 4.000 de salida, registro persistente y reserva conservadora de 0,01 USD/intento. Si no se puede comprobar el límite, no generar. Ver inference-budget.md.
@@ -63,7 +63,7 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 - [ ] Medición de tiempo y correcciones registrada; ahorro solo como resultado si los datos lo apoyan. Decisión de continuar, ajustar o parar documentada antes del acabado adicional.
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship.
 
-Hay verificación mecánica del corte 1 en evidence-slice1.md. Todavía no hay feedback de una prueba humana. Las revisiones que se acuerden se añadirán como tareas reales.
+Evidencia de cada corte en evidence-slice1.md, evidence-slice2.md y evidence-slice3.md. Hay feedback humano del corte 1 y de la aparición del aviso nativo de Chrome; no hay aún prueba final humana del conjunto ni valoración de tiempo.
 
 ## Code Tour and App Map
 

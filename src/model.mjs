@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { atomicWrite, readJson } from './store.mjs';
-import { AppError, outputSchema, requireThat } from './domain.mjs';
+import { AppError, outputSchema, requireThat, hash } from './domain.mjs';
 
 export const LIMITS = Object.freeze({
   model:'gpt-6-luna', attempts:12, budgetUsd:1, reserveUsd:0.01, maxInputTokens:6000, maxOutputTokens:4000,
@@ -67,8 +67,8 @@ const instructions = [
   'No omitas una propuesta de corrección útil. No des por aprobado ni guardado nada. Los campos no aplicables de value son null.',
   'Cada propuesta tiene una sola finalidad. El valor anterior lo obtiene la aplicación. Máximo doce propuestas.'
 ].join('\n');
-export function buildPayload(run, novelty) {
-  const input=JSON.stringify({case:run.caseData,sources:[...run.sources,novelty]});
+export function buildPayload(run, novelty, documents=[]) {
+  const input=JSON.stringify({case:run.caseData,sources:[...run.sources,novelty,...documents]});
   const body={model:LIMITS.model,store:false,service_tier:'default',reasoning:{effort:'low',mode:'standard'},prompt_cache_options:{mode:'explicit',ttl:'30m'},
     max_output_tokens:LIMITS.maxOutputTokens,instructions,input,
     text:{format:{type:'json_schema',name:'case_proposals',strict:true,schema:outputSchema}}};
@@ -88,10 +88,10 @@ export class ModelService {
     if(!response.ok) throw new AppError('El proveedor rechazó la petición (HTTP '+response.status+'). No se ha reintentado.',502);
     try{return await response.json();}catch{throw new AppError('Respuesta no legible del proveedor; no se ha guardado el caso.',502);}
   }
-  async analyze(run, novelty) {
+  async analyze(run, novelty, documents=[]) {
     requireThat(this.apiKey,'No hay credencial de modelo en el entorno del servidor.',503);
     requireThat(!this.active,'Ya hay un análisis en curso; espera su resultado.',409);
-    const body=buildPayload(run,novelty);
+    const body=buildPayload(run,novelty,documents);
     this.active=true;
     let attempt;
     try {
@@ -109,7 +109,7 @@ export class ModelService {
         responseId:raw.id??null,model:raw.model??null,serviceTier:raw.service_tier??null});
       await fs.mkdir(path.join(this.runtime,'evaluation'),{recursive:true});
       await atomicWrite(path.join(this.runtime,'evaluation',attempt+'.json'),{attempt,at:new Date().toISOString(),runId:run.id,
-        purpose:'Salida técnica ficticia original, NO incorporada al expediente',novelty,raw});
+        purpose:'Salida técnica ficticia original, NO incorporada al expediente',novelty,documents,requestFingerprint:hash(body),raw});
       requireThat(!known || (u.input_tokens<=6000 && u.output_tokens<=4000 && cost<=0.01),'Uso incompatible con los límites; llamadas bloqueadas.',503);
       requireThat(raw.status==='completed','El modelo no terminó la respuesta; no se guarda el caso.',502);
       const content=(raw.output??[]).filter(i=>i.type==='message').flatMap(i=>i.content??[]);

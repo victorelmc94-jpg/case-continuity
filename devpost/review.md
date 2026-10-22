@@ -6,7 +6,7 @@ updated: 2026-10-22
 
 # Revisión conjunta de producto y solución técnica
 
-El usuario ha aceptado el paquete conjunto con el ajuste aquí incorporado: cambios legítimos permitidos y evaluación en tres capas independientes. [PRD](prd.md) y [especificación](spec.md) recogen la aceptación condicionada y sus precisiones. No se ha construido.
+El usuario ha aceptado el paquete conjunto con el ajuste aquí incorporado: cambios legítimos permitidos y evaluación en tres capas independientes. [PRD](prd.md) y [especificación](spec.md) recogen sus precisiones. Posteriormente aprobó orden, fast, Git local y hasta 1 USD/doce intentos. Corte 1 construido y comprobado, pendiente de su prueba; [evidencias](evidence-slice1.md).
 
 ## Resultado que debe demostrar la primera versión
 Introducir una novedad de un cliente ficticio de fibra y dos móviles, revisar cambios con sus fuentes, guardar solo lo aprobado y recuperar un expediente correcto al reabrir.
@@ -24,7 +24,7 @@ La revisión sin cambios deja constancia solo al confirmar su finalización; con
 | Lo pendiente no se guarda automáticamente | Aviso antes de descartar trabajo revisado sin guardar; salida interna cancelable y advertencia nativa en cierre/recarga normal | Incluye aceptaciones, ediciones, rechazos y motivo. No se promete recuperar borradores o interceptar cierres forzados. |
 | La procedencia queda disponible | La confirmación incluye las fuentes originales que se archivarán como aportadas | Archivar una fuente no convierte todos sus contenidos en hechos aprobados. |
 | Seis pruebas independientes y reapertura | Ejemplos ficticios aislados, almacenamiento local y controles contra repetición | Se puede repetir cada prueba sin borrar las anteriores ni usar aplicaciones reales. |
-| Modelo candidato GPT-6 Luna | Una petición por análisis; propuesta de máximo doce intentos para seis casos y una repetición | El acceso de generación y la calidad siguen sin comprobarse; gasto aún no autorizado. |
+| Modelo GPT-6 Luna | Conteo antes de generar, entrada ≤ 6000 y salida ≤ 4000, doce intentos totales | Generación comprobada en corte 1; calidad global de los seis casos pendiente. Presupuesto máximo 1 USD autorizado, reserva conservadora ≤ 0,12 USD. |
 
 No cambia la arquitectura local. Se amplían operaciones permitidas, interpretación evaluable y comprobaciones positivas. El nombre sigue pendiente y no se autoriza consumo por aceptar el modelo candidato.
 
@@ -41,12 +41,10 @@ Un solo fallo crítico bloquea el resultado global. Interés convertido en autor
 
 Tres resultados independientes: MODEL (interpretación/propuestas originales), GUARDS (aprobación/guardado) y RECOVERY (resultado persistido/reapertura). Una capa correcta no compensa otra errónea.
 Primero pruebas sin coste para controles y recuperación; después, si se autoriza, seis casos con modelo real, variantes positivas de C1/C6 y entrada principal compuesta. Las simulaciones o los campos bloqueados no validan MODEL.
-No se han ejecutado pruebas de producto.
+Se han ejecutado 17 controles locales y la entrada principal con modelo real. Los seis casos y variantes siguen pendientes del corte 3.
 
 ## Coste y medición
-Acceso comprobado: autenticación y listado de modelos. No comprobados: generación, saldo, cuota y calidad.
-La estimación publicada para doce llamadas pequeñas sería unos 0,0096 USD, con los supuestos y límites de [spec.md > Acceso y coste](spec.md#acceso-y-coste); no es gasto realizado, tope garantizado ni autorización. El máximo propuesto de doce incluye ahora hasta nueve entradas iniciales (seis bases, dos variantes y la compuesta) y tres repeticiones selectivas; no una segunda tanda completa.
-Antes de habilitar generación hay que acordar presupuesto. No se activan servicios de Google o AWS.
+Acceso de generación comprobado: tres respuestas con uso informado. Saldo y cuota total de cuenta no consultados. El límite autorizado es 1 USD/doce intentos, con entrada contada y salidas acotadas. El cálculo conservador actualizado incluye escrituras de caché: [presupuesto](inference-budget.md). Tres intentos usados; quedan nueve. No se promete otra tanda completa si se agota el cupo. No se activan servicios de Google o AWS.
 
 El ahorro de tiempo es una hipótesis. Registrar espera, lectura, corrección y guardado frente al trabajo manual; también trazabilidad y errores. Después de esos resultados se decide continuar, ajustar o parar y cuánto acabado merece. No hay porcentaje de ahorro conseguido.
 
@@ -55,5 +53,4 @@ El ahorro de tiempo es una hipótesis. Registrar espera, lectura, corrección y 
 - [Especificación completa](spec.md): componentes, datos, contratos, errores y pruebas.
 - [Evaluación](evaluation.md): seis entradas ficticias y observaciones.
 
-El [orden de construcción](checklist.md) queda preparado como borrador de 5-build, en cortes utilizables y verificables. Se pide revisión del orden, no otra aprobación del paquete ya aceptado.
-No hay implementación ni inferencia iniciadas. El presupuesto sigue pendiente; no hace falta elegir nombre definitivo ahora.
+El [orden de construcción](checklist.md) está aprobado, en modo fast. Tras el corte 1 se espera la prueba humana antes de ampliar. El nombre definitivo sigue pendiente; no bloquea probar el núcleo.

@@ -11,12 +11,14 @@ El usuario autoriza como máximo 1 USD total y doce intentos de inferencia, cont
 ## Tarifas verificadas antes de generar
 GPT-6 Luna, Responses API, contexto corto, servicio estándar/default, razonamiento standard/low:
 - Entrada sin caché: 0,10 USD por millón de tokens.
+- Entrada en caché: 0,01 USD por millón; escritura 30 min: 0,125; escritura 12 h: 0,25. Estas tarifas de escritura sustituyen la tarifa ordinaria, no se suman a ella.
 - Salida total facturada: 0,50 USD por millón, incluido razonamiento y formato.
-No herramientas, imágenes, archivos remotos, pro, fast ni retención explícita de caché.
+No herramientas, imágenes, archivos remotos, pro ni fast. Desde la corrección del primer intento se usa prompt_cache_options explicit, sin puntos de escritura, para no crear caché deliberada. El cálculo de seguridad contempla aun así toda entrada a 0,25 USD/millón, incluida la escritura implícita del primer intento.
 Fuentes consultadas el 2026-10-22:
 https://developers.openai.com/api/docs/pricing
 https://developers.openai.com/api/docs/models/gpt-6-luna
 https://developers.openai.com/api/docs/guides/token-counting
+https://developers.openai.com/api/docs/guides/prompt-caching
 
 ## Límites obligatorios
 - Modelo fijo gpt-6-luna y service_tier default.
@@ -29,9 +31,16 @@ https://developers.openai.com/api/docs/guides/token-counting
 - No reiniciar cupos al crear caso, reiniciar servidor o cambiar de sesión.
 - Si el proveedor informa uso o tarifa incompatible, bloquear nuevas llamadas hasta revisión.
 
-Generación máxima por intento: (6000 × 0,10 + 4000 × 0,50)/1.000.000 = 0,0026 USD.
-Doce generaciones máximas: 0,0312 USD. La reserva de 0,12 USD deja margen conservador adicional; no se presenta la reserva como gasto real.
+Generación máxima por intento, incluyendo cualquier escritura de caché: (6000 × 0,25 + 4000 × 0,50)/1.000.000 = 0,0035 USD.
+Doce generaciones máximas: 0,042 USD. La reserva de 0,12 USD deja margen conservador adicional; no se presenta la reserva como gasto real.
+El conteo previo no se declara gratuito: no se encontró una tarifa separada publicada para ese endpoint. Se reserva 0,01 USD por intento completo, muy por encima del coste acotado de generación; no se crean operaciones auxiliares de pago ni reintentos ocultos.
 No asumir que un error sin usage costó cero. Mantener su reserva y mostrar uso conocido aparte.
+costUsd en el registro y «estimación máxima del uso conocido» en la pantalla son una cota conservadora calculada con entrada a 0,25 y salida a 0,50; no una consulta de la factura. El primer registro fue recalculado de forma conservadora al incorporar cache-write a la contabilidad, sin alterar la salida original.
 Este cálculo es de consumo API bajo las tarifas verificadas; no usa la suscripción del agente ni créditos supuestos de terceros.
 
 La aplicación conserva la autorización y limita consumo. No crea recursos externos ni publica.
+
+## Corte 1 ejecutado
+Tres intentos contabilizados, incluida la respuesta rechazada por falta de value.text y la revisión descartada al verificar el aviso. Sin llamadas automáticas adicionales. Detalle: evidence-slice1.md.
+Reserva acumulada 0,03 USD; cota de generación conocida 0,0025505 USD; nueve intentos restantes. No hay errores sin usage en esos tres intentos.
+La verificación de tarifas vence el 2026-10-23 a las 22:11:10 Europe/Madrid; a partir de entonces se bloquea analizar hasta revisarlas. La lectura y el guardado local siguen disponibles.

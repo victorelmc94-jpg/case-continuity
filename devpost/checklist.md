@@ -63,7 +63,7 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 - [ ] Medición de tiempo y correcciones registrada; ahorro solo como resultado si los datos lo apoyan. Decisión de continuar, ajustar o parar documentada antes del acabado adicional.
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship.
 
-No hay resultados ni feedback todavía. Las revisiones acordadas durante la construcción se añadirán como tareas reales, no se inventan ahora.
+Hay verificación mecánica del corte 1 en evidence-slice1.md. Todavía no hay feedback de una prueba humana. Las revisiones que se acuerden se añadirán como tareas reales.
 
 ## Code Tour and App Map
 
@@ -78,3 +78,8 @@ Reflection: no solicitada; la respuesta personal, si existe, irá al perfil excl
 Activity mode: pendiente, según experiencia y práctica que ya se haya producido.
 
 ## Revisions
+
+- 2026-10-22: corte 1 ejecutado; 17 controles locales, modelo real, guardado y reinicio con igualdad completa. Esperar prueba humana antes del corte 2. No marcar completado el checkpoint humano.
+- El primer modelo produjo un interés con value.text nulo; se mantuvo la validación, se precisó el contrato en las instrucciones y se conservó el FAIL original. Los intentos posteriores fueron válidos en los requisitos de la entrada principal. Se rechazó una propuesta redundante; no se presenta precisión perfecta ni ahorro medido.
+- La respuesta API informó cache_write_tokens: se amplió la contabilidad conservadora con las tarifas oficiales de escritura y se desactivó la caché deliberada. Máximo de generación 0,0035 USD/intento; reserva 0,01 sin modificar los límites del usuario. Ver inference-budget.md.
+- Implementación usa fixtures/main.json para el corte 1 y scripts/verify-slice1.mjs para evidencia de lectura y reinicio. El archivo de los seis ejemplos sigue pendiente del corte 3. Aviso básico de descarte ya presente por la condición de no perder trabajo sin advertencia; prueba completa de salidas y cancelación sigue en corte 2.

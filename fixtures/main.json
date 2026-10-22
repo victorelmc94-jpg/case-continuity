@@ -1,0 +1,30 @@
+{
+  "caseData": {
+    "client": "Cliente Demo 01",
+    "needs": "Revisar fibra y dos líneas móviles",
+    "current_fiber_mbps": 600,
+    "mobile_lines": 2,
+    "budget_reference": 40,
+    "budget_conditions": [],
+    "offers": [{"id":"A","description":"Oferta ficticia A","monthly_price":45,"conditions":["Sin permanencia según S-OFERTA-A1"],"source_refs":[{"source_id":"S-OFERTA-A1","quote":"Oferta A: 45 euros al mes, sin permanencia."}]}],
+    "documents": [],
+    "offer_interest": [],
+    "client_preference": "",
+    "antecedents": [],
+    "uncertainties": [],
+    "operational_state": "Requiere acción propia",
+    "next_movement": "Aclarar las condiciones de la oferta A",
+    "contract_authorization": "Sin autorización registrada"
+  },
+  "sources": [
+    {"id":"S-BASE-01","type":"human_note","author":"Cliente Demo 01","sourceDate":"2026-10-18","text":"Necesito fibra y dos líneas móviles. Mi fibra actual es de 600 Mb y mi presupuesto máximo es de 40 euros al mes. La factura está pendiente de entregar."},
+    {"id":"S-OFERTA-A1","type":"offer","author":"Proveedor ficticio A","sourceDate":"2026-10-19","text":"Oferta A: 45 euros al mes, sin permanencia."}
+  ],
+  "novelty": {
+    "id":"S-DEMO",
+    "type":"human_note",
+    "author":"Cliente Demo 01",
+    "sourceDate":"2026-10-20",
+    "text":"Corrijo lo de la fibra: tengo 300 Mb. Podría estudiar hasta 50 euros si incluye las dos líneas y el precio no sube durante doce meses. La oferta A me interesa, pero no contrates todavía."
+  }
+}

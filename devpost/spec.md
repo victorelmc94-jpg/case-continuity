@@ -7,7 +7,7 @@ review: joint-with-prd
 
 # Proyecto sin nombre definitivo — Technical Spec
 
-Paquete conjunto aceptado por el usuario el 2026-10-22 con el ajuste incorporado: permitir cambios legítimos en campos del alcance y evaluar interpretación, controles y persistencia por separado. No confundir restricciones técnicas con comprensión del modelo. El siguiente artefacto es el orden de construcción; no se ha autorizado inferencia.
+Paquete conjunto aceptado por el usuario el 2026-10-22 con el ajuste incorporado: permitir cambios legítimos en campos del alcance y evaluar interpretación, controles y persistencia por separado. No confundir restricciones técnicas con comprensión del modelo. Orden aprobado, modo fast y Git local autorizados; corte 1 construido y comprobado mecánicamente. Inferencia autorizada hasta 1 USD/doce intentos; prueba humana pendiente antes de ampliar. Evidencia: evidence-slice1.md.
 
 ## How This Works, In Plain Language
 Propuesta: una página en el navegador habla con un pequeño programa que corre en este equipo. Ese programa lee y guarda un archivo local con los casos ficticios.
@@ -28,7 +28,7 @@ Implements prd.md > The Core Journey.
 8. Al reabrir, la misma ejecución se lee del archivo; no se reconstruye desde la conversación ni desde la salida del modelo.
 
 ## Stack
-Propuestas pendientes de revisión:
+Stack aceptado e iniciado en el corte 1:
 - Node.js 24.x; instalado y comprobado en este equipo: v24.18.0. Sin actualización propuesta.
 - HTML, CSS y JavaScript del navegador, sin framework ni proceso de compilación.
 - Módulos integrados node:http, node:fs/promises, node:crypto, fetch y node:test. Sin paquetes de aplicación que instalar.
@@ -39,11 +39,11 @@ Documentación: [HTTP](https://nodejs.org/docs/v24.18.0/api/http.html), [archivo
 
 ## Where It Runs and How Someone Tries It
 Solo local, en navegador de escritorio, con Node 24.x.
-Comando previsto después de construir: node --env-file-if-exists=.env src/server.mjs
+Comando de arranque: node --env-file-if-exists=.env src/server.mjs (también npm start).
 Abrir http://127.0.0.1:4317 . Si el puerto está ocupado, salir con mensaje; no alterar otro servicio.
 La credencial se lee del entorno o de .env local excluido de Git. Sin clave o sin autorización de inferencia: se puede leer el expediente y ejecutar controles deterministas, pero analizar informa que falta acceso; no finge una llamada.
 Comandos de verificación previstos: node --test para controles sin inferencia y una ejecución explícita separada para C1–C6 con el modelo real.
-Las rutas y comandos son plan, no archivos ya creados ni comprobaciones ejecutadas.
+El corte 1 ya tiene estas rutas y arranque comprobados. El guardado parcial y los seis ejemplos siguen siendo parte del plan pendiente, no comportamiento disponible.
 El vídeo puede grabarse localmente. Repositorio público y vídeo accesible siguen siendo entregables futuros; despliegue opcional y no autorizado aquí.
 
 ## Look and Feel
@@ -131,7 +131,7 @@ Repetición: comparar fuentes/versiones y efectos ya incorporados. No duplicar p
 Si se perdieron borradores tras un guardado parcial, los recibos recuperan lo ya incorporado y señalan que no hay finalización; lo restante no se inventa ni se aprueba por omisión.
 
 ## File Structure
-Estructura prevista; no existe implementación todavía:
+Estructura objetivo de V1; src/, public/, tests/ y fixtures/main.json ya existen para el corte 1. fixtures/cases.json sigue pendiente de ampliar los ejemplos:
 - src/server.mjs — servicio y rutas locales.
 - src/domain.mjs — operaciones permitidas e invariantes.
 - src/store.mjs — lectura, escritura, versiones e idempotencia.
@@ -178,12 +178,12 @@ Documentación comprobada: [Structured Outputs](https://developers.openai.com/ap
 store false no se presenta como garantía de retención cero por el proveedor.
 
 ### Acceso y coste
-Ya se comprobó en este chat autenticación de solo lectura y visibilidad del catálogo. Generación, saldo y cuota no se han probado; no se ha generado inferencia.
-Tarifa de referencia consultada el 2026-10-22 para contexto corto estándar: 0,10 USD/millón de entrada y 0,50 USD/millón de salida facturada. [Tarifas](https://developers.openai.com/api/docs/pricing).
-Hipótesis numérica, no consumo: 12 llamadas de 3.000 tokens de entrada y 1.000 de salida facturada cada una serían 0,0096 USD, antes de impuestos y otros conceptos. La salida facturada debe incluir razonamiento cuando corresponda; el uso real puede diferir.
+Acceso real comprobado mediante tres generaciones en el corte 1. Saldo y cuota total de la cuenta no se han consultado; no se infieren a partir de estas respuestas.
+Tarifas verificadas el 2026-10-22: entrada ordinaria 0,10 USD/millón; entrada en caché 0,01; escritura 30 min 0,125 y 12 h 0,25; salida 0,50, incluido razonamiento. [Tarifas](https://developers.openai.com/api/docs/pricing). La estimación anterior de 0,0096 omitía las posibles escrituras de caché y queda sustituida por el cálculo conservador de inference-budget.md.
 
-Presupuesto pendiente de autorización. Se mantiene como propuesta un máximo de doce solicitudes iniciadas, incluidas fallidas, sin reintentos automáticos ni paralelismo. Ahora debe incluir los seis casos, dos variantes positivas de C1/C6 y la entrada compuesta de la demo: hasta nueve solicitudes iniciales y tres repeticiones selectivas. No prometer repetir la tanda entera dentro de doce; si hace falta ampliarla, detenerse y acordar consumo adicional. El contador se conserva entre reinicios y no se reinicia al crear un ejemplo.
-Límites técnicos propuestos: carga de análisis serializada de hasta 24 KiB, salida máxima indicada, espera de 45 segundos y bloqueo de nuevas llamadas al agotar intentos. Un timeout puede haber generado consumo y cuenta como intento.
+Autorizados 1 USD y doce intentos totales, incluidos fallos/repeticiones. Reserva en disco de 0,01 USD antes de cualquier petición; no se recupera por error. Entrada contada antes de generar, máximo 6.000 tokens; salida máxima 4.000; contexto serializado hasta 24 KiB; conteo con timeout 20 s y generación 45 s. Sin herramientas, paralelismo ni reintentos automáticos. Si el conteo falta o excede el máximo, no generar.
+Se calcula toda entrada a la tarifa más alta de escritura, aunque no la use: máximo 0,0035 USD/generación y 0,042 para doce. Reserva acumulada máxima 0,12 USD, inferior al permiso de 1 USD. Tarifas caducan el 23/10/2026 a las 22:11:10 Europe/Madrid y bloquean nuevas generaciones. Detalle y límites: inference-budget.md.
+Ya se han usado tres intentos; quedan nueve antes de la prueba humana. No se promete repetir una tanda completa dentro de doce. Si se agota el cupo, detenerse antes de consumir más. La cuota se conserva entre reinicios y no se reinicia al crear otro ejemplo. Un timeout cuenta y puede tener consumo desconocido.
 No usar el ahorro de una estimación para justificar un gasto no autorizado. No hay saldo o créditos de Google/AWS comprobados.
 
 ## Important Failure Modes
@@ -210,6 +210,5 @@ No se simula el núcleo para ahorrar integración. El modo de prueba técnica co
 Del usuario: paquete aceptado con el ajuste de cambios legítimos, evaluación en tres capas, solo autorización contractual fuera de modificación, aviso antes de perder trabajo revisado, guardado parcial/finalización separados, tiempo como hipótesis y prioridad al núcleo con reapertura.
 Se mantiene la arquitectura local sin dependencias y la persistencia única. Cambia el registro de operaciones y el contrato de interpretación, no el proveedor ni la infraestructura. El modelo candidato no implica permiso de consumo.
 Incertidumbre real aportada por el usuario: si la corrección de propuestas exige tanto trabajo que la actualización manual sea mejor. Se investigará con C1–C6 y comparación documentada; no se inventa una tecnología para resolverla.
-Pendiente: revisión del orden de construcción, acuerdo sobre Git y modo de trabajo al iniciar implementación.
-Antes de inferencia: acordar presupuesto y habilitación; comprobar generación sin atribuir al listado de modelos una garantía de cuota.
-El nombre y el acabado posterior quedan en manos del participante. El orden de construcción se recoge en checklist.md, todavía en borrador. No hay Git inicializado, implementación, pruebas de producto ejecutadas ni llamadas de generación autorizadas por este documento.
+Resuelto por el usuario: orden, fast, Git local con commits revisados e inferencia hasta 1 USD/doce intentos. Corte 1 comprobado con modelo real, controles y reinicio; esperar su prueba antes de construir corte 2.
+El nombre y el acabado posterior quedan en manos del participante. Ver checklist.md y evidence-slice1.md. Se mantiene pendiente la evaluación de los seis casos, no compensable por el resultado de la entrada principal.

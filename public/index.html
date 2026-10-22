@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revisión de expediente · prueba local</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div><p class="eyebrow">PRUEBA LOCAL · DATOS FICTICIOS · CORTE 1</p><h1>Revisión de expediente</h1><p>Una novedad. Cambios revisados. Un caso que puedes retomar.</p></div>
+    <div class="top-actions"><button id="refresh" class="secondary">Volver a leer lo guardado</button><button id="new-run">Nueva prueba ficticia</button></div>
+  </header>
+  <div id="message" role="status" aria-live="polite"></div>
+  <main>
+    <section aria-labelledby="case-title" class="panel">
+      <div class="section-head"><h2 id="case-title">Expediente guardado</h2><span id="version" class="badge">Sin iniciar</span></div>
+      <p id="run-label" class="muted"></p>
+      <div id="case-data"><p>Inicia una prueba ficticia para empezar.</p></div>
+      <details><summary>Fuentes y antecedentes</summary><div id="sources"></div><div id="versions"></div></details>
+    </section>
+    <section aria-labelledby="novelty-title" class="panel">
+      <h2 id="novelty-title">Novedad para revisar</h2>
+      <p class="muted">La entrada principal ya está preparada. Puedes editarla; no introduzcas datos reales.</p>
+      <form id="novelty-form">
+        <div class="fields"><label>Referencia<input id="source-id" maxlength="80" required></label><label>Fecha de la fuente<input id="source-date" type="date" required></label></div>
+        <label>Quién lo declara<input id="source-author" maxlength="100" required></label>
+        <label>Texto original<textarea id="source-text" rows="7" maxlength="7000" required></textarea></label>
+        <button id="analyze" type="submit">Analizar novedad con el modelo</button>
+        <button id="edit-novelty" type="button" class="secondary" hidden>Modificar novedad y descartar propuestas</button>
+      </form>
+      <p id="budget" class="small muted"></p>
+      <p class="small muted">Corte 1: revisión completa y guardado. El guardado parcial y las seis familias se habilitarán después de tu prueba.</p>
+    </section>
+    <section id="review-panel" aria-labelledby="review-title" class="panel wide" hidden>
+      <div class="section-head"><h2 id="review-title">Interpretación y propuestas</h2><span class="badge proposal-badge">Todavía sin incorporar</span></div>
+      <div id="interpretation"></div>
+      <p class="small muted">La interpretación es del modelo. Bloquear técnicamente la contratación no demuestra que haya entendido la novedad.</p>
+      <div id="proposals"></div>
+      <div class="save-area">
+        <p id="decision-count"></p>
+        <details><summary>Qué se guardará al confirmar</summary><div id="save-preview"></div></details>
+        <p>Confirmar significa que has terminado de revisar esta novedad y apruebas solo las incorporaciones aceptadas. También se archivará su fuente original como material aportado, sin validar todo su contenido.</p>
+        <button id="commit" disabled>Confirmar fin de revisión y guardar</button>
+      </div>
+    </section>
+    <section class="panel wide" aria-labelledby="history-title"><h2 id="history-title">Historial confirmado</h2><div id="history"><p class="muted">No hay revisiones confirmadas.</p></div></section>
+  </main>
+  <footer>Sin nombre definitivo · Sin comparación de tarifas ni tramitación de contratos · Fuente recibida no equivale a fuente validada</footer>
+</body>
+</html>

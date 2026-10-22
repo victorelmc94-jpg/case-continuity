@@ -77,7 +77,7 @@ No se presupone disponibilidad continua. La persona interviene en decisiones de 
 Si hay una decisión necesaria sin respuesta, se conserva el punto y se espera: el tiempo transcurrido no es aprobación.
 No se promete ejecución posterior a un turno sin una ejecución activa o nueva reanudación del trabajo.
 
-Tramo propuesto para decidir si continuar: 90–150 min humanos y 4–6 h de agente para planificación y una primera prueba comprobable del núcleo. La construcción de ese tramo aún no está autorizada.
+Tramo propuesto para decidir si continuar: 90–150 min humanos y 4–6 h de agente para planificación y una primera prueba comprobable del núcleo. Posteriormente se autorizó el corte 1, ya comprobado; queda la prueba humana. Es una estimación de planificación, no una medición de trabajo o ahorro.
 
 ## Registro de decisiones
 
@@ -95,7 +95,7 @@ Tramo propuesto para decidir si continuar: 90–150 min humanos y 4–6 h de age
 - Usuario: exige evaluar por separado interpretación/propuestas, controles de aprobación/guardado y resultado persistido/reapertura.
 - Usuario: acepta guardado parcial/finalización y borradores no persistidos, con aviso antes de perder trabajo revisado sin guardar.
 - Agente incorpora C1-B y C6-B como variantes positivas para presupuesto y seguimiento; no añade infraestructura ni habilita gasto. Máximo propuesto de doce intentos: hasta nueve iniciales y tres repeticiones selectivas, no una tanda completa de repetición.
-- Sin aprobación aún: presupuesto de inferencia, modo/orden de construcción, Git al iniciar esa fase y presentación.
+- Usuario, posteriormente: aprueba orden, fast y Git local con commits revisados. Autoriza inferencia hasta 1 USD/doce intentos, con tarifas y límites previos. Construir solo corte 1 y esperar su prueba. Presentación/publicación siguen sin autorizar.
 
 ## Próximos pasos formales
 
@@ -103,11 +103,11 @@ Tramo propuesto para decidir si continuar: 90–150 min humanos y 4–6 h de age
 2-scope: dirección y foco de demo aprobados; scope en approved con las precisiones de evaluación del usuario.
 3-prd: paquete aceptado con el ajuste incorporado; approved.
 4-spec: paquete aceptado con el ajuste incorporado; approved. La revisión conjunta fue pedida por el usuario y no se editaron las instrucciones originales del Pack.
-5-build: solo orden de construcción preparado en checklist.md, en draft. Sin código, Git o inferencia iniciados; revisar orden y resolver los requisitos de ejecución antes de construir.
+5-build: orden approved, fast y Git local; corte 1 con aplicación local, modelo, guardado y reinicio verificados. Ver evidence-slice1.md. Checkpoint humano pendiente; no avanzar al corte 2.
 6-ship: no iniciado; no hay inscripción, publicación ni candidatura presentada.
 
 Los textos de planificación actuales están en español. La traducción pertinente al inglés queda para preparación de entrega; no se declara cumplido ese requisito ahora.
 
 ## Paquete conjunto de revisión
-[Lectura conjunta](review.md), [PRD](prd.md), [especificación técnica](spec.md) y [orden de construcción en borrador](checklist.md). El paquete registra la aceptación con ajuste; el orden aún no está aprobado.
+[Lectura conjunta](review.md), [PRD](prd.md), [especificación técnica](spec.md) y [orden de construcción aprobado](checklist.md). El paquete registra la aceptación con ajuste y las autorizaciones posteriores.
 La aprobación de la dirección no prueba utilidad, precisión ni ahorro. Hasta ejecutar el núcleo, las ventajas son hipótesis.

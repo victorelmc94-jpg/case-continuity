@@ -8,7 +8,7 @@ updated: 2026-10-22
 
 Prueba de concepto para incorporar una novedad a un expediente comercial de telecomunicaciones con revisión humana, procedencia y conservación de límites y dudas. El identificador de carpeta es organizativo; no es el nombre de candidatura.
 
-Dirección del alcance y foco de demo aprobados expresamente por el usuario el 2026-10-22. Esta aprobación permite planificar el producto y la solución técnica; no autoriza construcción, inferencia de pago o publicación. Las propuestas concretas del PRD y de la especificación se revisarán juntas por petición expresa del usuario.
+Dirección del alcance y foco de demo aprobados expresamente por el usuario el 2026-10-22. Tras revisar juntos PRD y especificación, aprobó orden de construcción, fast, Git e inferencia hasta 1 USD/doce intentos. El corte 1 está comprobado y pendiente de prueba humana antes de ampliar. No hay autorización de publicación.
 
 ## The Unique Kernel
 Retomar un caso a partir de cambios revisados y explicables, sin convertir condiciones en compromisos, interés en autorización ni declaraciones en hechos comprobados. El resultado demuestra qué cambió, qué permaneció y qué sigue pendiente, con la fuente de cada incorporación.
@@ -51,7 +51,7 @@ Propuesta del agente para comprobarlo: seis casos ficticios, definidos en [evalu
 - Propuestas apoyadas en fuente, condiciones e incertidumbres visibles.
 - Incorporaciones revisadas, historial de revisión confirmado y conservación de antecedentes.
 - Comprobación del resultado guardado, de que nada cambia sin aprobación y de que las revisiones repetidas no duplican información.
-- Ruta técnica local aceptada dentro del paquete: propuestas de modelo separadas del guardado. El presupuesto de inferencia sigue pendiente, aunque el modelo candidato figure en la especificación.
+- Ruta técnica local aceptada: propuestas de modelo separadas del guardado. Presupuesto autorizado hasta 1 USD/doce intentos; límites efectivos en inference-budget.md.
 - Idioma de planificación actual: español para revisión. Antes de presentar se requerirá versión inglesa o traducción de los materiales pertinentes.
 
 ## Later
@@ -64,7 +64,7 @@ No son necesarios ahora para probar el núcleo: alojamiento público, exportacio
 - Comparación de tarifas reales y contratación: fuera del propósito y de la autorización.
 - Datos, documentos, conversaciones y credenciales reales en repositorio o demo: fuera del perímetro.
 - Acciones comerciales automáticas, fechas calculadas o prioridades decididas por IA: no se derivan de una propuesta revisada.
-- Construcción, despliegue, creación de repositorio remoto e inscripción en esta fase: no autorizados.
+- Ampliación más allá del corte 1 antes de la prueba humana, despliegue, repositorio remoto e inscripción: no autorizados en este turno.
 - Elegir un nombre definitivo por el usuario: pendiente de su decisión.
 
 ## Competitive Focus — dirección aprobada
@@ -82,9 +82,9 @@ Confirmado por el usuario: dominio telecom, datos ficticios, un flujo, fuentes/c
 El usuario ha aceptado el paquete conjunto con el ajuste de cambios legítimos y evaluación independiente: MODEL, GUARDS y RECOVERY. Solo autorización contractual queda fuera de modificaciones de V1; esa restricción no demuestra comprensión. Guardado parcial/finalización separados y borradores no persistidos con aviso están aceptados.
 
 Pendiente:
-1. Revisar el orden de construcción preparado en checklist.md.
-2. Acordar Git y modo de trabajo al iniciar implementación.
-3. Autorizar presupuesto de inferencia; verificar generación y continuidad del acceso. La aceptación del modelo candidato no habilita consumo.
+1. Prueba humana del corte 1 antes de ampliar el orden ya aprobado.
+2. Git local y modo fast acordados; mantener commits revisados y datos privados fuera de Git.
+3. Presupuesto autorizado hasta 1 USD/doce intentos, tres usados. Verificar tarifas antes de cualquier generación tras su caducidad y no superar los límites.
 4. Después del núcleo verificado: acabado adicional, nombre definitivo, dedicación y decisión de presentar.
 
-Alcance, PRD y especificación recogen el paquete aceptado con ajuste. El orden de construcción sigue en borrador; no hay implementación ni inferencia autorizadas por esta aprobación.
+Alcance, PRD, especificación y orden están aprobados. La evidencia mecánica del corte 1 no sustituye la prueba de Víctor ni la evaluación global posterior. Ver evidence-slice1.md.

@@ -10,7 +10,7 @@ review: joint-with-spec
 Permitir que un asesor retome un expediente ficticio de fibra y dos móviles después de incorporar una novedad revisada, conservando fuentes, condiciones y dudas.
 Source: scope.md > The Unique Kernel; Who It's For; The POC Boundary.
 
-Paquete aceptado por el usuario el 2026-10-22, condicionado a incorporar su ajuste: los campos incluidos deben admitir cambios legítimos y la comprensión del modelo se evalúa aparte de las protecciones técnicas. Se integran aquí esas precisiones. Guardado parcial y borradores no persistidos están aceptados, con aviso antes de perder trabajo revisado no guardado. Esta aprobación permite preparar el orden de construcción; no inicia implementación ni autoriza inferencia.
+Paquete aceptado por el usuario el 2026-10-22, condicionado a incorporar su ajuste: los campos incluidos deben admitir cambios legítimos y la comprensión del modelo se evalúa aparte de las protecciones técnicas. Se integran aquí esas precisiones. Guardado parcial y borradores no persistidos están aceptados, con aviso antes de perder trabajo revisado no guardado. Posteriormente aprobó orden, modo fast, Git y hasta 1 USD/doce intentos. Solo el corte 1 está construido y comprobado; esperar su prueba antes de ampliar.
 
 ## The Core Journey
 1. Abrir una prueba ficticia de los seis casos; ver los datos actuales, fuentes, estado operativo y próximo movimiento.
@@ -121,7 +121,7 @@ Source: scope.md > Decision to Continue; evaluation.md.
 ## Product Decisions
 Confirmadas: dominio telecom, fibra y dos móviles, un flujo, fuentes/condiciones/incertidumbres, autoridad humana, anotación confirmada sin cambios, no duplicar, resultado al reabrir, foco de demo y criticidad no compensable.
 Paquete aceptado con ajuste: pantalla única, arquitectura local, guardado parcial/finalización separados, borradores no persistidos con aviso, ejemplos aislados y apariencia funcional. Se retira el bloqueo general de campos delicados. Solo queda excluida la modificación de autorización contractual; su interpretación sigue siendo evaluable y puede fallar.
-Tres capas de evaluación separadas, sin compensar errores críticos entre capas ni entre casos. El presupuesto de inferencia sigue pendiente.
+Tres capas de evaluación separadas, sin compensar errores críticos entre capas ni entre casos. Inferencia autorizada hasta 1 USD/doce intentos; evidencia del corte 1 en evidence-slice1.md. No constituye validación global de los seis casos.
 
 ## What We're Building
 Flujo completo descrito y seis ejemplos verificables, con recepción documental como texto, guardado controlado, datos versionados, historial y reapertura.
@@ -140,6 +140,5 @@ Tarifas reales, comparación de mercado, OCR, carga de PDF, integraciones, gesti
 El nombre final y los textos públicos son del participante.
 
 ## Open Questions
-Pendiente: revisar el orden de construcción antes de implementarlo y resolver Git/modo de construcción al iniciar esa fase.
-Antes de inferencia: autorizar expresamente el presupuesto y alcance de consumo. La existencia de una credencial y la aceptación del modelo candidato no son autorización de gasto.
+Resueltos: orden aprobado, Git local, modo fast y presupuesto máximo 1 USD/doce intentos. Antes de ampliar al corte 2, recoger la prueba humana del corte 1. No superar cupo ni gasto sin nueva autorización.
 No bloquean esta primera planificación: nombre final, marca, despliegue, acabado adicional.

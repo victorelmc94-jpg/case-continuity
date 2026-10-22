@@ -51,3 +51,5 @@ Parcial simulado en navegador: segunda ejecución df9c9d32… dejó fibra guarda
 Una generación adicional: cota conservadora 0,000414 USD. Acumulado **4/12 intentos**, reserva 0,04 USD y cota de generación conocida 0,0029645 USD. Ocho intentos disponibles, sin reiniciar el registro ni crear recursos externos. No es una factura. Tarifas y límites originales vigentes durante esta prueba; no hubo reintentos automáticos.
 
 Los seis casos completos, variantes positivas y ahorro de tiempo siguen pendientes. C6 es una comprobación individual, no una aprobación global. Corte 3 no ejecutado. No hay publicación, inscripción, nombre definitivo ni cambios en aplicaciones anteriores.
+
+Código fijado en el commit local 6120344, revisado con controles de staging y sin incorporar runtime, credenciales o perfil personal. La aplicación de trabajo queda en http://127.0.0.1:4317; el servicio aislado de controles se ha detenido.

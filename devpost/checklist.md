@@ -26,7 +26,7 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
   Learner check: Abrir el caso, leer fuente y propuestas, guardar lo revisado y reabrir. Comprobar qué cambió y qué no; verificar que el modelo haya dicho expresamente que no existe autorización. Indicar qué resulta confuso o requiere corrección antes de extender el recorrido.
   Commit: `Add reviewed novelty flow with traceable persistence`
 
-- [ ] **2. Revisar por partes, terminar sin cambios y salir con aviso**
+- [x] **2. Revisar por partes, terminar sin cambios y salir con aviso**
   Becomes usable: Se puede guardar una parte sin declarar terminada la revisión, finalizarla después, registrar «Revisado, sin cambios» sin versión vacía y repetir la misma fuente sin duplicados. Antes de perder trabajo revisado no guardado aparece un aviso.
   Why now: Prueba el límite entre incorporación, finalización y ausencia de cambios sobre el núcleo ya utilizable. Evita que el historial o la navegación falseen trabajo realizado.
   PRD ref: `prd.md > Revisión y guardado parcial`; `prd.md > Finalización e historial sin cambios`; `prd.md > Repetición y reapertura`; `prd.md > Entrada de una novedad`; `prd.md > States and Boundaries`.
@@ -80,6 +80,7 @@ Activity mode: pendiente, según experiencia y práctica que ya se haya producid
 ## Revisions
 
 - 2026-10-22, continuación: feedback temprano recibido y corte 2 autorizado. Tres ajustes de presentación incorporados sin cambiar el expediente persistido. Evidencias en evidence-slice2.md; 28 controles locales y C6 real. No se declara superada la evaluación global ni ahorro medido.
+- Commit del corte 2: 6120344. Se marca construido y comprobado mecánicamente, con la limitación visual del aviso nativo registrada en evidencia. Corte 3 queda sin ejecutar en esta continuación.
 - Parciales se reconocen por recibos vinculados a fuente y huella; no hace falta guardar borradores o añadir otra base de datos. Reapertura de revisión ya terminada y datos iguales no consulta el modelo. Condiciones distintas para misma fuente/importe generan conflicto, sin fusión semántica automática.
 
 - 2026-10-22: corte 1 ejecutado; 17 controles locales, modelo real, guardado y reinicio con igualdad completa. Esperar prueba humana antes del corte 2. No marcar completado el checkpoint humano.

@@ -44,3 +44,7 @@ La aplicación conserva la autorización y limita consumo. No crea recursos exte
 Tres intentos contabilizados, incluida la respuesta rechazada por falta de value.text y la revisión descartada al verificar el aviso. Sin llamadas automáticas adicionales. Detalle: evidence-slice1.md.
 Reserva acumulada 0,03 USD; cota de generación conocida 0,0025505 USD; nueve intentos restantes. No hay errores sin usage en esos tres intentos.
 La verificación de tarifas vence el 2026-10-23 a las 22:11:10 Europe/Madrid; a partir de entonces se bloquea analizar hasta revisarlas. La lectura y el guardado local siguen disponibles.
+
+## Corte 2 ejecutado
+Una generación adicional para C6, con el mismo registro y límites: 1274 tokens de entrada, 191 de salida; cota conservadora 0,000414 USD. Repetir la fuente ya revisada no consultó al modelo. Pruebas de controles de pantalla simuladas sin inferencia.
+Acumulado: cuatro intentos, reserva 0,04 USD, cota de generación conocida 0,0029645 USD; ocho intentos restantes. La cifra del apartado anterior es la foto histórica del corte 1. Ver evidence-slice2.md.

@@ -119,13 +119,35 @@ function applyProposal(data, p) {
   }
 }
 
-export function finalize(workspace, draft, command) {
-  requireThat(command && Object.keys(command).every(k => ['draftId','baseStorageRevision','actionId','mode','confirmCompleted','decisions'].includes(k)), 'Orden de guardado no válida');
-  requireThat(command.mode === 'finalize' && command.confirmCompleted === true, 'Falta la confirmación explícita de fin de revisión');
+export const reviewKey = source => hash([source.id,source.contentHash??hash(source.text)]);
+const normalize = text => String(text??'').trim().replace(/\s+/g,' ').toLocaleLowerCase('es');
+export function effectKey(proposal, source) {
+  const p=proposal,v=p.value;
+  // Ignore summaries, quote lengths and display wording; preserve operative values and conditions.
+  const value=p.kind==='conditional_budget'?v.number:p.kind==='offer_interest'?[v.offer_id,p.conditions.map(normalize).sort()]:p.kind==='document_receipt'?v.document_source_id:p.kind==='offer_record'?v.offer:['current_fiber_mbps','mobile_lines','budget_reference'].includes(p.target)?v.number:normalize(v.text);
+  return hash([reviewKey(source),p.kind,p.target,value]);
+}
+export const sameConditions=(a,b)=>hash(a.map(normalize).sort())===hash(b.map(normalize).sort());
+export function openReviews(run) {
+  const finished=new Set(run.reviewEvents.flatMap(e=>e.receiptIds));
+  const groups=new Map();
+  for(const r of run.incorporationReceipts.filter(r=>r.reviewKey&&!finished.has(r.id))){
+    if(!groups.has(r.reviewKey))groups.set(r.reviewKey,{sourceId:r.reviewSourceId,receiptIds:[]});
+    groups.get(r.reviewKey).receiptIds.push(r.id);
+  }
+  return [...groups.values()];
+}
+export function commitReview(workspace, draft, command) {
+  requireThat(command && Object.keys(command).every(k => ['draftId','baseStorageRevision','actionId','mode','confirmCompleted','decisions','reason'].includes(k)), 'Orden de guardado no válida');
+  const finishing=command.mode==='finalize';
+  requireThat(['partial','finalize'].includes(command.mode),'Modo de guardado no válido');
+  requireThat(command.confirmCompleted===finishing, finishing?'Falta la confirmación explícita de fin de revisión':'Un guardado parcial no declara revisión terminada');
+  requireThat(command.reason===undefined||(typeof command.reason==='string'&&command.reason.length<=1000),'Motivo no válido');
+  requireThat(finishing||!command.reason,'El motivo de revisión se confirma al finalizar');
   requireThat(typeof command.actionId === 'string' && /^[a-f0-9-]{36}$/i.test(command.actionId), 'Identificador de guardado no válido');
   requireThat(command.baseStorageRevision === workspace.storageRevision && draft.baseStorageRevision === workspace.storageRevision, 'El expediente ha cambiado: recarga antes de guardar', 409);
   requireThat(draft.id === command.draftId && !draft.consumed, 'La revisión ya no está disponible', 409);
-  requireThat(Array.isArray(command.decisions) && command.decisions.length === draft.proposals.length, 'Quedan propuestas sin revisar');
+  requireThat(Array.isArray(command.decisions) && (finishing?command.decisions.length===draft.proposals.length:command.decisions.length>0), 'Quedan propuestas sin revisar');
   const seen = new Set();
   const approved = [];
   for (const decision of command.decisions) {
@@ -133,7 +155,9 @@ export function finalize(workspace, draft, command) {
     const original = draft.proposals.find(p => p.id === decision.proposalId);
     requireThat(original && !seen.has(original.id), 'Propuesta desconocida o duplicada');
     seen.add(original.id);
-    requireThat(['accepted','accepted_edited','rejected'].includes(decision.status), 'Queda una propuesta pendiente');
+    const saved=(draft.savedProposalIds??[]).includes(original.id);
+    if(saved){requireThat(finishing&&decision.status==='saved'&&!decision.edit,'Esta incorporación ya está guardada');continue;}
+    requireThat((finishing?['accepted','accepted_edited','rejected']:['accepted','accepted_edited']).includes(decision.status), 'Queda una propuesta pendiente o no aceptada');
     if (decision.status !== 'accepted_edited') requireThat(!decision.edit, 'Edición no aprobada');
     if (decision.status === 'rejected') continue;
     const { id, ...p } = original;
@@ -151,12 +175,23 @@ export function finalize(workspace, draft, command) {
   const before = copy(run.caseData);
   const at = new Date().toISOString();
   const receipts = [];
+  const key=reviewKey(draft.novelty);
+  const savedProposalIds=[];
   for (const item of approved) {
+    const effect=effectKey(item.proposal,draft.novelty);
+    const existing=[...run.incorporationReceipts,...receipts].find(r=>r.effectKey===effect);
+    if(existing){
+      requireThat(item.proposal.kind!=='conditional_budget'||sameConditions(existing.proposal.conditions,item.proposal.conditions),'La misma fuente ya aportó ese importe con condiciones distintas. No se duplica ni sustituye automáticamente: revisa la incorporación anterior.',409);
+      savedProposalIds.push(item.id);continue;
+    }
     const previous = copy(run.caseData[item.proposal.target]);
     applyProposal(run.caseData,item.proposal);
+    if(hash(previous)===hash(run.caseData[item.proposal.target]))continue;
     receipts.push({ id:randomUUID(), proposalId:item.id, proposal:copy(item.proposal), humanEdited:item.humanEdited, before:previous,
-      after:copy(run.caseData[item.proposal.target]), at, reviewer:'Asesor Demo' });
+      after:copy(run.caseData[item.proposal.target]), at, reviewer:'Asesor Demo',reviewKey:key,reviewSourceId:draft.novelty.id,effectKey:effect });
+    savedProposalIds.push(item.id);
   }
+  requireThat(finishing||savedProposalIds.length>0,'No hay incorporaciones nuevas que guardar');
   requireThat(run.caseData.contract_authorization === before.contract_authorization, 'Autorización contractual fuera de V1');
   const changed = JSON.stringify(before) !== JSON.stringify(run.caseData);
   if (changed) {
@@ -170,10 +205,20 @@ export function finalize(workspace, draft, command) {
     if (!existing) run.sources.push(copy(source));
   }
   run.incorporationReceipts.push(...receipts);
-  run.reviewEvents.push({ id:randomUUID(), at, reviewer:'Asesor Demo', sourceIds:[draft.novelty.id],
-    conclusion:changed ? 'Revisado, con incorporaciones' : 'Revisado, sin cambios',
-    acceptedCount:approved.length, rejectedCount:draft.proposals.length-approved.length, receiptIds:receipts.map(r => r.id) });
+  let duplicateReview=false;
+  if(finishing){
+    const completed=new Set(run.reviewEvents.flatMap(e=>e.receiptIds));
+    const related=run.incorporationReceipts.filter(r=>r.reviewKey===key&&!completed.has(r.id));
+    const reason=command.reason?.trim()??'';
+    const prior=run.reviewEvents.filter(e=>e.reviewKey===key||(!e.reviewKey&&e.sourceIds.includes(draft.novelty.id)));
+    duplicateReview=Boolean(!related.length&&prior.some(e=>!reason||normalize(reason)===normalize(e.reason)));
+    if(!duplicateReview)run.reviewEvents.push({id:randomUUID(),at,reviewer:'Asesor Demo',reviewKey:key,sourceIds:[draft.novelty.id],
+      conclusion:related.length?'Revisado, con incorporaciones':'Revisado, sin cambios',reason,
+      acceptedCount:related.length,rejectedCount:command.decisions.filter(d=>d.status==='rejected').length,receiptIds:related.map(r=>r.id),dataVersion:run.dataVersion});
+  }
   next.storageRevision++;
-  next.actions[command.actionId] = { draftId:draft.id, runId:run.id, commandHash:hash(command) };
+  next.actions[command.actionId] = { draftId:draft.id, runId:run.id, commandHash:hash(command),mode:command.mode,
+    savedProposalIds,storageRevision:next.storageRevision,duplicateReview };
   return next;
 }
+export function finalize(workspace,draft,command){return commitReview(workspace,draft,command);}

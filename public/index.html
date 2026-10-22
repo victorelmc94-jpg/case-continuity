@@ -9,7 +9,7 @@
 </head>
 <body>
   <header class="top">
-    <div><p class="eyebrow">PRUEBA LOCAL · DATOS FICTICIOS · CORTE 1</p><h1>Revisión de expediente</h1><p>Una novedad. Cambios revisados. Un caso que puedes retomar.</p></div>
+    <div><p class="eyebrow">PRUEBA LOCAL · DATOS FICTICIOS · CORTE 2</p><h1>Revisión de expediente</h1><p>Una novedad. Cambios revisados. Un caso que puedes retomar.</p></div>
     <div class="top-actions"><button id="refresh" class="secondary">Volver a leer lo guardado</button><button id="new-run">Nueva prueba ficticia</button></div>
   </header>
   <div id="message" role="status" aria-live="polite"></div>
@@ -18,6 +18,7 @@
       <div class="section-head"><h2 id="case-title">Expediente guardado</h2><span id="version" class="badge">Sin iniciar</span></div>
       <p id="run-label" class="muted"></p>
       <div id="case-data"><p>Inicia una prueba ficticia para empezar.</p></div>
+      <div id="open-reviews" role="status"></div>
       <details><summary>Fuentes y antecedentes</summary><div id="sources"></div><div id="versions"></div></details>
     </section>
     <section aria-labelledby="novelty-title" class="panel">
@@ -31,22 +32,25 @@
         <button id="edit-novelty" type="button" class="secondary" hidden>Modificar novedad y descartar propuestas</button>
       </form>
       <p id="budget" class="small muted"></p>
-      <p class="small muted">Corte 1: revisión completa y guardado. El guardado parcial y las seis familias se habilitarán después de tu prueba.</p>
+      <p class="small muted">Puedes guardar incorporaciones por partes. Solo confirmar el fin de revisión la declara terminada. Los seis casos completos siguen pendientes.</p>
     </section>
     <section id="review-panel" aria-labelledby="review-title" class="panel wide" hidden>
       <div class="section-head"><h2 id="review-title">Interpretación y propuestas</h2><span class="badge proposal-badge">Todavía sin incorporar</span></div>
       <div id="interpretation"></div>
-      <p class="small muted">La interpretación es del modelo. Bloquear técnicamente la contratación no demuestra que haya entendido la novedad.</p>
+      <p id="interpretation-note" class="small muted">La interpretación es del modelo. Bloquear técnicamente la contratación no demuestra que haya entendido la novedad.</p>
       <div id="proposals"></div>
       <div class="save-area">
         <p id="decision-count"></p>
         <details><summary>Qué se guardará al confirmar</summary><div id="save-preview"></div></details>
-        <p>Confirmar significa que has terminado de revisar esta novedad y apruebas solo las incorporaciones aceptadas. También se archivará su fuente original como material aportado, sin validar todo su contenido.</p>
+        <label>Motivo de la conclusión, si aporta información<textarea id="review-reason" rows="2" maxlength="1000" placeholder="Opcional. Solo se guarda al confirmar el fin de revisión."></textarea></label>
+        <p>Guardar una parte incorpora solo lo aceptado, sin terminar la revisión. Confirmar el fin requiere resolver todas las propuestas; también archiva la fuente original como material aportado, sin validar todo su contenido.</p>
+        <button id="partial" class="secondary" disabled>Guardar incorporaciones aceptadas</button>
         <button id="commit" disabled>Confirmar fin de revisión y guardar</button>
       </div>
     </section>
     <section class="panel wide" aria-labelledby="history-title"><h2 id="history-title">Historial confirmado</h2><div id="history"><p class="muted">No hay revisiones confirmadas.</p></div></section>
   </main>
   <footer>Sin nombre definitivo · Sin comparación de tarifas ni tramitación de contratos · Fuente recibida no equivale a fuente validada</footer>
+  <dialog id="discard-dialog" aria-labelledby="discard-title"><h2 id="discard-title">Hay trabajo sin guardar</h2><p>Las decisiones y el motivo no guardados se perderán. Lo ya incorporado permanece. Salir no termina la revisión.</p><div class="decision-actions"><button id="return-review">Volver a la revisión</button><button id="discard-work" class="reject">Descartar y continuar</button></div></dialog>
 </body>
 </html>

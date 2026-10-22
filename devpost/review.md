@@ -6,7 +6,7 @@ updated: 2026-10-22
 
 # Revisión conjunta de producto y solución técnica
 
-El usuario ha aceptado el paquete conjunto con el ajuste aquí incorporado: cambios legítimos permitidos y evaluación en tres capas independientes. [PRD](prd.md) y [especificación](spec.md) recogen sus precisiones. Posteriormente aprobó orden, fast, Git local y hasta 1 USD/doce intentos. Corte 1 construido y comprobado, pendiente de su prueba; [evidencias](evidence-slice1.md).
+El usuario ha aceptado el paquete conjunto: cambios legítimos y evaluación en tres capas independientes. [PRD](prd.md) y [especificación](spec.md) recogen sus precisiones. Aprobó orden, fast, Git local y hasta 1 USD/doce intentos. Probó el corte 1 y autorizó ajustes y corte 2, ya comprobado; [evidencia del corte 1](evidence-slice1.md) y [del corte 2](evidence-slice2.md). Seis casos y ahorro global pendientes.
 
 ## Resultado que debe demostrar la primera versión
 Introducir una novedad de un cliente ficticio de fibra y dos móviles, revisar cambios con sus fuentes, guardar solo lo aprobado y recuperar un expediente correcto al reabrir.

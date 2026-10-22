@@ -8,7 +8,7 @@ updated: 2026-10-22
 
 Prueba de concepto para incorporar una novedad a un expediente comercial de telecomunicaciones con revisión humana, procedencia y conservación de límites y dudas. El identificador de carpeta es organizativo; no es el nombre de candidatura.
 
-Dirección del alcance y foco de demo aprobados expresamente por el usuario el 2026-10-22. Tras revisar juntos PRD y especificación, aprobó orden de construcción, fast, Git e inferencia hasta 1 USD/doce intentos. El corte 1 está comprobado y pendiente de prueba humana antes de ampliar. No hay autorización de publicación.
+Dirección del alcance y foco de demo aprobados expresamente por el usuario el 2026-10-22. Aprobó orden, fast, Git e inferencia hasta 1 USD/doce intentos. Tras probar el corte 1 autorizó tres ajustes de presentación y continuar con el corte 2. Evaluación global y corte 3 pendientes. No hay autorización de publicación.
 
 ## The Unique Kernel
 Retomar un caso a partir de cambios revisados y explicables, sin convertir condiciones en compromisos, interés en autorización ni declaraciones en hechos comprobados. El resultado demuestra qué cambió, qué permaneció y qué sigue pendiente, con la fuente de cada incorporación.
@@ -64,7 +64,7 @@ No son necesarios ahora para probar el núcleo: alojamiento público, exportacio
 - Comparación de tarifas reales y contratación: fuera del propósito y de la autorización.
 - Datos, documentos, conversaciones y credenciales reales en repositorio o demo: fuera del perímetro.
 - Acciones comerciales automáticas, fechas calculadas o prioridades decididas por IA: no se derivan de una propuesta revisada.
-- Ampliación más allá del corte 1 antes de la prueba humana, despliegue, repositorio remoto e inscripción: no autorizados en este turno.
+- Ampliación más allá del corte 2 en esta continuación, despliegue, repositorio remoto e inscripción: no autorizados en este turno.
 - Elegir un nombre definitivo por el usuario: pendiente de su decisión.
 
 ## Competitive Focus — dirección aprobada
@@ -82,7 +82,7 @@ Confirmado por el usuario: dominio telecom, datos ficticios, un flujo, fuentes/c
 El usuario ha aceptado el paquete conjunto con el ajuste de cambios legítimos y evaluación independiente: MODEL, GUARDS y RECOVERY. Solo autorización contractual queda fuera de modificaciones de V1; esa restricción no demuestra comprensión. Guardado parcial/finalización separados y borradores no persistidos con aviso están aceptados.
 
 Pendiente:
-1. Prueba humana del corte 1 antes de ampliar el orden ya aprobado.
+1. Prueba humana del corte 1 recibida; ajustes y corte 2 autorizados. Quedan seis casos como conjunto, variantes y comparación manual.
 2. Git local y modo fast acordados; mantener commits revisados y datos privados fuera de Git.
 3. Presupuesto autorizado hasta 1 USD/doce intentos, tres usados. Verificar tarifas antes de cualquier generación tras su caducidad y no superar los límites.
 4. Después del núcleo verificado: acabado adicional, nombre definitivo, dedicación y decisión de presentar.

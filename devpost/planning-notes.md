@@ -81,6 +81,8 @@ Tramo propuesto para decidir si continuar: 90–150 min humanos y 4–6 h de age
 
 ## Registro de decisiones
 
+- Continuación del 2026-10-22: el participante probó el corte 1, confirmó el resultado visible y autorizó ajustes de lenguaje/procedencia y corte 2. Parciales, finalización y C6 comprobados con evidencia separada; 4/12 intentos utilizados. Corte 3 y comparación manual siguen pendientes. Las notas anteriores de estimación no se convierten en tiempo o ahorro medido.
+
 - Usuario: nueva candidata independiente, sin trasladar código de proyectos previos; solo datos ficticios.
 - Usuario: dominio fibra y dos líneas móviles; conservar necesidades, presupuesto, condiciones, ofertas, documentos pendientes y decisiones.
 - Usuario: conservar fuente, revisión humana y límites; no inferir contratación o acciones realizadas.

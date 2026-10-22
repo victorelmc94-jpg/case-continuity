@@ -6,9 +6,9 @@ updated: 2026-10-22
 
 # Build Checklist
 
-Build mode: fast — elegido expresamente por el usuario el 2026-10-22. Detenerse tras el corte 1 listo y esperar su prueba antes de ampliar.
+Build mode: fast — elegido expresamente por el usuario el 2026-10-22. Prueba temprana del corte 1 recibida; ajustes de presentación y corte 2 autorizados. Los seis casos y el ahorro siguen pendientes.
 
-Orden aprobado expresamente por el usuario. Implementar solo el corte 1 en este turno; los demás requieren su prueba previa. Los tres cortes incluyen comportamiento completo que se puede usar y verificar; no son fases separadas de interfaz, almacenamiento y modelo.
+Orden aprobado expresamente por el usuario. En esta continuación se ejecuta el corte 2 y los tres ajustes solicitados, sin adelantar el corte 3. Los tres cortes incluyen comportamiento completo que se puede usar y verificar; no son fases separadas de interfaz, almacenamiento y modelo.
 
 Git local y commits revisados autorizados. Se ha inicializado la carpeta dedicada; no hay repositorio remoto.
 Inferencia autorizada hasta 1 USD y doce intentos totales, incluidos errores/repeticiones. Tarifas verificadas, entrada contada antes de generar, máximo 6.000 tokens de entrada y 4.000 de salida, registro persistente y reserva conservadora de 0,01 USD/intento. Si no se puede comprobar el límite, no generar. Ver inference-budget.md.
@@ -48,9 +48,9 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — después del corte 1; feedback sobre fuente, interpretación original y resultado recuperado antes de ampliar comportamiento.
+- [x] Early usable behavior explored — el usuario confirmó el resultado visible del corte 1 y pidió historial claro, disposición «podría estudiar» y petición expresa de no contratar con fuente; ajustes incorporados en corte 2.
 - [ ] Final kick-the-tires exploration and feedback completed — después del corte 3, con los seis casos y variantes verificables; sin repetir artificialmente una revisión ya resuelta.
-- Modo fast elegido. Control temprano obligatorio tras el corte 1; esperar la prueba del usuario antes de ampliar. No exige presencia continua durante ejecución autónoma.
+- Modo fast elegido. Control temprano completado por feedback expreso; no exige presencia continua. La revisión final y la evaluación global siguen pendientes.
 
 ## Final Review
 
@@ -78,6 +78,9 @@ Reflection: no solicitada; la respuesta personal, si existe, irá al perfil excl
 Activity mode: pendiente, según experiencia y práctica que ya se haya producido.
 
 ## Revisions
+
+- 2026-10-22, continuación: feedback temprano recibido y corte 2 autorizado. Tres ajustes de presentación incorporados sin cambiar el expediente persistido. Evidencias en evidence-slice2.md; 28 controles locales y C6 real. No se declara superada la evaluación global ni ahorro medido.
+- Parciales se reconocen por recibos vinculados a fuente y huella; no hace falta guardar borradores o añadir otra base de datos. Reapertura de revisión ya terminada y datos iguales no consulta el modelo. Condiciones distintas para misma fuente/importe generan conflicto, sin fusión semántica automática.
 
 - 2026-10-22: corte 1 ejecutado; 17 controles locales, modelo real, guardado y reinicio con igualdad completa. Esperar prueba humana antes del corte 2. No marcar completado el checkpoint humano.
 - Commit del corte 1: b980823, revisado antes de incorporar los archivos. El check del corte acredita construcción y verificación mecánica; el checkpoint humano continúa pendiente por instrucción del usuario. No avanzar al siguiente corte hasta recibir su prueba.

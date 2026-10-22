@@ -2,12 +2,14 @@
 doc: evaluation-plan
 status: draft
 updated: 2026-10-22
-execution: not-run
+execution: partial-main-and-c6
 ---
 
 # Seis casos ficticios y prueba del núcleo
 
 Plan complementario del alcance, no prueba de funcionamiento ni checklist de 5-build. Todos los nombres, fechas, ofertas y documentos de esta sección son inventados. Cero compensación de fallos críticos es una decisión expresa del usuario; los detalles de la comparación manual siguen como protocolo propuesto.
+
+Ejecución hasta corte 2: entrada principal y C6 con modelo real, con evidencias separadas en evidence-slice1.md y evidence-slice2.md. Los seis casos como conjunto, sus variantes positivas y comparación de tiempo siguen pendientes. Las definiciones siguientes no equivalen a resultados ejecutados.
 
 ## Baseline
 

@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { randomUUID } from 'node:crypto';
-import { AppError, copy, hash, requireThat, newRun, validateSource, validateOutput, finalize } from './domain.mjs';
+import { AppError, copy, hash, requireThat, newRun, validateSource, validateOutput, commitReview, reviewKey, effectKey, openReviews, sameConditions } from './domain.mjs';
 import { WorkspaceStore } from './store.mjs';
 import { ModelService } from './model.mjs';
 
@@ -18,7 +18,7 @@ export async function createApplication({runtime=path.join(root,'runtime'),model
   async function view(workspace) {
     workspace ??= await store.read();
     return {storageRevision:workspace.storageRevision,run:workspace.runs[workspace.activeRunId]??null,novelty:fixture.novelty,
-      budget:await model.budget.status(),slice:1};
+      openReviews:workspace.activeRunId?openReviews(workspace.runs[workspace.activeRunId]):[],budget:await model.budget.status(),slice:2};
   }
   async function body(req) {
     requireThat(req.headers['content-type']?.split(';')[0]==='application/json','La petición debe ser JSON',415);
@@ -41,7 +41,7 @@ export async function createApplication({runtime=path.join(root,'runtime'),model
       requireThat(req.headers.host===new URL(origin).host,'Host no permitido',403);
       const url=new URL(req.url,origin);
       if(req.method==='GET' && url.pathname==='/api/session') return send(200,{token});
-      if(req.method==='GET' && url.pathname==='/api/health') return send(200,{app:'build-ai-basics-candidate',slice:1,pid:process.pid,modelAvailable:Boolean(model.apiKey),storage:'local'});
+      if(req.method==='GET' && url.pathname==='/api/health') return send(200,{app:'build-ai-basics-candidate',slice:2,pid:process.pid,modelAvailable:Boolean(model.apiKey),storage:'local'});
       if(req.method==='GET' && url.pathname==='/api/run') return send(200,await view());
       if(req.method==='POST') {
         requireThat(req.headers.origin===origin && req.headers['x-review-token']===token,'Solicitud de revisión no autorizada',403);
@@ -63,21 +63,25 @@ export async function createApplication({runtime=path.join(root,'runtime'),model
           requireThat(run,'Primero inicia una prueba ficticia');
           const novelty=validateSource(data.source);
           const existing=run.sources.find(s=>s.id===novelty.id);
-          requireThat(!existing || existing.contentHash===novelty.contentHash,'Usa una referencia nueva para una fuente distinta');
-          requireThat(!run.reviewEvents.some(e=>e.sourceIds.includes(novelty.id)),'Esta fuente ya está revisada. En el corte 1 inicia otra prueba para repetirla.',409);
+          requireThat(!existing || ['id','type','author','sourceDate','text'].every(k=>existing[k]===novelty[k]),'Una fuente conservada no se cambia. Usa una referencia nueva para una fuente distinta');
           const sources=existing?copy(run.sources):[...copy(run.sources),novelty];
-          const result=await model.analyze(run,novelty);
-          const valid=validateOutput(result.output,sources,run.caseData);
+          const prior=run.reviewEvents.filter(e=>
+            (e.reviewKey===reviewKey(novelty)||(!e.reviewKey&&existing&&e.sourceIds.includes(novelty.id)))&&
+            (e.dataVersion??run.dataVersions.find(v=>v.at===e.at)?.version)===run.dataVersion).at(-1);
+          // Reopening an unchanged, completed review is deterministic and never poses as new model understanding.
+          const result=prior?{output:{interpretation:null,proposals:[],no_change_reason:'La misma fuente ya tiene una revisión confirmada y los datos no han cambiado. No se ha consultado el modelo.'},origin:'existing_review'}:await model.analyze(run,novelty);
+          const valid=prior?result.output:validateOutput(result.output,sources,run.caseData);
           const draft={id:randomUUID(),runId:run.id,baseStorageRevision:workspace.storageRevision,novelty,sources,
             interpretation:valid.interpretation,proposals:valid.proposals.map(p=>({...p,id:randomUUID()})),
-            no_change_reason:valid.no_change_reason,attempt:result.attempt,consumed:false};
+            no_change_reason:valid.no_change_reason,attempt:result.attempt??null,origin:result.origin??'model',consumed:false,savedProposalIds:[]};
+          draft.savedProposalIds=draft.proposals.filter(p=>run.incorporationReceipts.some(r=>r.effectKey===effectKey(p,novelty)&&(p.kind!=='conditional_budget'||sameConditions(r.proposal.conditions,p.conditions)))).map(p=>p.id);
           drafts.set(draft.id,draft);
           // Cap ephemeral drafts; this never turns a draft into an incorporated fact.
           if(drafts.size>20) drafts.delete(drafts.keys().next().value);
           return send(200,{draft,usage:result.usage,costUsd:result.costUsd,budget:await model.budget.status()});
         }
         if(url.pathname==='/api/commit') {
-          requireThat(data.mode==='finalize','El guardado parcial pertenece al corte 2; aún no está habilitado.',501);
+          requireThat(['partial','finalize'].includes(data.mode),'Modo de guardado no válido');
           const workspace=await store.transact(current=>{
             const applied=current.actions[data.actionId];
             if(applied) {
@@ -86,20 +90,27 @@ export async function createApplication({runtime=path.join(root,'runtime'),model
             }
             const draft=drafts.get(data.draftId);
             requireThat(draft,'El borrador no existe o se perdió al reiniciar; nada se ha incorporado.',409);
-            return finalize(current,draft,data);
+            return commitReview(current,draft,data);
           });
           const draft=drafts.get(data.draftId);
-          if(draft) draft.consumed=true;
-          return send(200,await view(workspace));
+          const applied=workspace.actions[data.actionId];
+          if(draft){
+            if((applied.storageRevision??draft.baseStorageRevision)>=draft.baseStorageRevision){
+              draft.consumed=data.mode==='finalize';
+              draft.baseStorageRevision=applied.storageRevision??draft.baseStorageRevision;
+            }
+            draft.savedProposalIds=[...new Set([...(draft.savedProposalIds??[]),...(applied.savedProposalIds??[])])];
+          }
+          return send(200,{...await view(workspace),draft:data.mode==='partial'&&!draft?.consumed?draft:null,duplicateReview:applied.duplicateReview??false});
         }
         throw new AppError('Ruta no disponible',404);
       }
       if(req.method==='GET') {
-        const files={'/':'index.html','/app.js':'app.js','/styles.css':'styles.css'};
+        const files={'/':'index.html','/app.js':'app.js','/presentation.mjs':'presentation.mjs','/styles.css':'styles.css'};
         const file=files[url.pathname];
         requireThat(file,'Ruta no disponible',404);
         const content=await fs.readFile(path.join(root,'public',file));
-        const mime=file.endsWith('.html')?'text/html':file.endsWith('.js')?'text/javascript':'text/css';
+        const mime=file.endsWith('.html')?'text/html':/\.m?js$/.test(file)?'text/javascript':'text/css';
         res.writeHead(200,{'Content-Type':mime+'; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',
           'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"});
         res.end(content);return;

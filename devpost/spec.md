@@ -7,9 +7,11 @@ review: joint-with-prd
 
 # Proyecto sin nombre definitivo — Technical Spec
 
-Paquete conjunto aceptado por el usuario el 2026-10-22 con el ajuste incorporado: permitir cambios legítimos en campos del alcance y evaluar interpretación, controles y persistencia por separado. No confundir restricciones técnicas con comprensión del modelo. Orden aprobado, modo fast y Git local autorizados; corte 1 construido y comprobado mecánicamente. Inferencia autorizada hasta 1 USD/doce intentos; prueba humana pendiente antes de ampliar. Evidencia: evidence-slice1.md.
+Paquete conjunto aceptado por el usuario el 2026-10-22: cambios legítimos y evaluación separada de modelo, controles y persistencia. Orden, modo fast y Git local autorizados. Corte 1 probado por el participante; ajustes solicitados y corte 2 autorizados e incorporados. Inferencia hasta 1 USD/doce intentos, cuatro utilizados. Evidencias: evidence-slice1.md y evidence-slice2.md. Corte 3 y evaluación global pendientes.
 
 ## How This Works, In Plain Language
+Continuación autorizada tras la prueba del usuario: corte 2 construido; evidence-slice2.md recoge C6 real, parciales, repetición y recuperación. El estado persistido del caso probado no se modificó para ajustar su presentación. Corte 3 pendiente.
+
 Propuesta: una página en el navegador habla con un pequeño programa que corre en este equipo. Ese programa lee y guarda un archivo local con los casos ficticios.
 Al pulsar analizar, envía al modelo la novedad y el contexto del caso. El modelo devuelve propuestas y citas; no puede escribir el expediente.
 La persona revisa. Solo una orden explícita de guardado llega al componente que valida e incorpora los datos. La finalización de revisión es otra intención explícita.
@@ -71,6 +73,7 @@ Sirve estáticos y cinco rutas:
 - POST /api/commit: modo partial o finalize, identificador de borrador, base vigente, actionId y decisiones explícitas.
 Rechazar métodos/rutas ajenos, cargas excesivas y guardados sin intención válida. Para POST exigir JSON, Host local y Origin del propio servicio; no abrir CORS ni exponer la clave al cliente.
 Una petición de análisis a la vez; una cola de escritura local. No se admiten varios procesos escritores sobre el mismo archivo.
+GET /api/session entrega un token local para las mutaciones. En corte 2, /api/commit devuelve también el mismo borrador con su base y tarjetas guardadas tras un parcial; solo se actualiza después de la escritura. Reabrir una fuente ya finalizada con datos iguales crea un borrador local vacío, sin atribuirle interpretación nueva ni consultar al modelo.
 
 ### Proponente de cambios
 Archivo src/model.mjs.
@@ -100,6 +103,8 @@ Cada escritura: releer, comprobar storageRevision, calcular resultado, escribir 
 No se promete resistencia absoluta a fallos de disco. JSON inválido o error de escritura detiene el guardado; no reinicializa ni descarta trabajo previo.
 Persistir los elementos aceptados y la finalización solicitada en el mismo documento evita actualizaciones separadas de datos e historial.
 actionId permite responder al mismo intento de guardado sin repetirlo. Un segundo clic no es una segunda revisión.
+Los recibos añaden reviewKey (referencia y huella de fuente), reviewSourceId y effectKey. Los recibos no vinculados aún a un ReviewEvent forman las revisiones abiertas; no se añade otra persistencia de borradores. Finalizar incluye los recibos previos de esa fuente que aún no se habían finalizado. Una repetición sin nuevos efectos ni motivo útil conserva la fecha y anotación anteriores.
+effectKey ignora resúmenes y texto de presentación. Para una disposición de la misma fuente e importe, condiciones distintas generan conflicto en lugar de duplicar o sustituir. No se decide su equivalencia semántica por parecido. Referencias distintas no se fusionan automáticamente.
 
 ### Ejemplos y verificación
 Archivo fixtures/cases.json y pruebas con node:test.
@@ -137,6 +142,8 @@ Estructura objetivo de V1; src/, public/, tests/ y fixtures/main.json ya existen
 - src/store.mjs — lectura, escritura, versiones e idempotencia.
 - src/model.mjs — llamada y validación de propuestas.
 - public/index.html, app.js, styles.css — pantalla funcional.
+- public/presentation.mjs — formatos legibles, unidades e instrucción expresa de no contratar solo con declaración incorporada y cita respaldada; JSON únicamente en detalles técnicos secundarios.
+- fixtures/main.json y no-news.json — entrada principal y C6 disponibles; las seis bases y variantes aún no están completas.
 - fixtures/cases.json — seis entradas y expectativas ficticias.
 - tests/domain.test.mjs, store.test.mjs, model.test.mjs, server.test.mjs — controles sin coste de inferencia.
 - runtime/workspace.json — casos, versiones, fuentes e historial; excluido de Git.

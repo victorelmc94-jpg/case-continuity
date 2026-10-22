@@ -10,9 +10,11 @@ review: joint-with-spec
 Permitir que un asesor retome un expediente ficticio de fibra y dos móviles después de incorporar una novedad revisada, conservando fuentes, condiciones y dudas.
 Source: scope.md > The Unique Kernel; Who It's For; The POC Boundary.
 
-Paquete aceptado por el usuario el 2026-10-22, condicionado a incorporar su ajuste: los campos incluidos deben admitir cambios legítimos y la comprensión del modelo se evalúa aparte de las protecciones técnicas. Se integran aquí esas precisiones. Guardado parcial y borradores no persistidos están aceptados, con aviso antes de perder trabajo revisado no guardado. Posteriormente aprobó orden, modo fast, Git y hasta 1 USD/doce intentos. Solo el corte 1 está construido y comprobado; esperar su prueba antes de ampliar.
+Paquete aceptado por el usuario el 2026-10-22: campos incluidos admiten cambios legítimos y comprensión del modelo separada de las protecciones técnicas. Guardado parcial y borradores no persistidos aceptados, con aviso antes de perder trabajo. Aprobó orden, fast, Git y hasta 1 USD/doce intentos. Tras probar el corte 1 autorizó los tres ajustes de presentación y continuar con el corte 2, ya comprobado. Evaluación global pendiente.
 
 ## The Core Journey
+Tras probar el primer recorrido, el usuario autorizó el corte 2 y concretó: historial en lenguaje claro con antes/después/condiciones/fuente; conservar «podría estudiar»; destacar «El cliente pide no contratar todavía» con fuente, sin modificar autorización contractual. Se mantienen estado y próximo movimiento. Ver evidence-slice2.md; seis casos y ahorro global pendientes.
+
 1. Abrir una prueba ficticia de los seis casos; ver los datos actuales, fuentes, estado operativo y próximo movimiento.
 2. Introducir una novedad: nota y, si corresponde, texto documental separado, con identificación de fuente, autor/tipo y fecha.
 3. Pulsar «Analizar novedad». Ver propuestas comparadas con el dato conservado, su fundamento y lo que sigue pendiente. Nada se incorpora todavía.

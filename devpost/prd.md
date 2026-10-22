@@ -1,7 +1,7 @@
 ---
 doc: prd
 status: approved
-updated: 2026-10-22
+updated: 2026-10-23
 review: joint-with-spec
 ---
 
@@ -10,10 +10,10 @@ review: joint-with-spec
 Permitir que un asesor retome un expediente ficticio de fibra y dos móviles después de incorporar una novedad revisada, conservando fuentes, condiciones y dudas.
 Source: scope.md > The Unique Kernel; Who It's For; The POC Boundary.
 
-Paquete aceptado por el usuario el 2026-10-22: campos incluidos admiten cambios legítimos y comprensión del modelo separada de las protecciones técnicas. Guardado parcial y borradores no persistidos aceptados, con aviso antes de perder trabajo. Aprobó orden, fast, Git y hasta 1 USD/doce intentos. Tras probar el corte 1 autorizó los tres ajustes de presentación y continuar con el corte 2, ya comprobado. Evaluación global pendiente.
+Paquete aceptado por el usuario el 2026-10-22: campos incluidos admiten cambios legítimos y comprensión del modelo separada de protecciones. Parciales y borradores no persistidos aceptados, con aviso antes de perder trabajo. Orden, fast y Git aprobados. Tres cortes evaluados técnicamente, prueba final humana pendiente. Autorización vigente ampliada a **40 intentos acumulados y 1 USD total**, sin funciones nuevas; conservar las dos redundancias y medir su carga. Ver final-review-readiness.md.
 
 ## The Core Journey
-Tras probar el primer recorrido, el usuario autorizó el corte 2 y concretó: historial en lenguaje claro con antes/después/condiciones/fuente; conservar «podría estudiar»; destacar «El cliente pide no contratar todavía» con fuente, sin modificar autorización contractual. Se mantienen estado y próximo movimiento. Ver evidence-slice2.md; seis casos y ahorro global pendientes.
+Tras probar el primer recorrido, el usuario concretó historial claro con antes/después/condiciones/fuente, conservar «podría estudiar» y destacar la petición de no contratar con fuente, sin modificar autorización contractual. Se mantienen estado y próximo movimiento en la entrada principal. Los seis casos y positivos están evaluados técnicamente; el participante quiere probar texto propio, revisar/guardar sin ayuda y recuperar lo aprobado. Prueba humana y ahorro pendientes.
 
 1. Abrir una prueba ficticia de los seis casos; ver los datos actuales, fuentes, estado operativo y próximo movimiento.
 2. Introducir una novedad: nota y, si corresponde, texto documental separado, con identificación de fuente, autor/tipo y fecha.
@@ -123,7 +123,7 @@ Source: scope.md > Decision to Continue; evaluation.md.
 ## Product Decisions
 Confirmadas: dominio telecom, fibra y dos móviles, un flujo, fuentes/condiciones/incertidumbres, autoridad humana, anotación confirmada sin cambios, no duplicar, resultado al reabrir, foco de demo y criticidad no compensable.
 Paquete aceptado con ajuste: pantalla única, arquitectura local, guardado parcial/finalización separados, borradores no persistidos con aviso, ejemplos aislados y apariencia funcional. Se retira el bloqueo general de campos delicados. Solo queda excluida la modificación de autorización contractual; su interpretación sigue siendo evaluable y puede fallar.
-Tres capas de evaluación separadas, sin compensar errores críticos entre capas ni entre casos. Inferencia autorizada hasta 1 USD/doce intentos; evidencia del corte 1 en evidence-slice1.md. No constituye validación global de los seis casos.
+Tres capas separadas, sin compensar errores críticos entre capas ni casos. Inferencia autorizada hasta 1 USD/40 intentos acumulados. Evidencias históricas en evidence-slice1.md–evidence-slice3.md; preparación final en final-review-readiness.md. Ninguna verificación mecánica sustituye la prueba final del participante.
 
 ## What We're Building
 Flujo completo descrito y seis ejemplos verificables, con recepción documental como texto, guardado controlado, datos versionados, historial y reapertura.
@@ -142,5 +142,5 @@ Tarifas reales, comparación de mercado, OCR, carga de PDF, integraciones, gesti
 El nombre final y los textos públicos son del participante.
 
 ## Open Questions
-Resueltos: orden aprobado, Git local, modo fast y presupuesto máximo 1 USD/doce intentos. Antes de ampliar al corte 2, recoger la prueba humana del corte 1. No superar cupo ni gasto sin nueva autorización.
+Resueltos: orden, Git local, fast y presupuesto máximo 1 USD/40 acumulados. Prueba temprana del corte 1 recibida; falta la prueba final del conjunto con texto propio. No superar cupo ni gasto sin nueva autorización.
 No bloquean esta primera planificación: nombre final, marca, despliegue, acabado adicional.

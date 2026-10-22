@@ -5,17 +5,17 @@ import { atomicWrite, readJson } from './store.mjs';
 import { AppError, outputSchema, requireThat, hash } from './domain.mjs';
 
 export const LIMITS = Object.freeze({
-  model:'gpt-6-luna', attempts:12, budgetUsd:1, reserveUsd:0.01, maxInputTokens:6000, maxOutputTokens:4000,
+  model:'gpt-6-luna', attempts:40, budgetUsd:1, reserveUsd:0.01, maxInputTokens:6000, maxOutputTokens:4000,
   maxRequestBytes:24576, inputPerMillion:0.10, inputCeilingPerMillion:0.25, outputPerMillion:0.50,
-  rateVerifiedAt:'2026-10-22T20:11:10Z', rateExpiresAt:'2026-10-23T20:11:10Z'
+  rateVerifiedAt:'2026-10-22T21:54:18Z', rateExpiresAt:'2026-10-23T21:54:18Z'
 });
-const initialLedger = () => ({schemaVersion:1,authorization:{budgetUsd:1,maxAttempts:12},attempts:[],blocked:false});
+const initialLedger = () => ({schemaVersion:1,authorization:{budgetUsd:LIMITS.budgetUsd,maxAttempts:LIMITS.attempts},attempts:[],blocked:false});
 export const costUpperBound = usage => (usage.input_tokens*LIMITS.inputCeilingPerMillion+usage.output_tokens*LIMITS.outputPerMillion)/1000000;
 export class Budget {
   constructor(file, now = ()=>Date.now()) { this.file=file; this.now=now; this.tail=Promise.resolve(); }
   async read() {
     const ledger=await readJson(this.file,initialLedger());
-    requireThat(ledger.schemaVersion===1 && Array.isArray(ledger.attempts) && ledger.authorization?.budgetUsd===1 && ledger.authorization?.maxAttempts===12,'Registro de presupuesto no válido',503);
+    requireThat(ledger.schemaVersion===1 && Array.isArray(ledger.attempts) && ledger.authorization?.budgetUsd===LIMITS.budgetUsd && [12,LIMITS.attempts].includes(ledger.authorization?.maxAttempts),'Registro de presupuesto no válido',503);
     // Conservative bound also covers implicit cache writes in the first recorded request.
     for(const a of ledger.attempts)if(Number.isInteger(a.inputTokens)&&Number.isInteger(a.outputTokens)){
       a.costUsd=costUpperBound({input_tokens:a.inputTokens,output_tokens:a.outputTokens});a.pricingBasis='upper-bound-including-cache-writes';
@@ -24,8 +24,8 @@ export class Budget {
   }
   async status() {
     const l=await this.read();
-    return {model:LIMITS.model,attempts:l.attempts.length,maxAttempts:12,remainingAttempts:Math.max(0,12-l.attempts.length),
-      reservedUsd:l.attempts.length*0.01,knownGenerationCostUsd:l.attempts.reduce((sum,a)=>sum+(a.costUsd??0),0),
+    return {model:LIMITS.model,attempts:l.attempts.length,maxAttempts:l.authorization.maxAttempts,remainingAttempts:Math.max(0,l.authorization.maxAttempts-l.attempts.length),budgetUsd:l.authorization.budgetUsd,
+      reservedUsd:l.attempts.length*LIMITS.reserveUsd,knownGenerationCostUsd:l.attempts.reduce((sum,a)=>sum+(a.costUsd??0),0),
       unknownUsageAttempts:l.attempts.filter(a=>a.costUsd==null).length,blocked:l.blocked,
       maxInputTokens:6000,maxOutputTokens:4000,rateExpiresAt:LIMITS.rateExpiresAt,
       ratesValid:this.now()<Date.parse(LIMITS.rateExpiresAt)};
@@ -38,10 +38,20 @@ export class Budget {
   reserve() {
     return this.mutate(l=>{
       requireThat(this.now()<Date.parse(LIMITS.rateExpiresAt),'La verificación de tarifas ha caducado; no se genera hasta revisarlas.',503);
-      requireThat(!l.blocked && l.attempts.length<12 && (l.attempts.length+1)*0.01<=1,'Límite de inferencia alcanzado; no se ha enviado otra petición.',429);
+      requireThat(!l.blocked && l.attempts.length<l.authorization.maxAttempts && (l.attempts.length+1)*LIMITS.reserveUsd<=l.authorization.budgetUsd,'Límite de inferencia alcanzado; no se ha enviado otra petición.',429);
       const id=randomUUID();
       l.attempts.push({id,at:new Date(this.now()).toISOString(),status:'reserved',reservedUsd:0.01,costUsd:null});
       return id;
+    });
+  }
+  // Explicit local migration after the participant extended authorization; never run by a read or restart.
+  extendFinalTestAuthorization() {
+    return this.mutate(l=>{
+      if(l.authorization.maxAttempts===LIMITS.attempts)return;
+      const previous={...l.authorization};
+      l.authorization={budgetUsd:LIMITS.budgetUsd,maxAttempts:LIMITS.attempts};
+      l.authorizationRevisions=[...(l.authorizationRevisions??[]),{at:new Date(this.now()).toISOString(),previous,current:{...l.authorization},
+        reason:'Autorización expresa del participante: hasta 40 intentos acumulados, manteniendo 1 USD total y los controles de consumo.'}];
     });
   }
   record(id, values) {

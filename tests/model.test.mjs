@@ -1,16 +1,32 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import {atomicWrite} from '../src/store.mjs';
 import { Budget, LIMITS, ModelService, buildPayload } from '../src/model.mjs';
 import { fixture, scenario, simulatedOutput, temporary } from './helpers.mjs';
 
 const verifiedTime=()=>Date.parse('2026-10-22T20:20:00Z');
 const response=value=>({ok:true,json:async()=>value});
-test('twelve attempts include errors, persist across restart, and the thirteenth is blocked',async t=>{
+test('forty cumulative attempts include errors, survive restart, and attempt forty-one is blocked',async t=>{
   const file=path.join(await temporary(t),'ledger.json'),budget=new Budget(file,verifiedTime);
-  for(let i=0;i<12;i++){const id=await budget.reserve();await budget.record(id,{error:'simulated connection failure'});}
+  for(let i=0;i<40;i++){const id=await budget.reserve();await budget.record(id,{error:'simulated connection failure'});}
   const fresh=new Budget(file,verifiedTime);await assert.rejects(fresh.reserve(),/Límite/);
-  const s=await fresh.status();assert.equal(s.attempts,12);assert.equal(s.reservedUsd,0.12);assert.equal(s.unknownUsageAttempts,12);
+  const s=await fresh.status();assert.equal(s.attempts,40);assert.equal(s.maxAttempts,40);assert.equal(s.budgetUsd,1);assert.equal(s.reservedUsd,0.40);assert.equal(s.unknownUsageAttempts,40);
+});
+
+test('explicit authorization extension retains twelve attempts and anomalies, never resets spending or duplicates history',async t=>{
+  const file=path.join(await temporary(t),'ledger.json');
+  const original={schemaVersion:1,authorization:{budgetUsd:1,maxAttempts:12},blocked:false,
+    attempts:Array.from({length:12},(_,i)=>({id:'previous-'+i,status:'failed',reservedUsd:0.01,costUsd:null,error:'simulated failure'}))};
+  await atomicWrite(file,original);const b=new Budget(file,verifiedTime);
+  assert.equal((await b.status()).remainingAttempts,0);await assert.rejects(b.reserve(),/Límite/);
+  await b.extendFinalTestAuthorization();const l=await b.read();assert.deepEqual(l.attempts,original.attempts);assert.equal(l.authorizationRevisions.length,1);
+  const restarted=new Budget(file,verifiedTime);assert.equal((await restarted.status()).remainingAttempts,28);assert.equal((await restarted.status()).reservedUsd,0.12);
+  await restarted.extendFinalTestAuthorization();assert.equal((await restarted.read()).authorizationRevisions.length,1);
+  await restarted.reserve();assert.equal((await restarted.status()).attempts,13);assert.equal((await restarted.status()).remainingAttempts,27);
+  original.blocked=true;await atomicWrite(file,original);await restarted.extendFinalTestAuthorization();await assert.rejects(restarted.reserve(),/Límite/);
+  assert.equal((await restarted.read()).blocked,true);
+  await atomicWrite(file,{...original,authorization:{budgetUsd:2,maxAttempts:40}});await assert.rejects(restarted.read(),/Registro/);
 });
 test('expired tariffs and unexpected usage block calls',async t=>{
   const dir=await temporary(t);

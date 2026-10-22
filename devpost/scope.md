@@ -1,14 +1,14 @@
 ---
 doc: scope
 status: approved
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 # Proyecto sin nombre definitivo
 
 Prueba de concepto para incorporar una novedad a un expediente comercial de telecomunicaciones con revisión humana, procedencia y conservación de límites y dudas. El identificador de carpeta es organizativo; no es el nombre de candidatura.
 
-Dirección del alcance y foco de demo aprobados expresamente por el usuario el 2026-10-22. Aprobó orden, fast, Git e inferencia hasta 1 USD/doce intentos. Tras probar el corte 1 autorizó tres ajustes de presentación y continuar con el corte 2. Evaluación global y corte 3 pendientes. No hay autorización de publicación.
+Dirección del alcance y foco de demo aprobados expresamente por el usuario el 2026-10-22. Orden, fast y Git local aprobados. Los tres cortes están construidos y evaluados técnicamente, con dos fallos de precisión documentados; prueba final humana y ahorro pendientes. Amplió inferencia de doce a **40 intentos acumulados manteniendo 1 USD total**, para texto propio con modelo real, sin ampliar funciones. No hay autorización de publicación. Ver final-review-readiness.md.
 
 ## The Unique Kernel
 Retomar un caso a partir de cambios revisados y explicables, sin convertir condiciones en compromisos, interés en autorización ni declaraciones en hechos comprobados. El resultado demuestra qué cambió, qué permaneció y qué sigue pendiente, con la fuente de cada incorporación.

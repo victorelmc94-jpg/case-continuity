@@ -14,7 +14,7 @@ async function api(route,body){
   const response=await fetch('/api/'+route,options);const value=await response.json();if(!response.ok)throw new Error(value.error??'Operación fallida');return value;
 }
 function syncSourceUI(){for(const id of sourceFields)$(id).disabled=state.busy||Boolean(state.draft);$('edit-novelty').hidden=!state.draft;$('edit-novelty').disabled=state.busy;showDirty();}
-function setBusy(b){state.busy=b;$('analyze').disabled=b||!state.view?.run||state.view.budget.remainingAttempts===0;$('recorded').disabled=b||!state.view?.run;$('fixture').disabled=b;$('new-run').disabled=b;$('refresh').disabled=b;$('review-reason').disabled=b;document.querySelectorAll('#proposals button,#proposals input,#proposals textarea,#open-reviews button').forEach(e=>e.disabled=b);syncSourceUI();updateSave();}
+function setBusy(b){state.busy=b;$('analyze').disabled=b||!state.view?.run||state.view.budget.remainingAttempts===0||state.view.budget.blocked||state.view.budget.ratesValid===false;$('recorded').disabled=b||!state.view?.run;$('fixture').disabled=b;$('new-run').disabled=b;$('refresh').disabled=b;$('review-reason').disabled=b;document.querySelectorAll('#proposals button,#proposals input,#proposals textarea,#open-reviews button').forEach(e=>e.disabled=b);syncSourceUI();updateSave();}
 async function canDiscard(){
   if(!state.dirty)return true;
   const dialog=$('discard-dialog');
@@ -46,7 +46,7 @@ function renderReceipt(receipt,sources){
 }
 function renderCase(){
   const view=state.view;const run=view?.run;clear($('case-data'));clear($('sources'));clear($('versions'));clear($('history'));clear($('open-reviews'));
-  $('analyze').disabled=!run||state.busy||view.budget.remainingAttempts===0;
+  $('analyze').disabled=!run||state.busy||view.budget.remainingAttempts===0||view.budget.blocked||view.budget.ratesValid===false;
   if(!$('fixture').options.length)for(const item of view.cases??[{id:'MAIN',label:'Principal'}]){const option=node('option',item.label);option.value=item.id;$('fixture').append(option);}
   if(!run){$('version').textContent='Sin iniciar';$('run-label').textContent='';$('case-data').append(node('p','Inicia una prueba ficticia para empezar.'));return;}
   $('version').textContent='Datos · V'+run.dataVersion;
@@ -78,7 +78,7 @@ function renderCase(){
     $('history').append(box);
   }
   const b=view.budget;
-  $('budget').textContent=(b.model==='SIMULATED'?'Simulación técnica sin inferencia':'GPT-6 Luna')+' · '+b.attempts+'/12 intentos · reserva '+b.reservedUsd.toFixed(2)+' USD · estimación máxima del uso conocido '+(Math.ceil(b.knownGenerationCostUsd*1e6)/1e6).toFixed(6)+' USD. '+(!b.ratesValid?'Tarifas caducadas: generación bloqueada.':'Entrada ≤ 6.000 · salida ≤ 4.000 tokens.');
+  $('budget').textContent=(b.model==='SIMULATED'?'Simulación técnica sin inferencia':'GPT-6 Luna')+' · '+b.attempts+'/'+b.maxAttempts+' intentos · límite total '+b.budgetUsd+' USD · reserva '+b.reservedUsd.toFixed(2)+' USD · estimación máxima del uso conocido '+(Math.ceil(b.knownGenerationCostUsd*1e6)/1e6).toFixed(6)+' USD. '+(!b.ratesValid?'Tarifas caducadas: generación bloqueada.':'Entrada ≤ 6.000 · salida ≤ 4.000 tokens.');
 }
 function resetDraft(){state.draft=null;state.decisions.clear();state.dirty=false;state.retry=null;$('review-reason').value='';$('review-panel').hidden=true;clear($('proposals'));syncSourceUI();updateSave();}
 function fillNovelty(n,documents=[]){$('source-id').value=n.id;$('source-date').value=n.sourceDate;$('source-author').value=n.author;$('source-type').value=n.type;$('source-text').value=n.text;const d=documents[0];for(const [field,key]of [['id','id'],['date','sourceDate'],['author','author'],['text','text']])$('document-'+field).value=d?.[key]??'';$('document-details').open=Boolean(d);}
@@ -99,6 +99,7 @@ function updateSave(){
 function renderDraft(){
   syncSourceUI();
   const draft=state.draft;$('review-panel').hidden=false;clear($('interpretation'));clear($('proposals'));
+  $('review-origin').textContent=draft.origin==='recorded_model'?'Respuesta registrada · sin nueva llamada':draft.origin==='existing_review'?'Revisión local · sin consulta':draft.origin==='simulated_controls'?'Simulación de controles':'Nueva interpretación del modelo · sin incorporar';
   const interpretation=node('div',undefined,'interpretation');
   $('interpretation-note').hidden=!draft.interpretation;
   if(draft.interpretation){interpretation.append(node('h3',authLabels[draft.interpretation.authorization]),node('p',draft.interpretation.explanation));draft.interpretation.source_refs.forEach(r=>quote(r,interpretation,draft.sources));}

@@ -1,7 +1,7 @@
 ---
 doc: checklist
 status: approved
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 # Build Checklist
@@ -11,7 +11,7 @@ Build mode: fast — elegido expresamente por el usuario el 2026-10-22. Prueba t
 Orden aprobado expresamente por el usuario. Esta continuación ejecuta el corte 3 sin funciones fuera de alcance. Los tres cortes incluyen comportamiento completo que se puede usar y verificar; no son fases separadas de interfaz, almacenamiento y modelo.
 
 Git local y commits revisados autorizados. Se ha inicializado la carpeta dedicada; no hay repositorio remoto.
-Inferencia autorizada hasta 1 USD y doce intentos totales, incluidos errores/repeticiones. Tarifas verificadas, entrada contada antes de generar, máximo 6.000 tokens de entrada y 4.000 de salida, registro persistente y reserva conservadora de 0,01 USD/intento. Si no se puede comprobar el límite, no generar. Ver inference-budget.md.
+Inferencia autorizada hasta 1 USD y 40 intentos acumulados, incluidos los doce anteriores y todos los errores/repeticiones. Ampliación expresa del participante para texto propio y modelo real. Tarifas reconfirmadas, entrada contada antes de generar, máximo 6.000 tokens de entrada y 4.000 de salida, registro persistente y reserva conservadora de 0,01 USD/intento (máximo 0,40 USD). Si no se puede comprobar el límite, no generar. Ver inference-budget.md.
 En cada commit: revisar cambios previstos, proteger learner-profile.md y credenciales, incorporar solo archivos de este proyecto; no usar un añadido masivo sin revisión.
 
 ## Slices
@@ -78,6 +78,10 @@ Reflection: no solicitada; la respuesta personal, si existe, irá al perfil excl
 Activity mode: pendiente, según experiencia y práctica que ya se haya producido.
 
 ## Revisions
+
+- 2026-10-23, preparación final: participante autoriza 40 acumulados manteniendo 1 USD. Se conserva íntegro el bloque de doce intentos, sin reiniciar consumo ni retirar bloqueos. Una comprobación técnica real nueva: 13/40, quedan 27; 33 controles locales superados. Texto nuevo, dos cambios aceptados, sugerencia opcional rechazada y recuperación íntegra en otro proceso. Evidencia: final-review-readiness.md. No es prueba ni valoración del participante.
+- Las dos redundancias originales siguen como FAIL de precisión: al repetirlas por pantalla requieren una tarjeta/decisión extra; rechazarlas permite finalizar guardando solo lo útil. Carga de tiempo y molestia pendientes de valoración humana. No se cambia el prompt ni se ocultan tarjetas. Origen de nueva interpretación, respuesta registrada y revisión local visibles en la sección de propuestas. Sin funciones nuevas de negocio.
+- Prueba final del participante, medición y decisión de acabado/candidatura siguen sin marcar. La limitación histórica de cupo agotado tras corte 3 queda sustituida por la ampliación; las respuestas registradas siguen exigiendo contexto exacto y los borradores continúan sin persistirse.
 
 - 2026-10-22, corte 3: commit 165a5b3. Seis familias, variantes positivas, factura prometida y principal evaluadas. Ocho llamadas nuevas, doce acumuladas, sin reintentos ni ampliación del presupuesto. Dos respuestas compatibles reutilizadas. 32 controles locales; veinte tratamientos de aprobación/rechazo comparados íntegramente en otro proceso. Evidencia separada en evidence-slice3.md y originales ficticios en evidence-model-slice3.json.
 - No se detectan fallos críticos en la muestra actual; principal/C4 mantienen fallos de precisión por redundancia, que el agente rechaza en los controles. Prueba final humana y ahorro pendientes. No se marca aceptación global ni listo para publicar.

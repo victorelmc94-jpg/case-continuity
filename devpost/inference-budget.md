@@ -1,12 +1,12 @@
 ---
 doc: inference-budget
 status: approved
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 # Presupuesto de inferencia autorizado
 
-El usuario autoriza como máximo 1 USD total y doce intentos de inferencia, contando errores y repeticiones. Se implementa un límite más conservador: reserva irrevocable de 0,01 USD por intento, máximo acumulado 0,12 USD. Los intentos fallidos no recuperan cupo ni reserva.
+Autorización vigente: **1 USD total y cuarenta intentos acumulados**, contando los doce anteriores, errores y repeticiones. Ampliación expresa del participante antes de su prueba final. Reserva irrevocable de 0,01 USD por intento, máximo acumulado 0,40 USD. Los fallidos no recuperan cupo ni reserva. Historial de autorización conservado; no se reinician contadores ni se elimina un bloqueo por uso anómalo.
 
 ## Tarifas verificadas antes de generar
 GPT-6 Luna, Responses API, contexto corto, servicio estándar/default, razonamiento standard/low:
@@ -14,7 +14,7 @@ GPT-6 Luna, Responses API, contexto corto, servicio estándar/default, razonamie
 - Entrada en caché: 0,01 USD por millón; escritura 30 min: 0,125; escritura 12 h: 0,25. Estas tarifas de escritura sustituyen la tarifa ordinaria, no se suman a ella.
 - Salida total facturada: 0,50 USD por millón, incluido razonamiento y formato.
 No herramientas, imágenes, archivos remotos, pro ni fast. Desde la corrección del primer intento se usa prompt_cache_options explicit, sin puntos de escritura, para no crear caché deliberada. El cálculo de seguridad contempla aun así toda entrada a 0,25 USD/millón, incluida la escritura implícita del primer intento.
-Fuentes consultadas el 2026-10-22:
+Fuentes consultadas y reconfirmadas el 2026-10-22 a las 23:54:18 Europe/Madrid:
 https://developers.openai.com/api/docs/pricing
 https://developers.openai.com/api/docs/models/gpt-6-luna
 https://developers.openai.com/api/docs/guides/token-counting
@@ -32,7 +32,7 @@ https://developers.openai.com/api/docs/guides/prompt-caching
 - Si el proveedor informa uso o tarifa incompatible, bloquear nuevas llamadas hasta revisión.
 
 Generación máxima por intento, incluyendo cualquier escritura de caché: (6000 × 0,25 + 4000 × 0,50)/1.000.000 = 0,0035 USD.
-Doce generaciones máximas: 0,042 USD. La reserva de 0,12 USD deja margen conservador adicional; no se presenta la reserva como gasto real.
+Cuarenta generaciones máximas: 0,14 USD. La reserva de 0,40 USD deja margen conservador adicional dentro del dólar autorizado; no se presenta como gasto real.
 El conteo previo no se declara gratuito: no se encontró una tarifa separada publicada para ese endpoint. Se reserva 0,01 USD por intento completo, muy por encima del coste acotado de generación; no se crean operaciones auxiliares de pago ni reintentos ocultos.
 No asumir que un error sin usage costó cero. Mantener su reserva y mostrar uso conocido aparte.
 costUsd en el registro y «estimación máxima del uso conocido» en la pantalla son una cota conservadora calculada con entrada a 0,25 y salida a 0,50; no una consulta de la factura. El primer registro fue recalculado de forma conservadora al incorporar cache-write a la contabilidad, sin alterar la salida original.
@@ -43,13 +43,17 @@ La aplicación conserva la autorización y limita consumo. No crea recursos exte
 ## Corte 1 ejecutado
 Tres intentos contabilizados, incluida la respuesta rechazada por falta de value.text y la revisión descartada al verificar el aviso. Sin llamadas automáticas adicionales. Detalle: evidence-slice1.md.
 Reserva acumulada 0,03 USD; cota de generación conocida 0,0025505 USD; nueve intentos restantes. No hay errores sin usage en esos tres intentos.
-La verificación de tarifas vence el 2026-10-23 a las 22:11:10 Europe/Madrid; a partir de entonces se bloquea analizar hasta revisarlas. La lectura y el guardado local siguen disponibles.
+La primera verificación vencía el 2026-10-23 a las 22:11:10 Europe/Madrid. Se reconfirmó antes de la prueba final: vigencia actual hasta el **23/10/2026 a las 23:54:18 Europe/Madrid**; después se bloquea generar hasta revisarlas. Leer y guardar localmente sigue disponible.
 
 ## Corte 2 ejecutado
 Una generación adicional para C6, con el mismo registro y límites: 1274 tokens de entrada, 191 de salida; cota conservadora 0,000414 USD. Repetir la fuente ya revisada no consultó al modelo. Pruebas de controles de pantalla simuladas sin inferencia.
 Acumulado: cuatro intentos, reserva 0,04 USD, cota de generación conocida 0,0029645 USD; ocho intentos restantes. La cifra del apartado anterior es la foto histórica del corte 1. Ver evidence-slice2.md.
 
-## Corte 3 ejecutado — cupo agotado
+## Corte 3 ejecutado — foto histórica con el cupo anterior agotado
 Ocho generaciones nuevas: C1, C2, C3, factura prometida, C4, C5, C1-B y C6-B. Cero reintentos en este corte. Principal y C6 reutilizan respuestas compatibles existentes; controles y recuperación no llaman al proveedor.
 Acumulado: **12/12 intentos**, reserva 0,12 USD, cota conservadora de generación conocida **0,0081175 USD**, cero intentos con usage desconocido. No es factura. No se restablece cupo ni se genera más aunque quede presupuesto monetario: el límite de intentos se alcanzó.
 La prueba final ofrece repetición explícita de respuestas reales registradas para contexto idéntico. No es nueva inferencia. No funciona como fallback para entradas editadas ni para estados modificados tras perder un borrador parcial. Detalle y referencias por intento: evidence-slice3.md.
+
+## Ampliación y preparación final
+El participante amplía a 40 acumulados manteniendo 1 USD total. Los doce registros anteriores se conservan íntegros; quedan 28 tras la ampliación. Se realizó una única comprobación técnica real adicional, intento 26374686-b1cf-493d-a095-0443323dd23a: entrada 1336, salida 932, cota 0,0008 USD. No es una prueba del participante.
+Estado al entregar: **13/40**, quedan **27**, reserva 0,13 USD, cota de generación conocida 0,0089175 USD, cero usage desconocido. Sin nuevas llamadas en controles de redundancia o recuperación. Detalles en final-review-readiness.md. La limitación histórica del párrafo anterior ya no significa cupo agotado actual; el límite de contexto exacto de las respuestas registradas se mantiene.

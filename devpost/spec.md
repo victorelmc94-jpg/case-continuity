@@ -1,16 +1,16 @@
 ---
 doc: spec
 status: approved
-updated: 2026-10-22
+updated: 2026-10-23
 review: joint-with-prd
 ---
 
 # Proyecto sin nombre definitivo — Technical Spec
 
-Paquete conjunto aceptado por el usuario el 2026-10-22: cambios legítimos y evaluación separada de modelo, controles y persistencia. Orden, modo fast y Git local autorizados. Corte 1 probado por el participante; ajustes solicitados y corte 2 autorizados e incorporados. Inferencia hasta 1 USD/doce intentos, cuatro utilizados. Evidencias: evidence-slice1.md y evidence-slice2.md. Corte 3 y evaluación global pendientes.
+Paquete conjunto aprobado: cambios legítimos y evaluación separada de modelo, controles y persistencia. Orden, fast y Git local autorizados. Tres cortes construidos; evidencia técnica y dos fallos de precisión en evidence-slice3.md. Prueba final humana pendiente. Inferencia ampliada a **40 acumulados y 1 USD total**; al preparar la entrega, trece utilizados. Ver final-review-readiness.md. Sin funciones nuevas de negocio.
 
 ## How This Works, In Plain Language
-Continuación autorizada tras la prueba del usuario: corte 2 construido; evidence-slice2.md recoge C6 real, parciales, repetición y recuperación. El estado persistido del caso probado no se modificó para ajustar su presentación. Corte 3 pendiente.
+Tres cortes construidos. La preparación final habilita el cupo expresamente ampliado y conserva sus registros. La interfaz distingue una nueva interpretación de una respuesta registrada, que nunca se usa como fallback. El expediente probado previamente se conserva; las comprobaciones técnicas nuevas usan un espacio aislado.
 
 Propuesta: una página en el navegador habla con un pequeño programa que corre en este equipo. Ese programa lee y guarda un archivo local con los casos ficticios.
 Al pulsar analizar, envía al modelo la novedad y el contexto del caso. El modelo devuelve propuestas y citas; no puede escribir el expediente.
@@ -45,7 +45,7 @@ Comando de arranque: node --env-file-if-exists=.env src/server.mjs (también npm
 Abrir http://127.0.0.1:4317 . Si el puerto está ocupado, salir con mensaje; no alterar otro servicio.
 La credencial se lee del entorno o de .env local excluido de Git. Sin clave o sin autorización de inferencia: se puede leer el expediente y ejecutar controles deterministas, pero analizar informa que falta acceso; no finge una llamada.
 Comandos de verificación previstos: node --test para controles sin inferencia y una ejecución explícita separada para C1–C6 con el modelo real.
-El corte 1 ya tiene estas rutas y arranque comprobados. El guardado parcial y los seis ejemplos siguen siendo parte del plan pendiente, no comportamiento disponible.
+Arranque, guardado parcial y ejemplos disponibles y comprobados mecánicamente. Falta probarlos y valorar su utilidad con el participante, usando texto escrito por él.
 El vídeo puede grabarse localmente. Repositorio público y vídeo accesible siguen siendo entregables futuros; despliegue opcional y no autorizado aquí.
 
 ## Look and Feel
@@ -136,7 +136,7 @@ Repetición: comparar fuentes/versiones y efectos ya incorporados. No duplicar p
 Si se perdieron borradores tras un guardado parcial, los recibos recuperan lo ya incorporado y señalan que no hay finalización; lo restante no se inventa ni se aprueba por omisión.
 
 ## File Structure
-Estructura objetivo de V1; src/, public/, tests/ y fixtures/main.json ya existen para el corte 1. fixtures/cases.json sigue pendiente de ampliar los ejemplos:
+Estructura de V1: src/, public/, tests/, fixtures/main.json y fixtures/cases.json implementados para los tres cortes:
 - src/server.mjs — servicio y rutas locales.
 - src/domain.mjs — operaciones permitidas e invariantes.
 - src/store.mjs — lectura, escritura, versiones e idempotencia.
@@ -188,9 +188,9 @@ store false no se presenta como garantía de retención cero por el proveedor.
 Acceso real comprobado mediante tres generaciones en el corte 1. Saldo y cuota total de la cuenta no se han consultado; no se infieren a partir de estas respuestas.
 Tarifas verificadas el 2026-10-22: entrada ordinaria 0,10 USD/millón; entrada en caché 0,01; escritura 30 min 0,125 y 12 h 0,25; salida 0,50, incluido razonamiento. [Tarifas](https://developers.openai.com/api/docs/pricing). La estimación anterior de 0,0096 omitía las posibles escrituras de caché y queda sustituida por el cálculo conservador de inference-budget.md.
 
-Autorizados 1 USD y doce intentos totales, incluidos fallos/repeticiones. Reserva en disco de 0,01 USD antes de cualquier petición; no se recupera por error. Entrada contada antes de generar, máximo 6.000 tokens; salida máxima 4.000; contexto serializado hasta 24 KiB; conteo con timeout 20 s y generación 45 s. Sin herramientas, paralelismo ni reintentos automáticos. Si el conteo falta o excede el máximo, no generar.
-Se calcula toda entrada a la tarifa más alta de escritura, aunque no la use: máximo 0,0035 USD/generación y 0,042 para doce. Reserva acumulada máxima 0,12 USD, inferior al permiso de 1 USD. Tarifas caducan el 23/10/2026 a las 22:11:10 Europe/Madrid y bloquean nuevas generaciones. Detalle y límites: inference-budget.md.
-Ya se han usado tres intentos; quedan nueve antes de la prueba humana. No se promete repetir una tanda completa dentro de doce. Si se agota el cupo, detenerse antes de consumir más. La cuota se conserva entre reinicios y no se reinicia al crear otro ejemplo. Un timeout cuenta y puede tener consumo desconocido.
+Autorizados 1 USD total y cuarenta intentos acumulados, incluidos los doce anteriores y fallos/repeticiones. Reserva en disco de 0,01 USD antes de cualquier petición; no se recupera por error. Entrada contada antes de generar, máximo 6.000 tokens; salida máxima 4.000; contexto hasta 24 KiB; timeout de conteo 20 s y generación 45 s. Sin herramientas, paralelismo ni reintentos automáticos. Si el conteo falta o excede máximo, no generar.
+Toda entrada se calcula a la tarifa más alta de escritura: máximo 0,0035 USD/generación y 0,14 para cuarenta. Reserva máxima 0,40 USD, dentro de 1 USD. Tarifas reconfirmadas, vigentes hasta 23/10/2026 23:54:18 Europe/Madrid; después se bloquea generar hasta revisarlas. Ver inference-budget.md.
+Al preparar entrega: trece usados, veintisiete disponibles. No se restablece consumo al crear casos o reiniciar. Migración explícita auditada conserva intentos y bloqueos anteriores. Un timeout cuenta y puede tener consumo desconocido.
 No usar el ahorro de una estimación para justificar un gasto no autorizado. No hay saldo o créditos de Google/AWS comprobados.
 
 ## Important Failure Modes
@@ -217,5 +217,5 @@ No se simula el núcleo para ahorrar integración. El modo de prueba técnica co
 Del usuario: paquete aceptado con el ajuste de cambios legítimos, evaluación en tres capas, solo autorización contractual fuera de modificación, aviso antes de perder trabajo revisado, guardado parcial/finalización separados, tiempo como hipótesis y prioridad al núcleo con reapertura.
 Se mantiene la arquitectura local sin dependencias y la persistencia única. Cambia el registro de operaciones y el contrato de interpretación, no el proveedor ni la infraestructura. El modelo candidato no implica permiso de consumo.
 Incertidumbre real aportada por el usuario: si la corrección de propuestas exige tanto trabajo que la actualización manual sea mejor. Se investigará con C1–C6 y comparación documentada; no se inventa una tecnología para resolverla.
-Resuelto por el usuario: orden, fast, Git local con commits revisados e inferencia hasta 1 USD/doce intentos. Corte 1 comprobado con modelo real, controles y reinicio; esperar su prueba antes de construir corte 2.
-El nombre y el acabado posterior quedan en manos del participante. Ver checklist.md y evidence-slice1.md. Se mantiene pendiente la evaluación de los seis casos, no compensable por el resultado de la entrada principal.
+Resueltos: orden, fast, Git local e inferencia hasta 1 USD/40 acumulados. Prueba temprana recibida y tres cortes evaluados técnicamente. La revisión final humana sigue pendiente; las dos redundancias originales se mantienen documentadas y visibles.
+Nombre, acabado y candidatura quedan en manos del participante. Ver checklist.md y final-review-readiness.md. No se acredita ahorro ni se compensa ningún fallo crítico con otros aciertos.

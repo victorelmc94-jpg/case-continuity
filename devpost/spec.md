@@ -1,13 +1,13 @@
 ---
 doc: spec
 status: approved
-updated: 2026-10-23
+updated: 2026-10-24
 review: joint-with-prd
 ---
 
 # Proyecto sin nombre definitivo — Technical Spec
 
-Paquete conjunto aprobado: cambios legítimos y evaluación separada de modelo, controles y persistencia. Orden, fast y Git local autorizados. Tres cortes construidos; evidencia técnica y dos fallos de precisión en evidence-slice3.md. Prueba final humana pendiente. Inferencia ampliada a **40 acumulados y 1 USD total**; al preparar la entrega, trece utilizados. Ver final-review-readiness.md. Sin funciones nuevas de negocio.
+Paquete conjunto aprobado: cambios legítimos y evaluación separada de modelo, controles y persistencia. Orden, fast y Git local autorizados. Tres cortes construidos. Prueba humana S-PRUEBA-47 de aceptación/guardado/relectura realizada; detectó pérdida de pendiente. Corrección y edición del agente verificadas, repetición humana de Editar pendiente. Inferencia **40 acumulados y 1 USD total**, diecisiete utilizados. Ver revision-pending-actions.md. Sin funciones nuevas de negocio.
 
 ## How This Works, In Plain Language
 Tres cortes construidos. La preparación final habilita el cupo expresamente ampliado y conserva sus registros. La interfaz distingue una nueva interpretación de una respuesta registrada, que nunca se usa como fallback. El expediente probado previamente se conserva; las comprobaciones técnicas nuevas usan un espacio aislado.
@@ -82,6 +82,7 @@ Prepara contexto acotado, instrucciones y esquema. Las fuentes se tratan como da
 Comprueba estado completed, ausencia de refusal y contenido output_text; analiza y valida el JSON. No usa output_text como propiedad universal del REST: extrae los bloques message/content de output.
 No reintenta de pago automáticamente ni convierte respuestas incompletas en propuestas guardables.
 La forma válida no demuestra significado correcto; C1–C6 evalúan ambos.
+Revisión del 24/10: instrucciones de generación deben conservar actuaciones pendientes al añadir esperas, y exigir respaldo explícito para resolución/cancelación/sustitución. Se permite y evalúa next_movement combinado o reemplazo legítimo, sin guardarlo automáticamente ni congelarlo. R47 y dos contrastes se evalúan con respuesta original antes de edición. Las salidas del prompt previo siguen como evidencia histórica, no como validación del prompt nuevo. Ver revision-pending-actions.md.
 
 ### Reglas de incorporación
 Archivo src/domain.mjs.
@@ -189,8 +190,8 @@ Acceso real comprobado mediante tres generaciones en el corte 1. Saldo y cuota t
 Tarifas verificadas el 2026-10-22: entrada ordinaria 0,10 USD/millón; entrada en caché 0,01; escritura 30 min 0,125 y 12 h 0,25; salida 0,50, incluido razonamiento. [Tarifas](https://developers.openai.com/api/docs/pricing). La estimación anterior de 0,0096 omitía las posibles escrituras de caché y queda sustituida por el cálculo conservador de inference-budget.md.
 
 Autorizados 1 USD total y cuarenta intentos acumulados, incluidos los doce anteriores y fallos/repeticiones. Reserva en disco de 0,01 USD antes de cualquier petición; no se recupera por error. Entrada contada antes de generar, máximo 6.000 tokens; salida máxima 4.000; contexto hasta 24 KiB; timeout de conteo 20 s y generación 45 s. Sin herramientas, paralelismo ni reintentos automáticos. Si el conteo falta o excede máximo, no generar.
-Toda entrada se calcula a la tarifa más alta de escritura: máximo 0,0035 USD/generación y 0,14 para cuarenta. Reserva máxima 0,40 USD, dentro de 1 USD. Tarifas reconfirmadas, vigentes hasta 23/10/2026 23:54:18 Europe/Madrid; después se bloquea generar hasta revisarlas. Ver inference-budget.md.
-Al preparar entrega: trece usados, veintisiete disponibles. No se restablece consumo al crear casos o reiniciar. Migración explícita auditada conserva intentos y bloqueos anteriores. Un timeout cuenta y puede tener consumo desconocido.
+Toda entrada se calcula a la tarifa más alta de escritura: máximo 0,0035 USD/generación y 0,14 para cuarenta. Reserva máxima 0,40 USD, dentro de 1 USD. Tarifas reconfirmadas el 24/10/2026, vigentes hasta 25/10/2026 19:28:25 Europe/Madrid; después se bloquea generar hasta revisarlas. Ver inference-budget.md.
+Tras S-PRUEBA-47 y la regresión acotada: diecisiete usados, veintitrés disponibles. No se restablece consumo al crear casos o reiniciar. Migración explícita auditada conserva intentos y bloqueos anteriores. Un timeout cuenta y puede tener consumo desconocido.
 No usar el ahorro de una estimación para justificar un gasto no autorizado. No hay saldo o créditos de Google/AWS comprobados.
 
 ## Important Failure Modes

@@ -1,12 +1,12 @@
 ---
 doc: checklist
 status: approved
-updated: 2026-10-23
+updated: 2026-10-24
 ---
 
 # Build Checklist
 
-Build mode: fast — elegido expresamente por el usuario el 2026-10-22. Prueba temprana del corte 1 recibida. Continuación del corte 3 autorizada; evaluación mecánica de seis casos y positivos ejecutada, con observaciones. Prueba final humana y ahorro siguen pendientes.
+Build mode: fast — elegido por el usuario. Prueba temprana recibida y tres cortes construidos. El participante probó S-PRUEBA-47: nueva interpretación, aceptación, guardado y relectura; no Editar ni ahorro. Detectó pérdida de una actuación pendiente; corrección y regresión acotada del agente verificadas. Su prueba breve de Editar y la valoración final siguen pendientes.
 
 Orden aprobado expresamente por el usuario. Esta continuación ejecuta el corte 3 sin funciones fuera de alcance. Los tres cortes incluyen comportamiento completo que se puede usar y verificar; no son fases separadas de interfaz, almacenamiento y modelo.
 
@@ -55,15 +55,16 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 ## Final Review
 
 - [x] Los tres cortes están verificados mecánicamente y sus evidencias indican ejecución, código/prompt y límites; no implica aceptación humana final.
-- [x] MODEL: seis casos y contrastes positivos evaluados con salida original; críticos cumplidos en la muestra, dos fallos de precisión no críticos conservados. Sin confundir bloqueo técnico o corrección con comprensión.
+- [x] MODEL: evaluación original de seis casos/positivos documentada, con dos fallos de precisión. S-PRUEBA-47 original es FAIL por perder una actuación pendiente. Nuevo prompt comprobado solo en R47 y dos contrastes, sin compensar ese fallo ni recalificar salidas antiguas. Ver revision-pending-actions.md.
 - [x] GUARDS: cambios válidos aceptados se guardan; no aceptados no se guardan; autorización contractual bloqueada se informa solo como restricción de V1.
 - [x] RECOVERY: datos, antecedentes, fuentes, revisiones y versiones coinciden al leer de nuevo y reiniciar; parcial, deduplicación y fallos no producen estado ficticio en las comprobaciones ejecutadas.
 - [ ] No hay fallos críticos pendientes. Si los hay, detener la aceptación del núcleo, registrar el problema y reevaluar la ruta; no compensar con aciertos.
+- [ ] Reintento del participante: R47, Editar el valor del próximo movimiento → aceptar edición → guardar → reabrir; confirmar texto, fuentes y conservación del pendiente. Corrección técnica y edición del agente ya verificadas; el check humano no está realizado.
 - [ ] El participante ha explorado los casos, comunicado observaciones y vuelto a probar las correcciones acordadas; no inventar revisión si no ocurrió.
 - [ ] Medición de tiempo y correcciones registrada; ahorro solo como resultado si los datos lo apoyan. Decisión de continuar, ajustar o parar documentada antes del acabado adicional.
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship.
 
-Evidencia de cada corte en evidence-slice1.md, evidence-slice2.md y evidence-slice3.md. Hay feedback humano del corte 1 y de la aparición del aviso nativo de Chrome; no hay aún prueba final humana del conjunto ni valoración de tiempo.
+Evidencia histórica en los tres cortes; feedback humano del corte 1, aviso nativo de Chrome y aceptación/guardado/relectura de S-PRUEBA-47. Original preservado y corrección en revision-pending-actions.md. Sin prueba humana de Editar, reinicio ni valoración de tiempo atribuida.
 
 ## Code Tour and App Map
 
@@ -78,6 +79,10 @@ Reflection: no solicitada; la respuesta personal, si existe, irá al perfil excl
 Activity mode: pendiente, según experiencia y práctica que ya se haya producido.
 
 ## Revisions
+
+- 2026-10-24: participante informa S-PRUEBA-47, expediente 21ff502f. Se conservan fuente, salida original, recibos, versiones y hashes. Aceptó tres propuestas sin editar y releyó: no registrar como prueba de Editar, cierre/reinicio o ahorro. Próximo movimiento perdía aclaración no resuelta: MODEL original FAIL aunque fuera aceptado.
+- Corrección de generación: conservar actuaciones pendientes y combinar esperas; permitir reemplazo con cancelación/resolución/sustitución explícita. Campo sigue editable. Tres regresiones reales, un reemplazo legítimo guardado y una edición por pantalla del agente recuperada íntegramente en otro proceso. 33 controles locales pasan. Acumulado 17/40, reserva 0,17 USD, cota conocida 0,01225175 USD. Sin inferencia en edición/recuperación. No se repite ni se recalifica toda la tanda anterior.
+- Añadida entrada ficticia R47 para una única prueba breve de Editar con la respuesta corregida registrada. Es material de prueba dentro del flujo existente, sin nueva función de negocio. El original humano no se reescribe. Reintento humano, comparación manual, decisión de acabado y entrega quedan pendientes. Publicación no autorizada.
 
 - 2026-10-23, preparación final: participante autoriza 40 acumulados manteniendo 1 USD. Se conserva íntegro el bloque de doce intentos, sin reiniciar consumo ni retirar bloqueos. Una comprobación técnica real nueva: 13/40, quedan 27; 33 controles locales superados. Texto nuevo, dos cambios aceptados, sugerencia opcional rechazada y recuperación íntegra en otro proceso. Evidencia: final-review-readiness.md. No es prueba ni valoración del participante.
 - Las dos redundancias originales siguen como FAIL de precisión: al repetirlas por pantalla requieren una tarjeta/decisión extra; rechazarlas permite finalizar guardando solo lo útil. Carga de tiempo y molestia pendientes de valoración humana. No se cambia el prompt ni se ocultan tarjetas. Origen de nueva interpretación, respuesta registrada y revisión local visibles en la sección de propuestas. Sin funciones nuevas de negocio.

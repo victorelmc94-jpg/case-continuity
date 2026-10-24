@@ -1,7 +1,7 @@
 ---
 doc: prd
 status: approved
-updated: 2026-10-23
+updated: 2026-10-24
 review: joint-with-spec
 ---
 
@@ -61,6 +61,7 @@ Source: scope.md > The Core Loop; Explicitly Cut.
 ### Propuestas con límites
 Cada propuesta muestra tipo de incorporación, valor anterior obtenido del expediente, resultado sugerido, citas, condiciones y dudas.
 Tipos de V1: actualizar datos del alcance respaldados por fuente, conservar presupuesto condicionado, registrar recepción documental, interés/preferencia sin autorización, incertidumbre, antecedente y cambios justificados de seguimiento. No son parches libres ni acciones ejecutadas.
+El próximo movimiento conserva actuaciones aún pendientes. Si una novedad añade una espera paralela, la propuesta debe combinarla con lo no resuelto; solo resolución, cancelación o sustitución explícita justifica retirar una actuación. No bloquear el campo: deben seguir posibles cambios legítimos revisados. Esta regla corrige el fallo original detectado por el participante en S-PRUEBA-47, preservado en revision-pending-actions.md.
 - Una rectificación explícita conserva el dato anterior.
 - El importe condicionado se conserva junto al presupuesto de referencia, sin sustituirlo como máximo incondicional.
 - Una contradicción muestra ambas fuentes y queda abierta; la fecha más reciente no resuelve por sí sola.

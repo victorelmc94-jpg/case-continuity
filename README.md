@@ -2,7 +2,7 @@
 
 Proyecto nuevo e independiente, construido desde vacío. Expedientes, documentos y ofertas ficticios. Sin código de aplicaciones anteriores, tarifas reales ni contratación.
 
-Los tres cortes están implementados. La evaluación distingue interpretación original del modelo, aprobación/guardado y recuperación. La prueba final del participante y la medición frente al trabajo manual siguen pendientes. [Resultados y límites](devpost/evidence-slice3.md).
+Los tres cortes están implementados. El participante probó texto propio, aceptación, guardado y relectura en S-PRUEBA-47, y detectó un próximo movimiento que perdía una actuación pendiente. Se preservó el original y se corrigió la generación con una regresión acotada. Falta su prueba breve de Editar y la comparación manual. [Corrección, evidencias y límites](devpost/revision-pending-actions.md).
 
 ## Abrir
 
@@ -14,17 +14,18 @@ npm start
 
 Node 24.x (comprobado con 24.18.0), sin paquetes que instalar ni compilación. Ctrl+C detiene su servicio. No detener otros procesos si el puerto está ocupado.
 
-La clave solo se lee en el servidor desde OPENAI_API_KEY o un .env excluido. Nunca introducirla en navegador o repositorio. Hay acceso real comprobado. El participante amplió el cupo a **40 intentos acumulados, manteniendo 1 USD total**. Se conservan los doce anteriores: tras una comprobación técnica nueva hay **13 utilizados y 27 disponibles**. Crear pruebas o reiniciar no restablece el consumo.
+La clave solo se lee en el servidor desde OPENAI_API_KEY o un .env excluido. Nunca introducirla en navegador o repositorio. Cupo autorizado: **40 intentos acumulados y 1 USD total**. Tras la prueba del participante y tres regresiones nuevas hay **17 utilizados y 23 disponibles**. Crear pruebas o reiniciar no restablece consumo. La prueba breve siguiente no necesita inferencia nueva.
 
-## Prueba final, en sesiones separadas si hace falta
+## Una prueba breve pendiente: Editar → guardar → reabrir
 
-1. Elige «Principal» y pulsa **Nueva prueba ficticia**. Parte de 600 Mb, 40 €, factura pendiente y seguimiento original. Los anteriores se conservan; solo se muestra el activo.
-2. Pon una referencia nueva, por ejemplo S-MI-PRUEBA-01, y sustituye «Texto original» por una novedad escrita por ti, usando solo datos ficticios. Una fuente conservada no se sobrescribe: cada novedad distinta necesita su propia referencia.
-3. Pulsa **Analizar novedad con el modelo**. La sección muestra «Nueva interpretación del modelo · sin incorporar». Cada petición consume un intento, también si falla; no hay reintentos automáticos.
-4. Lee interpretación y citas **antes de corregir**. Aceptar una tarjeta no cambia todavía el expediente. Acepta, edita o rechaza y confirma el fin de revisión para guardar. También se puede guardar por partes sin declarar terminada toda la revisión.
-5. Cierra la pestaña y vuelve a abrir la misma dirección, o pulsa «Volver a leer lo guardado». Comprueba cambios, condiciones, fuentes, versiones y que lo rechazado no se incorporó. Es una prueba tuya pendiente, no un resultado ya superado.
+1. Elige **R47 · prueba breve de Editar**, pulsa **Nueva prueba ficticia** y **Usar respuesta real registrada**. Es la respuesta corregida ya comprobada por el agente, no una interpretación nueva. El expediente original 21ff502f se conserva sin modificar.
+2. En **Próximo movimiento → Editar**, cambia **Declaración o valor de texto** por: «Aclarar las condiciones de la oferta A; revisar la factura cuando llegue y esperar la respuesta del cliente tras hablar con su pareja.»
+3. Pulsa **Aceptar esta edición**, acepta las otras dos tarjetas y **Confirma el fin de revisión y guarda**.
+4. Cierra y reabre la aplicación. Comprueba ese texto exacto, «Edición humana aceptada», fuentes y que no desaparece aclarar las condiciones. Deben seguir 47 €, fibra 600, interés posible sujeto a hablar con la pareja, no contratar y factura pendiente. La marca solo se atribuirá al participante cuando él comunique esta prueba.
 
-**Respuestas registradas:** el otro botón sigue disponible para repetir los ejemplos originales. Muestra «Respuesta registrada · sin nueva llamada» y exige contexto exacto; editar el texto no genera una interpretación nueva por esa vía ni activa un fallback. Los resultados previstos de esas entradas fijas son:
+Puedes continuar con texto propio mediante «Analizar novedad con el modelo», usando una referencia nueva en cada fuente distinta. Una fuente ya conservada no se sobrescribe. Esa vía sí consume intento, también si el proveedor falla, sin reintentos automáticos. Editar una tarjeta no vuelve a llamar al modelo. Lo pendiente del borrador no se conserva al cerrar; lo guardado sí.
+
+**Respuestas registradas:** exige contexto e instrucciones exactos. R47 tiene una respuesta compatible con el prompt corregido. Las anteriores siguen archivadas como evidencia histórica; su huella antigua no se hace pasar por una respuesta del nuevo prompt. No hay fallback. La tabla siguiente conserva los criterios de las entradas originales, que no se han vuelto a evaluar como una tanda completa tras esta corrección:
 
 | Entrada | Resultado a comprobar |
 |---|---|
@@ -51,11 +52,11 @@ La novedad y el texto documental se archivan como material aportado al finalizar
 npm test
 ```
 
-33 controles locales, sin inferencia. El corte 3 verificó aceptación/rechazo por HTTP en diez escenarios y recuperación íntegra de veinte ejecuciones en otro proceso. La preparación final añade una llamada real con texto ficticio nuevo, revisión/guardado por pantalla y recuperación íntegra tras reiniciar. [Preparación y límites actuales](devpost/final-review-readiness.md), [salidas originales ficticias](devpost/evidence-model-slice3.json), [evaluación del corte 3](devpost/evidence-slice3.md). Ninguna de estas pruebas técnicas es una valoración humana.
+33 controles locales, sin inferencia, pasan con la corrección. La regresión nueva tiene tres respuestas originales reales, un contraste positivo guardado y una edición manual del agente por pantalla, recuperada íntegramente en otro proceso. [Revisión actual](devpost/revision-pending-actions.md), [original humano preservado](devpost/evidence-s-prueba-47-original.json), [regresión y edición del agente](devpost/evidence-pending-actions.json). Las pruebas históricas del corte 3 siguen en sus documentos. Ninguna verificación del agente sustituye la prueba humana de Editar.
 
-**13/40 intentos acumulados**, incluidos fallos/repeticiones anteriores. Reserva actual 0,13 USD; cota conservadora de generación conocida **0,0089175 USD**, no factura. Reserva máxima a cuarenta: 0,40 USD, dentro del límite total de 1 USD. Entrada ≤ 6.000 tokens, salida ≤ 4.000, petición ≤ 24 KiB, sin reintentos. [Tarifas y cálculo](devpost/inference-budget.md). No se usan créditos de Google/AWS ni recursos nuevos.
+**17/40 intentos acumulados**, incluidos fallos/repeticiones anteriores. Reserva 0,17 USD; cota conservadora de generación conocida **0,01225175 USD**, no factura. Reserva máxima 0,40 USD dentro de 1 USD. Entrada ≤ 6.000 tokens, salida ≤ 4.000, petición ≤ 24 KiB, sin reintentos. [Tarifas y cálculo](devpost/inference-budget.md). Sin créditos supuestos de Google/AWS ni recursos nuevos.
 
-Principal y C6 se reutilizaron tras comprobar compatibilidad. Las dos redundancias conservan sus fallos de precisión y ahora se han revisado por pantalla: cada una exige una decisión adicional antes de finalizar; rechazarlas permite guardar lo útil. Su carga subjetiva y tiempo añadido no están medidos. No se ocultan ni se cambia el prompt para favorecer la prueba. Tampoco se ha demostrado fiabilidad general, utilidad neta ni ahorro. La autorización contractual sigue fuera de escritura por límite técnico, separado de la evaluación semántica.
+En la evaluación histórica del corte 3, Principal y C6 se reutilizaron tras comprobar compatibilidad con las instrucciones de entonces. Las dos redundancias conservan sus fallos de precisión y se revisaron por pantalla: cada una exige una decisión adicional antes de finalizar; rechazarlas permite guardar lo útil. Su carga subjetiva y tiempo añadido no están medidos. Las salidas originales siguen intactas. La corrección actual añade una regla general sobre actuaciones pendientes, sin excepciones para R47. Tampoco se ha demostrado fiabilidad general, utilidad neta ni ahorro. La autorización contractual sigue fuera de escritura por límite técnico, separado de la evaluación semántica.
 
 runtime/workspace.json conserva expedientes; runtime/inference-ledger.json conserva cupo; runtime/slice3/ conserva capturas, comparaciones y recuperación. runtime queda fuera de Git. No borrar el registro para recuperar intentos. Ante archivo corrupto se detiene sin reinicializar. Los fallos de timeout, refusal y disco lleno fueron simulados; no se afirma haber provocado fallos reales del proveedor o disco.
 

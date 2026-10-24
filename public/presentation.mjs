@@ -23,7 +23,7 @@ export function describeValue(target,value){
 }
 export function contractingInstruction(run){
   // Only display the specific instruction when an incorporated declaration AND its quoted source support it.
-  const explicit=/no (?:contrates|contratar|se contrate) todavía/i;
+  const explicit=/no (?:contrates|contratar|se contrate)(?: nada)? todavía/i;
   for(const interest of [...run.caseData.offer_interest].reverse()){
     if(!explicit.test(interest.declaration??''))continue;
     const refs=interest.source_refs.filter(ref=>explicit.test(ref.quote)&&run.sources.some(s=>s.id===ref.source_id&&s.text.includes(ref.quote)));

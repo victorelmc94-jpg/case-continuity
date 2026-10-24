@@ -8,5 +8,6 @@
   {"id":"C6","label":"C6 · sin novedades","source":{"id":"S-N06","text":"No tengo novedades de este asunto desde la última revisión."}},
   {"id":"C1-B","label":"C1-B · nuevo límite definitivo","source":{"id":"S-N01-B","sourceDate":"2026-10-21","text":"Confirmo que mi nuevo presupuesto máximo es 45 euros al mes. Es mi nuevo límite definitivo, no depende de una oferta. Todavía no autorizo contratar"}},
   {"id":"C3-P","label":"C3 · factura prometida, no recibida","source":{"id":"S-N03-P","text":"Te la enviaré mañana."}},
-  {"id":"C6-B","label":"C6-B · esperar decisión del cliente","source":{"id":"S-N06-B","sourceDate":"2026-10-21","text":"He decidido que ahora esperes mi decisión. Te avisaré yo cuando esté listo; no me llames todavía"}}
+  {"id":"C6-B","label":"C6-B · esperar decisión del cliente","source":{"id":"S-N06-B","sourceDate":"2026-10-21","text":"He decidido que ahora esperes mi decisión. Te avisaré yo cuando esté listo; no me llames todavía"}},
+  {"id":"R47","label":"R47 · prueba breve de Editar","source":{"id":"S-PRUEBA-47","sourceDate":"2026-10-24","text":"He revisado las cuentas: mi presupuesto máximo definitivo pasa de 40 a 47 euros al mes. La oferta A podría interesarme, pero primero quiero comentarlo con mi pareja; no contrates nada todavía. La factura te la enviaré mañana. Sobre la velocidad de fibra no tengo información nueva."}}
 ]

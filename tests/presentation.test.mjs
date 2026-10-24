@@ -14,5 +14,9 @@ test('contracting instruction requires an incorporated statement with supporting
   assert.equal(contractingInstruction(run),null);
   run.caseData.offer_interest.push({declaration:'Me interesa, pero no contrates todavía.',source_refs:[{source_id:'S-DEMO',quote:'La oferta A me interesa, pero no contrates todavía.'}]});
   assert.equal(contractingInstruction(run).text,'El cliente pide no contratar todavía');
+  const wording='La oferta A podría interesarme; no contrates nada todavía.';
+  run.sources.push({id:'S-47-PRESENTATION',text:wording});
+  run.caseData.offer_interest[0]={declaration:wording,source_refs:[{source_id:'S-47-PRESENTATION',quote:wording}]};
+  assert.equal(contractingInstruction(run).text,'El cliente pide no contratar todavía');
   run.caseData.offer_interest[0].source_refs[0].quote='Texto sin respaldo';assert.equal(contractingInstruction(run),null);
 });

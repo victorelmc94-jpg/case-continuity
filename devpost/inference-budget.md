@@ -1,7 +1,7 @@
 ---
 doc: inference-budget
 status: approved
-updated: 2026-10-23
+updated: 2026-10-24
 ---
 
 # Presupuesto de inferencia autorizado
@@ -57,3 +57,6 @@ La prueba final ofrece repetición explícita de respuestas reales registradas p
 ## Ampliación y preparación final
 El participante amplía a 40 acumulados manteniendo 1 USD total. Los doce registros anteriores se conservan íntegros; quedan 28 tras la ampliación. Se realizó una única comprobación técnica real adicional, intento 26374686-b1cf-493d-a095-0443323dd23a: entrada 1336, salida 932, cota 0,0008 USD. No es una prueba del participante.
 Estado al entregar: **13/40**, quedan **27**, reserva 0,13 USD, cota de generación conocida 0,0089175 USD, cero usage desconocido. Sin nuevas llamadas en controles de redundancia o recuperación. Detalles en final-review-readiness.md. La limitación histórica del párrafo anterior ya no significa cupo agotado actual; el límite de contexto exacto de las respuestas registradas se mantiene.
+
+## Rearranque del 24/10/2026
+El participante apagó y volvió a encender el PC; el servicio local se vuelve a arrancar, conservando expedientes y contador. La credencial está disponible sin mostrarla. La verificación anterior había vencido y bloqueaba analizar. Se reconfirmaron las mismas tarifas en la documentación oficial el 24/10/2026 a las 20:28:25 Europe/Madrid, sin inferencia ni consumo de intentos. Nueva vigencia: **25/10/2026 a las 19:28:25 Europe/Madrid** (24 horas exactas, con cambio horario). Se conserva el bloqueo por caducidad futura y todos los demás límites. Contador comprobado: 13/40; no se restablece ni se amplía autorización.

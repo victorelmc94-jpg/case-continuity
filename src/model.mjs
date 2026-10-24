@@ -7,7 +7,7 @@ import { AppError, outputSchema, requireThat, hash } from './domain.mjs';
 export const LIMITS = Object.freeze({
   model:'gpt-6-luna', attempts:40, budgetUsd:1, reserveUsd:0.01, maxInputTokens:6000, maxOutputTokens:4000,
   maxRequestBytes:24576, inputPerMillion:0.10, inputCeilingPerMillion:0.25, outputPerMillion:0.50,
-  rateVerifiedAt:'2026-10-22T21:54:18Z', rateExpiresAt:'2026-10-23T21:54:18Z'
+  rateVerifiedAt:'2026-10-24T18:28:25Z', rateExpiresAt:'2026-10-25T18:28:25Z'
 });
 const initialLedger = () => ({schemaVersion:1,authorization:{budgetUsd:LIMITS.budgetUsd,maxAttempts:LIMITS.attempts},attempts:[],blocked:false});
 export const costUpperBound = usage => (usage.input_tokens*LIMITS.inputCeilingPerMillion+usage.output_tokens*LIMITS.outputPerMillion)/1000000;

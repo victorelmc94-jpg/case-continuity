@@ -49,7 +49,7 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — el usuario confirmó el resultado visible del corte 1 y pidió historial claro, disposición «podría estudiar» y petición expresa de no contratar con fuente; ajustes incorporados en corte 2.
-- [ ] Final kick-the-tires exploration and feedback completed — después del corte 3, con los seis casos y variantes verificables; sin repetir artificialmente una revisión ya resuelta.
+- [x] Revisión humana final y feedback: el participante probó texto propio en S-PRUEBA-47 y detectó pérdida del pendiente. Delegó la repetición afectada al agente el 26/10 y autorizó publicar el PoC con sus límites. No implica que haya probado Editar ni los seis casos personalmente.
 - Modo fast elegido. Control temprano completado por feedback expreso; no exige presencia continua. La revisión final y la evaluación global siguen pendientes.
 
 ## Final Review
@@ -58,25 +58,25 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 - [x] MODEL: evaluación original de seis casos/positivos documentada, con dos fallos de precisión. S-PRUEBA-47 original es FAIL por perder una actuación pendiente. Nuevo prompt comprobado solo en R47 y dos contrastes, sin compensar ese fallo ni recalificar salidas antiguas. Ver revision-pending-actions.md.
 - [x] GUARDS: cambios válidos aceptados se guardan; no aceptados no se guardan; autorización contractual bloqueada se informa solo como restricción de V1.
 - [x] RECOVERY: datos, antecedentes, fuentes, revisiones y versiones coinciden al leer de nuevo y reiniciar; parcial, deduplicación y fallos no producen estado ficticio en las comprobaciones ejecutadas.
-- [ ] No hay fallos críticos pendientes. Si los hay, detener la aceptación del núcleo, registrar el problema y reevaluar la ruta; no compensar con aciertos.
+- [x] Sin fallo crítico conocido pendiente en las comprobaciones acotadas tras el ajuste; el fallo original sigue como FAIL histórico. No implica garantía semántica general. Lista estructurada vacía documentada, declaración/cita y resultado conservados.
 - [x] Prueba técnica delegada por el participante el 26/10: R47, Editar el valor → aceptar edición → guardar → cerrar pestaña y reabrir. Ejecutada por el agente en d136cb17, texto/fuentes/pendiente conservados. La prueba de Editar no se atribuye al participante. Ver release-check.md.
-- [ ] El participante ha explorado los casos, comunicado observaciones y vuelto a probar las correcciones acordadas; no inventar revisión si no ocurrió.
+- [x] Observación humana y corrección acordada documentadas; por instrucción expresa la repetición de Editar la ejecutó el agente. Autoría separada en release-check.md y evidence-release.json.
 - [x] Decisión de continuar hacia entrega del 26/10 documentada por instrucción expresa del participante. La comparación manual y medición no están realizadas; ahorro sigue sin demostrarse. No afirmar medición ni añadir acabado fuera del alcance.
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship.
+- [x] Final review complete para este PoC con límites: el participante aprobó el paquete/publicación el 26/10. Vídeo y envío final siguen sujetos a revisión; no se declara candidatura presentada.
 
 Evidencia histórica en los tres cortes; feedback humano del corte 1, aviso nativo de Chrome y aceptación/guardado/relectura de S-PRUEBA-47. Original preservado y corrección en revision-pending-actions.md. Sin prueba humana de Editar, reinicio ni valoración de tiempo atribuida.
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — conectar una incertidumbre real o seguir una incorporación desde la novedad hasta el guardado, con evidencia de código terminado.
-- [ ] Optional edit and transfer reflection addressed — ofrecer, declinar o reconocer práctica ya realizada, sin repetirla ni imponer reflexión.
-- [ ] `devpost/app-map.html` generado desde código terminado, comprobado y mostrado, con una práctica reutilizable del proyecto.
+- [x] Learning activity: recapitulación de investigación real ya realizada por el participante al detectar que guardar correctamente no prueba interpretar correctamente; requisito, instrucciones y pruebas enlazados en mapa. Sin actividad de código nueva atribuida.
+- [x] Práctica existente reconocida. No se hizo edición de código por el participante. Reflexión ofrecida, sin respuesta de aprendizaje atribuida ni exigencia de otra actividad; delegación solicitada.
+- [x] `devpost/app-map.html` generado desde código real, rutas/símbolos comprobados y enlace mostrado. Guía offline sin scripts/red. Apertura visual en navegador bloqueada por protocolo local; no se declara validación visual.
 
-Activity and evidence: no realizada; se registrará práctica observada, no dominio supuesto.
-Route and stops: pendientes del código real; no generar rutas como si existieran.
-Edit outcome: no propuesto ni ejecutado.
-Reflection: no solicitada; la respuesta personal, si existe, irá al perfil excluido de commits.
-Activity mode: pendiente, según experiencia y práctica que ya se haya producido.
+Activity and evidence: observación humana S-PRUEBA-47 y recapitulación del 26/10; distinguir interpretación, controles y recuperación como práctica reutilizable. No dominio de código supuesto.
+Route and stops: ruta de referencia en public/app.js (renderDraft/save), src/domain.mjs (commitReview), src/store.mjs (atomicWrite/WorkspaceStore.transact); no recorrido interactivo atribuido.
+Edit outcome: solo edición por interfaz ejecutada por el agente; no edición de código humana.
+Reflection: ofrecida; no se atribuye respuesta personal de aprendizaje. Perfil personal excluido de publicación.
+Activity mode: alternativa enfocada sobre trabajo real previo y recapitulación, por preferencia explícita de delegación.
 
 ## Revisions
 

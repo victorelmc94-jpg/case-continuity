@@ -2,6 +2,8 @@
 
 Technical preparation record, not participant-authored submission copy.
 
+Repository published with explicit authorization: https://github.com/victorelmc94-jpg/case-continuity . Anonymous checks returned200 for repository, MIT license, English README, three English planning documents and demo preparation script. Original private backup remains only in ignored runtime; its commit is not reachable from published main. Personal registration responses were removed from the only affected local commit before the first push, with explicit authorization and a verified private bundle backup. No force push or remote history rewrite.
+
 Official deadline checked at19:42:19UTC: **26 October21:00UTC =22:00Europe/Madrid**. Registration and submission share the deadline. Target: materials ready21:40, submission by21:50, final buffer10minutes. Recheck remaining time while executing; do not represent target times as completed tasks.
 
 ## Essential order

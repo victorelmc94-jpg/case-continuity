@@ -1,0 +1,73 @@
+{
+  "at": "2026-10-26T20:09:09.453Z",
+  "actor": "agent; explicitly delegated by participant",
+  "route": "UI Edit actual text value -> accept edit -> approve other cards -> explicitly finish/save -> close tab -> reopen",
+  "runId": "d136cb17-16f9-44b6-816b-5db5adeee039",
+  "runHash": "635ded65b1f215fc8a691c89ea84deb66ee5c0adb712d2c3195b5af643b5228f",
+  "dataVersion": 2,
+  "nextMovement": "Aclarar las condiciones de la oferta A; revisar la factura cuando llegue y esperar la respuesta del cliente tras hablar con su pareja.",
+  "receipt": {
+    "id": "b2ae7738-dcbc-4434-8ee9-3a8755606d8e",
+    "proposalId": "663f7267-2daf-4fb7-a9d3-9989a7cfd330",
+    "proposal": {
+      "kind": "case_update",
+      "summary": "Mantener la aclaración pendiente sobre las condiciones de la oferta A e incorporar el seguimiento de la factura prometida y de la decisión tras hablarlo con su pareja. La factura aún no consta recibida.",
+      "target": "next_movement",
+      "value": {
+        "number": null,
+        "text": "Aclarar las condiciones de la oferta A; revisar la factura cuando llegue y esperar la respuesta del cliente tras hablar con su pareja.",
+        "document_source_id": null,
+        "offer_id": null,
+        "offer": null
+      },
+      "conditions": [],
+      "uncertainties": [
+        "La factura está prometida, pero no se ha recibido.",
+        "La decisión sobre la oferta A está pendiente de hablarlo con su pareja."
+      ],
+      "source_refs": [
+        {
+          "source_id": "S-PRUEBA-47",
+          "quote": "pero primero quiero comentarlo con mi pareja"
+        },
+        {
+          "source_id": "S-PRUEBA-47",
+          "quote": "La factura te la enviaré mañana."
+        }
+      ]
+    },
+    "humanEdited": true,
+    "before": "Aclarar las condiciones de la oferta A",
+    "after": "Aclarar las condiciones de la oferta A; revisar la factura cuando llegue y esperar la respuesta del cliente tras hablar con su pareja.",
+    "at": "2026-10-26T19:47:23.339Z",
+    "reviewer": "Asesor Demo",
+    "reviewKey": "001c552e8f2b679ccdac095fd63c2ad5334a50b27a52a8a1675e001181efabcd",
+    "reviewSourceId": "S-PRUEBA-47",
+    "reviewDocumentIds": [],
+    "effectKey": "1c4188574ab597c015100265a24254eb5f0fcf480dd683afbced6dfdb9f6bf0f"
+  },
+  "budget": {
+    "model": "gpt-6-luna",
+    "attempts": 17,
+    "maxAttempts": 40,
+    "remainingAttempts": 23,
+    "budgetUsd": 1,
+    "reservedUsd": 0.17,
+    "knownGenerationCostUsd": 0.01225175,
+    "unknownUsageAttempts": 0,
+    "blocked": false,
+    "maxInputTokens": 6000,
+    "maxOutputTokens": 4000,
+    "rateExpiresAt": "2026-10-25T18:28:25Z",
+    "ratesValid": false
+  },
+  "originalParticipantRunUnchanged": true,
+  "originalParticipantRunHash": "7571cd78bff6b7f762608de60b6147ac3eb75c0471379b66bac038e393805076",
+  "tests": {
+    "passed": 36,
+    "failed": 0,
+    "inferenceCalls": 0
+  },
+  "humanEditTest": "Not performed by participant; do not attribute",
+  "timeSaving": "Not measured"
+}

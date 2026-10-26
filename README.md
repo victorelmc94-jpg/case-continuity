@@ -1,4 +1,6 @@
-# Revisión de expediente — prueba local, nombre pendiente
+# Case Continuity
+
+**[English setup, testing instructions, planning documents and known limitations](README.en.md)** · Documentación original en español a continuación. Nombre propuesto por el participante el 26/10/2026; los registros siguientes conservan la cronología anterior.
 
 Proyecto nuevo e independiente, construido desde vacío. Expedientes, documentos y ofertas ficticios. Sin código de aplicaciones anteriores, tarifas reales ni contratación.
 

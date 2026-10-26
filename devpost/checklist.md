@@ -1,7 +1,7 @@
 ---
 doc: checklist
 status: approved
-updated: 2026-10-24
+updated: 2026-10-26
 ---
 
 # Build Checklist
@@ -59,9 +59,9 @@ En cada commit: revisar cambios previstos, proteger learner-profile.md y credenc
 - [x] GUARDS: cambios válidos aceptados se guardan; no aceptados no se guardan; autorización contractual bloqueada se informa solo como restricción de V1.
 - [x] RECOVERY: datos, antecedentes, fuentes, revisiones y versiones coinciden al leer de nuevo y reiniciar; parcial, deduplicación y fallos no producen estado ficticio en las comprobaciones ejecutadas.
 - [ ] No hay fallos críticos pendientes. Si los hay, detener la aceptación del núcleo, registrar el problema y reevaluar la ruta; no compensar con aciertos.
-- [ ] Reintento del participante: R47, Editar el valor del próximo movimiento → aceptar edición → guardar → reabrir; confirmar texto, fuentes y conservación del pendiente. Corrección técnica y edición del agente ya verificadas; el check humano no está realizado.
+- [x] Prueba técnica delegada por el participante el 26/10: R47, Editar el valor → aceptar edición → guardar → cerrar pestaña y reabrir. Ejecutada por el agente en d136cb17, texto/fuentes/pendiente conservados. La prueba de Editar no se atribuye al participante. Ver release-check.md.
 - [ ] El participante ha explorado los casos, comunicado observaciones y vuelto a probar las correcciones acordadas; no inventar revisión si no ocurrió.
-- [ ] Medición de tiempo y correcciones registrada; ahorro solo como resultado si los datos lo apoyan. Decisión de continuar, ajustar o parar documentada antes del acabado adicional.
+- [x] Decisión de continuar hacia entrega del 26/10 documentada por instrucción expresa del participante. La comparación manual y medición no están realizadas; ahorro sigue sin demostrarse. No afirmar medición ni añadir acabado fuera del alcance.
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship.
 
 Evidencia histórica en los tres cortes; feedback humano del corte 1, aviso nativo de Chrome y aceptación/guardado/relectura de S-PRUEBA-47. Original preservado y corrección en revision-pending-actions.md. Sin prueba humana de Editar, reinicio ni valoración de tiempo atribuida.
@@ -79,6 +79,8 @@ Reflection: no solicitada; la respuesta personal, si existe, irá al perfil excl
 Activity mode: pendiente, según experiencia y práctica que ya se haya producido.
 
 ## Revisions
+
+- 2026-10-26: participante pide terminar/presentar hoy, delega expresamente la repetición de Editar y solicita registrar actor real. Se sustituye la repetición humana pendiente por un check técnico delegado sin inventar práctica humana. Se conserva su observación original y el fallo MODEL. 36 controles locales, cero inferencia nueva, 17/40. Preparación local publicable, documentos técnicos ingleses y mapa; publicación y envío sujetos a revisión final.
 
 - 2026-10-24: participante informa S-PRUEBA-47, expediente 21ff502f. Se conservan fuente, salida original, recibos, versiones y hashes. Aceptó tres propuestas sin editar y releyó: no registrar como prueba de Editar, cierre/reinicio o ahorro. Próximo movimiento perdía aclaración no resuelta: MODEL original FAIL aunque fuera aceptado.
 - Corrección de generación: conservar actuaciones pendientes y combinar esperas; permitir reemplazo con cancelación/resolución/sustitución explícita. Campo sigue editable. Tres regresiones reales, un reemplazo legítimo guardado y una edición por pantalla del agente recuperada íntegramente en otro proceso. 33 controles locales pasan. Acumulado 17/40, reserva 0,17 USD, cota conocida 0,01225175 USD. Sin inferencia en edición/recuperación. No se repite ni se recalifica toda la tanda anterior.
